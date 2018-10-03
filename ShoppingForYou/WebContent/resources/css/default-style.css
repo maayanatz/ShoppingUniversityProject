@@ -1,0 +1,85 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.navigator {
+  overflow: hidden;
+  background-color: #000000;
+}
+
+.navigator a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.navigator a:hover {
+  background-color: #FFFFFF;
+  color: black;
+}
+
+.navigator .search-box {
+  float: right;
+}
+
+/* Style the search box inside the navigation bar */
+.navigator input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+
+.navigator .search-box button {
+  float: right;
+  padding: 6px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.navigator .search-box button:hover {
+  background: #ccc;
+}
+
+@media screen and (max-width: 600px) {
+  .navigator .search-box {
+    float: none;
+  }
+  .navigator a, .navigator input[type=text], .navigator .search-box button {
+    float: none;
+    display: block;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+    padding: 14px;
+  }
+  .navigator input[type=text] {
+    border: 1px solid #ccc;  
+  }
+}
+
+.content {
+	padding-left:16px
+}
+
+/*
+.logo{
+    position: absolute;
+    left:0;
+    top:0;
+    display:none;
+}
+*/
