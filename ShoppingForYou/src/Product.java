@@ -10,16 +10,17 @@ public class Product {
 	private String category;
 	private int size;
 	private String color;
-	private int price;
-	private int discount;
+	private float price;
+	private float discount;
 	private String image;
 	private int amount;
+	private float finalPrice;
 
 	public Product() {
 	}
 	
 	public Product(int catalogNumber, String description, String category, int size,
-			String color, int price, int discount, String image, int amount) {
+			String color, float price, float discount, String image, int amount, float finalPrice) {
 		this.catalogNumber = catalogNumber;
 		this.description = description;
 		this.category = category;
@@ -29,6 +30,7 @@ public class Product {
 		this.discount = discount;
 		this.image = image;
 		this.amount = amount;
+		this.finalPrice = finalPrice;
 	}
 
 	/**

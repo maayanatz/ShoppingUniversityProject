@@ -15,17 +15,23 @@ import javax.faces.context.FacesContext;
 public class EditProductController {
 
 	private List<Product> products;
+	private List<Product> shirts;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
 	public EditProductController() throws Exception {
 		products = new ArrayList<>();
+		shirts = new ArrayList<>();
 		
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
 	public List<Product> getProducts() {
 		return products;
+	}
+	
+	public List<Product> getShirts() {
+		return shirts;
 	}
 
 	public void loadProducts() {
@@ -42,6 +48,26 @@ public class EditProductController {
 		} catch (Exception exc) {
 			// send this to server logs
 			logger.log(Level.SEVERE, "Error loading products", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+		}
+	}
+	
+	public void loadShirts() {
+
+		logger.info("Loading shirts");
+		
+		shirts.clear();
+
+		try {
+			
+			// get all shirts from database
+			shirts = shoppingDbUtil.getShirts();
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error loading shirts", exc);
 			
 			// add error message for JSF page
 			addErrorMessage(exc);

@@ -13,11 +13,13 @@ import javax.faces.context.FacesContext;
 public class ShoppingController {
 
 	private List<Customer> customers;
+	private List<Product> products;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
 	public ShoppingController() throws Exception {
 		customers = new ArrayList<>();
+		products = new ArrayList<>();
 		
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
@@ -40,6 +42,26 @@ public class ShoppingController {
 		} catch (Exception exc) {
 			// send this to server logs
 			logger.log(Level.SEVERE, "Error loading customers", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+		}
+	}
+	
+	public void loadProducts() {
+
+		logger.info("Loading products");
+		
+		products.clear();
+
+		try {
+			
+			// get all customers from database
+			products = shoppingDbUtil.getProducts();
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error loading products", exc);
 			
 			// add error message for JSF page
 			addErrorMessage(exc);

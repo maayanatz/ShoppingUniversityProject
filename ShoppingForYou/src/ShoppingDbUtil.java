@@ -424,5 +424,51 @@ public class ShoppingDbUtil {
 			close (myConn, myStmt);
 		}
 		
-	}	
+	}
+
+	public List<Product> getShirts() throws Exception {
+		
+		List<Product> shirts = new ArrayList<>();
+
+		Connection myConn = null;
+		Statement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			myConn = getConnection();
+
+			String sql = "select * from products where Category = 'Shirts'";
+
+			myStmt = myConn.createStatement();
+
+			myRs = myStmt.executeQuery(sql);
+
+			// process result set
+			while (myRs.next()) {
+				
+				// retrieve data from result set row
+				int catalogNumber = myRs.getInt("Catalog_Number");
+				String description = myRs.getString("Description");
+				String category = myRs.getString("Category");
+				int size = myRs.getInt("Size");
+				String color = myRs.getString("Color");
+				int price = myRs.getInt("Price");
+				int discount = myRs.getInt("Discount");
+				String image = myRs.getString("Image");
+				int amount = myRs.getInt("Amount_In_Stock");
+				
+				// create new shirt object
+				Product tempShirt = new Product(catalogNumber, description, category, size, color, price,
+						discount, image, amount);
+
+				// add it to the list of products
+				shirts.add(tempShirt);
+			}
+			
+			return shirts;		
+		}
+		finally {
+			close (myConn, myStmt, myRs);
+		}
+	}
 }
