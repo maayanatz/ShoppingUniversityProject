@@ -229,5 +229,200 @@ public class ShoppingDbUtil {
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}
+	}
+
+	public List<Product> getProducts() throws Exception {
+		
+		List<Product> products = new ArrayList<>();
+
+		Connection myConn = null;
+		Statement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			myConn = getConnection();
+
+			String sql = "select * from products order by Category, Catalog_Number";
+
+			myStmt = myConn.createStatement();
+
+			myRs = myStmt.executeQuery(sql);
+
+			// process result set
+			while (myRs.next()) {
+				
+				// retrieve data from result set row
+				int catalogNumber = myRs.getInt("Catalog_Number");
+				String description = myRs.getString("Description");
+				String category = myRs.getString("Category");
+				int size = myRs.getInt("Size");
+				String color = myRs.getString("Color");
+				int price = myRs.getInt("Price");
+				int discount = myRs.getInt("Discount");
+				String image = myRs.getString("Image");
+				int amount = myRs.getInt("Amount_In_Stock");
+				
+				// create new product object
+				Product tempProduct = new Product(catalogNumber, description, category, size, color, price,
+						discount, image, amount);
+
+				// add it to the list of products
+				products.add(tempProduct);
+			}
+			
+			return products;		
+		}
+		finally {
+			close (myConn, myStmt, myRs);
+		}
+	}
+
+	public void addProduct(Product theProduct) throws Exception {
+
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+
+		try {
+			myConn = getConnection();
+
+			String sql = "insert into products (Catalog_Number, Description, Category, Size, Color, Price, Discount, Image, Amount_In_Stock) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+			myStmt = myConn.prepareStatement(sql);
+
+			// set params
+			myStmt.setInt(1, theProduct.getCatalogNumber());
+			myStmt.setString(2, theProduct.getDescription());
+			myStmt.setString(3, theProduct.getCategory());
+			myStmt.setInt(4, theProduct.getSize());
+			myStmt.setString(5, theProduct.getColor());
+			myStmt.setInt(6, theProduct.getPrice());
+			myStmt.setInt(7, theProduct.getDiscount());
+			myStmt.setString(8, theProduct.getImage());
+			myStmt.setInt(9, theProduct.getAmount());
+			
+			myStmt.execute();			
+		}
+		finally {
+			close (myConn, myStmt);
+		}
+		
+	}
+
+	public void deleteProduct(Product theProduct) throws Exception {
+
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+
+		try {
+			
+			if (theProduct.getAmount() == 1)
+			{
+				myConn = getConnection();
+				
+				String sql = "delete from products where Catalog_Number = ?";
+
+				myStmt = myConn.prepareStatement(sql);
+
+				// set params
+				myStmt.setInt(1, theProduct.getCatalogNumber());
+				
+				myStmt.execute();
+			}
+			
+			else
+			{
+				myConn = getConnection();
+				
+				String sql = "update products set Amount_In_Stock=? where Catalog_Number=?";
+
+				myStmt = myConn.prepareStatement(sql);
+
+				// set params
+				myStmt.setInt(1, ((theProduct.getAmount()) - 1));
+				myStmt.setInt(2, theProduct.getCatalogNumber());
+				
+				myStmt.execute();
+			}
+		}
+		finally {
+			close (myConn, myStmt);
+		}		
+	}	
+
+	public Product getProduct(int productNumber) throws Exception {
+			
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			myConn = getConnection();
+
+			String sql = "select * from products where Catalog_Number = ?";
+
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setInt(1, productNumber);
+			
+			myRs = myStmt.executeQuery();
+
+			Product theProduct = null;
+			
+			// retrieve data from result set row
+			if (myRs.next()) {
+				int catalogNumber = myRs.getInt("Catalog_Number");
+				String description = myRs.getString("Description");
+				String category = myRs.getString("Category");
+				int size = myRs.getInt("Size");
+				String color = myRs.getString("Color");
+				int price = myRs.getInt("Price");
+				int discount = myRs.getInt("Discount");
+				String image = myRs.getString("Image");
+				int amount = myRs.getInt("Amount_In_Stock");
+				
+				theProduct = new Product(catalogNumber, description, category, size, color, price,
+						discount, image, amount);
+			}
+			else {
+				throw new Exception("Could not find catalog numebr: " + productNumber);
+			}
+
+			return theProduct;
+		}
+		finally {
+			close (myConn, myStmt, myRs);
+		}
+	}
+
+	public void updateProduct(Product theProduct) throws Exception {
+
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+
+		try {
+			myConn = getConnection();
+
+			String sql = "update products set Description=?, Category=?, Size=?, Color=?, Price=?, Discount=?, Image=?, Amount_In_Stock=? where Catalog_Number=?";
+
+			myStmt = myConn.prepareStatement(sql);
+
+			// set params
+			myStmt.setString(1, theProduct.getDescription());
+			myStmt.setString(2, theProduct.getCategory());
+			myStmt.setInt(3, theProduct.getSize());
+			myStmt.setString(4, theProduct.getColor());
+			myStmt.setInt(5, theProduct.getPrice());
+			myStmt.setInt(6, theProduct.getDiscount());
+			myStmt.setString(7, theProduct.getImage());
+			myStmt.setInt(8, theProduct.getAmount());
+			myStmt.setInt(9, theProduct.getCatalogNumber());
+			
+			myStmt.execute();
+		}
+		finally {
+			close (myConn, myStmt);
+		}
+		
 	}	
 }
