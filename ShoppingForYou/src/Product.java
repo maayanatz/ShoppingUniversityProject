@@ -1,36 +1,56 @@
-import java.net.URL;
-
 import javax.faces.bean.ManagedBean;
 
 @ManagedBean
 public class Product {
 
-	private int catalogNumber;
-	private String description;
-	private String category;
-	private int size;
-	private String color;
-	private float price;
-	private float discount;
-	private String image;
-	private int amount;
-	private float finalPrice;
+	protected int catalogNumber;
+	protected String description;
+	protected String category;
+	protected float price;
+	protected float discount;
+	protected float finalPrice;
+	protected String image;
+	protected float size;
+	protected int amount;
 
 	public Product() {
 	}
 	
-	public Product(int catalogNumber, String description, String category, int size,
-			String color, float price, float discount, String image, int amount, float finalPrice) {
-		this.catalogNumber = catalogNumber;
-		this.description = description;
-		this.category = category;
-		this.size = size;
-		this.color = color;
-		this.price = price;
-		this.discount = discount;
-		this.image = image;
-		this.amount = amount;
-		this.finalPrice = finalPrice;
+	public Product(int catalogNumber, String description, String category, float price,
+			float discount, float finalPrice, String image, float size, int amount) {
+
+		
+		switch (category) {
+        case "Shirts":
+        	Shirt newShirt = new Shirt(catalogNumber, description, category, price,
+        			discount, finalPrice, image, size, amount);
+            break;
+        case "Skirts":
+        	Dress newSkirt = new Dress(catalogNumber, description, category, price,
+        			discount, finalPrice, image, size, amount);
+        	break;
+        case "Dresses":
+        	Dress newDress = new Dress(catalogNumber, description, category, price,
+        			discount, finalPrice, image, size, amount);
+        	break;
+        case "Shoes":
+        	Shoe newShoe = new Shoe(catalogNumber, description, category, price,
+        			discount, finalPrice, image, size, amount);
+        	break;
+        default:
+        {
+    		this.catalogNumber = catalogNumber;
+    		this.description = description;
+    		this.category = category;
+    		this.price = price;
+    		this.discount = discount;
+    		this.finalPrice = finalPrice;
+    		this.image = image;
+    		this.size = size;
+    		this.amount = amount;
+    		break;
+        }
+		}
 	}
 
 	/**
@@ -76,59 +96,45 @@ public class Product {
 	}
 
 	/**
-	 * @return the size
-	 */
-	public int getSize() {
-		return size;
-	}
-
-	/**
-	 * @param size the size to set
-	 */
-	public void setSize(int size) {
-		this.size = size;
-	}
-
-	/**
-	 * @return the color
-	 */
-	public String getColor() {
-		return color;
-	}
-
-	/**
-	 * @param color the color to set
-	 */
-	public void setColor(String color) {
-		this.color = color;
-	}
-
-	/**
 	 * @return the price
 	 */
-	public int getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
 	/**
 	 * @param price the price to set
 	 */
-	public void setPrice(int price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 
 	/**
 	 * @return the discount
 	 */
-	public int getDiscount() {
+	public float getDiscount() {
 		return discount;
 	}
 
 	/**
 	 * @param discount the discount to set
 	 */
-	public void setDiscount(int discount) {
+	public void setDiscount(float discount) {
 		this.discount = discount;
+	}
+
+	/**
+	 * @return the finalPrice
+	 */
+	public float getFinalPrice() {
+		return finalPrice;
+	}
+
+	/**
+	 * @param finalPrice the finalPrice to set
+	 */
+	public void setFinalPrice(float finalPrice) {
+		this.finalPrice = finalPrice;
 	}
 
 	/**
@@ -143,6 +149,20 @@ public class Product {
 	 */
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	/**
+	 * @return the size
+	 */
+	public float getSize() {
+		return size;
+	}
+
+	/**
+	 * @param size the size to set
+	 */
+	public void setSize(float size) {
+		this.size = size;
 	}
 
 	/**
