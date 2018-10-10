@@ -35,18 +35,16 @@
 				<h:outputLabel>Description:</h:outputLabel> <h:inputText value="#{product.description}" id="description" /> <h:message for="description" />
 	
 				<h:outputLabel>Category:</h:outputLabel> <h:inputText value="#{product.category}" id="category" /> <h:message for="category" />
-	
-				<h:outputLabel>Size:</h:outputLabel> <h:inputText value="#{product.size}" id="size" /> <h:message for="size" />
-            							
-				<h:outputLabel>Color:</h:outputLabel> <h:inputText value="#{product.color}" id="color" /> <h:message for="color" />            							
 				
 				<h:outputLabel>Price:</h:outputLabel> <h:inputText value="#{product.price}" id="price" /> <h:message for="price" />
 				
 				<h:outputLabel>Discount:</h:outputLabel> <h:inputText value="#{product.discount}" id="discount" /> <h:message for="discount" />
 				
 				<h:outputLabel>Image:</h:outputLabel> <h:inputText value="#{product.image}" id="image" /> <h:message for="image" />
-				
-				<h:outputLabel>Amount in Stock:</h:outputLabel> <h:inputText value="#{product.amount}" id="amount" /> <h:message for="amount" />
+	
+				<h:outputLabel>Size:</h:outputLabel> <h:inputText value="#{product.size}" id="size" /> <h:message for="size" />
+            							
+				<h:outputLabel>Amount in Stock:</h:outputLabel> <h:inputText value="#{product.amount}" id="amount" /> <h:message for="amount" />            							
 				
 				<h:outputLabel /> <h:commandButton value="Save" styleClass="save" action="#{editProductController.addProduct(product)}"/>
 			

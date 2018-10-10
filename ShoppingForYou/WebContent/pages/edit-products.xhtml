@@ -66,24 +66,8 @@
 
 				<h:column>
 					<!-- the column header -->
-					<f:facet name="header">Size</f:facet>
-
-					<!--  the value for each row -->
-					#{tempProduct.size}
-				</h:column>
-				
-				<h:column>
-					<!-- the column header -->
-					<f:facet name="header">Color</f:facet>
-					
-					<!--  the value for each row -->
-					#{tempProduct.color}
-				</h:column>
-				
-				<h:column>
-					<!-- the column header -->
 					<f:facet name="header">Price</f:facet>
-					
+
 					<!--  the value for each row -->
 					#{tempProduct.price}
 				</h:column>
@@ -98,10 +82,26 @@
 				
 				<h:column>
 					<!-- the column header -->
+					<f:facet name="header">Final Price</f:facet>
+					
+					<!--  the value for each row -->
+					#{tempProduct.finalPrice}
+				</h:column>
+				
+				<h:column>
+					<!-- the column header -->
 					<f:facet name="header">Image</f:facet>
 					
 					<!--  the value for each row -->
 					#{tempProduct.image}
+				</h:column>
+				
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Size</f:facet>
+					
+					<!--  the value for each row -->
+					#{tempProduct.size}
 				</h:column>
 				
 				<h:column>

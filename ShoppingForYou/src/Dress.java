@@ -3,10 +3,6 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean
 public class Dress extends Product{
 
-	public Dress() {
-		super();
-	}
-
 	public Dress(int catalogNumber, String description, String category, float price, float discount, float finalPrice,
 			String image, float size, int amount) {
 		this.catalogNumber = catalogNumber;

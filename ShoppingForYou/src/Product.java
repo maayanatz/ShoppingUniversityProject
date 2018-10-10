@@ -18,23 +18,22 @@ public class Product {
 	
 	public Product(int catalogNumber, String description, String category, float price,
 			float discount, float finalPrice, String image, float size, int amount) {
-
 		
 		switch (category) {
         case "Shirts":
-        	Shirt newShirt = new Shirt(catalogNumber, description, category, price,
+        	Product newShirt = new Shirt(catalogNumber, description, category, price,
         			discount, finalPrice, image, size, amount);
             break;
         case "Skirts":
-        	Dress newSkirt = new Dress(catalogNumber, description, category, price,
+        	Product newSkirt = new Dress(catalogNumber, description, category, price,
         			discount, finalPrice, image, size, amount);
         	break;
         case "Dresses":
-        	Dress newDress = new Dress(catalogNumber, description, category, price,
+        	Product newDress = new Dress(catalogNumber, description, category, price,
         			discount, finalPrice, image, size, amount);
         	break;
         case "Shoes":
-        	Shoe newShoe = new Shoe(catalogNumber, description, category, price,
+        	Product newShoe = new Shoe(catalogNumber, description, category, price,
         			discount, finalPrice, image, size, amount);
         	break;
         default:
