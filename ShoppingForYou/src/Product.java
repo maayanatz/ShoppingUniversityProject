@@ -18,38 +18,15 @@ public class Product {
 	
 	public Product(int catalogNumber, String description, String category, float price,
 			float discount, float finalPrice, String image, float size, int amount) {
-		
-		switch (category) {
-        case "Shirts":
-        	Product newShirt = new Shirt(catalogNumber, description, category, price,
-        			discount, finalPrice, image, size, amount);
-            break;
-        case "Skirts":
-        	Product newSkirt = new Dress(catalogNumber, description, category, price,
-        			discount, finalPrice, image, size, amount);
-        	break;
-        case "Dresses":
-        	Product newDress = new Dress(catalogNumber, description, category, price,
-        			discount, finalPrice, image, size, amount);
-        	break;
-        case "Shoes":
-        	Product newShoe = new Shoe(catalogNumber, description, category, price,
-        			discount, finalPrice, image, size, amount);
-        	break;
-        default:
-        {
-    		this.catalogNumber = catalogNumber;
-    		this.description = description;
-    		this.category = category;
-    		this.price = price;
-    		this.discount = discount;
-    		this.finalPrice = finalPrice;
-    		this.image = image;
-    		this.size = size;
-    		this.amount = amount;
-    		break;
-        }
-		}
+		this.catalogNumber = catalogNumber;
+		this.description = description;
+		this.category = category;
+		this.price = price;
+		this.discount = discount;
+		this.finalPrice = finalPrice;
+		this.image = image;
+		this.size = size;
+		this.amount = amount;
 	}
 
 	/**

@@ -45,8 +45,6 @@
 				<h:outputLabel>Amount in Stock:</h:outputLabel> <h:inputText value="#{product.amount}" id="amount" /> <h:message for="amount" /> 
 				
 				 <h:inputHidden value="#{product.catalogNumber}" />
-				 
-				 <h:inputHidden value="#{product.finalPrice}" />
 				
 				 <h:commandButton value="Save" styleClass="save" 
 				 			action="#{editProductController.updateProduct(product)}"/>

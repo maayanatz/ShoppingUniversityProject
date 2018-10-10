@@ -5,15 +5,6 @@ public class Skirt extends Product{
 
 	public Skirt(int catalogNumber, String description, String category, float price, float discount, float finalPrice,
 			String image, float size, int amount) {
-		this.catalogNumber = catalogNumber;
-		this.description = description;
-		this.category = category;
-		this.price = price;
-		this.discount = discount;
-		this.finalPrice = finalPrice;
-		this.image = image;
-		this.size = size;
-		this.amount = amount;
-	}
-	
+		super(catalogNumber, description, category, price, discount, finalPrice, image, size, amount);
+	}	
 }

@@ -262,14 +262,12 @@ public class ShoppingDbUtil {
 				float size = myRs.getFloat("size");
 				int amount = myRs.getInt("Amount_In_Stock");
 				
-				// create new product object
-				Product tempProduct = new Product(catalogNumber, description, category, price, 
-						discount, finalPrice, image, size, amount);
-
+				Product tempProduct = new Product(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+				
 				// add it to the list of products
 				products.add(tempProduct);
 			}
-			
 			return products;		
 		}
 		finally {
@@ -285,7 +283,7 @@ public class ShoppingDbUtil {
 
 		try {
 			myConn = getConnection();
-
+			
 			String sql_products = "insert into products (Catalog_Number, Description, Category, Price, Discount, Image) values (?, ?, ?, ?, ?, ?)";
 			String sql_sizes = "insert into sizes (Size, Catalog_Number, Amount_In_Stock) values (?, ?, ?)";
 			

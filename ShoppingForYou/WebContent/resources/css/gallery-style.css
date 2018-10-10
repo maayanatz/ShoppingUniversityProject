@@ -2,8 +2,8 @@
   display: grid;
   justify-items: center;
   align-items: center;
-  grid-template-columns: repeat(3, auto);
-  grid-template-rows: repeat(3, auto);
+  grid-template-columns: repeat(4, auto);
+  grid-template-rows: auto
 }
 
 .grid-item {
