@@ -15,7 +15,7 @@ import javax.faces.context.FacesContext;
 public class EditProductController {
 
 	private List<Product> products;
-	private List<Product> shirts;
+	private List<Shirt> shirts;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
@@ -30,7 +30,7 @@ public class EditProductController {
 		return products;
 	}
 	
-	public List<Product> getShirts() {
+	public List<Shirt> getShirts() {
 		return shirts;
 	}
 
@@ -167,7 +167,30 @@ public class EditProductController {
 		
 		return "edit-products";	
 	}
+	
+	public String decreaseProduct(Product theProduct) {
+
+		logger.info("Decreasing amount of product number: " + theProduct.getCatalogNumber());
 		
+		try {
+
+			// delete the product from the database
+			theProduct.setAmount((theProduct.getAmount()) - 1);
+			shoppingDbUtil.decreaseProduct(theProduct);
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error decreasing amount of product number: " + theProduct.getCatalogNumber(), exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+			
+			return null;
+		}
+		
+		return "edit-products";	
+	}
+	
 	private void addErrorMessage(Exception exc) {
 		FacesMessage message = new FacesMessage("Error: " + exc.getMessage());
 		FacesContext.getCurrentInstance().addMessage(null, message);

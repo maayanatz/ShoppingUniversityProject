@@ -26,9 +26,11 @@
 						
 				<a target="_blank" href="product-details.xhtml">
 					<img src="#{tempShirt.image}" alt="#{tempShirt.description}"/>
+					<div class="desc">
+						#{tempShirt.description} <br/> #{tempShirt.finalPrice} &#x20AA;
+					</div>
 				</a>
-				<div class="desc">#{tempShirt.description}</div>
-				<div class="price">#{tempShirt.finalPrice}</div>
+
 			</div>
 		</ui:repeat>
 

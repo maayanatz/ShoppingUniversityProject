@@ -317,41 +317,28 @@ public class ShoppingDbUtil {
 	public void deleteProduct(Product theProduct) throws Exception {
 
 		Connection myConn = null;
-		PreparedStatement myStmt = null;
+		PreparedStatement myStmt_sizes = null;
+		PreparedStatement myStmt_products = null;
 
 		try {
+			myConn = getConnection();
+				
+			String sql_sizes = "delete from sizes where Catalog_Number = ?";
+			String sql_products = "delete from products where Catalog_Number = ?";
+
+			myStmt_sizes = myConn.prepareStatement(sql_sizes);
+			myStmt_products = myConn.prepareStatement(sql_products);
 			
-			if (theProduct.getAmount() == 1)
-			{
-				myConn = getConnection();
-				
-				String sql = "delete from products where Catalog_Number = ?";
-
-				myStmt = myConn.prepareStatement(sql);
-
-				// set params
-				myStmt.setInt(1, theProduct.getCatalogNumber());
-				
-				myStmt.execute();
-			}
+			// set params
+			myStmt_sizes.setInt(1, theProduct.getCatalogNumber());
+			myStmt_products.setInt(1, theProduct.getCatalogNumber());
 			
-			else
-			{
-				myConn = getConnection();
-				
-				String sql = "update products set Amount_In_Stock=? where Catalog_Number=?";
-
-				myStmt = myConn.prepareStatement(sql);
-
-				// set params
-				myStmt.setInt(1, ((theProduct.getAmount()) - 1));
-				myStmt.setInt(2, theProduct.getCatalogNumber());
-				
-				myStmt.execute();
-			}
+			myStmt_sizes.execute();
+			myStmt_products.execute();
 		}
 		finally {
-			close (myConn, myStmt);
+			close (myConn, myStmt_sizes);
+			close (myConn, myStmt_products);
 		}		
 	}	
 
@@ -440,9 +427,9 @@ public class ShoppingDbUtil {
 		}
 	}
 
-	public List<Product> getShirts() throws Exception {
+	public List<Shirt> getShirts() throws Exception {
 		
-		List<Product> shirts = new ArrayList<>();
+		List<Shirt> shirts = new ArrayList<>();
 
 		Connection myConn = null;
 		Statement myStmt = null;
@@ -472,7 +459,7 @@ public class ShoppingDbUtil {
 				int amount = myRs.getInt("Amount_In_Stock");
 				
 				// create new product object
-				Product tempShirt = new Product(catalogNumber, description, category, price, 
+				Shirt tempShirt = new Shirt(catalogNumber, description, category, price, 
 						discount, finalPrice, image, size, amount);
 
 				// add it to the list of shirts
@@ -483,6 +470,30 @@ public class ShoppingDbUtil {
 		}
 		finally {
 			close (myConn, myStmt, myRs);
+		}
+	}
+
+	public void decreaseProduct(Product theProduct) throws Exception {
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+
+		try {
+			myConn = getConnection();
+				
+			String sql = "update sizes set Amount_In_Stock=? where Catalog_Number=? and size=?";
+
+			myStmt = myConn.prepareStatement(sql);
+
+			// set params
+			myStmt.setInt(1, (theProduct.getAmount()));
+			myStmt.setInt(2, theProduct.getCatalogNumber());
+			myStmt.setFloat(3, theProduct.getSize());
+			
+			myStmt.execute();
+		}
+		finally {
+			close (myConn, myStmt);
 		}
 	}
 }
