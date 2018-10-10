@@ -23,17 +23,16 @@
 	<div class="grid-container">
 		
 		<ui:repeat value="#{editProductController.shirts}" var="tempShirt">
-		
-    		<div class="grid-item">
-						
-				<a target="_blank" href="product-details.xhtml">
-					<img src="#{tempShirt.image}" alt="#{tempShirt.description}"/>
-					<div class="desc">
-						#{tempShirt.description} <br/> #{tempShirt.finalPrice} &#x20AA;
-					</div>
-				</a>
 
-			</div>
+    		<div class="grid-item">
+    			<h:form>
+					<h:commandLink class="productDesc" action="#{editProductController.loadProductDetails(tempShirt.catalogNumber)}">
+					     <h:graphicImage class="productImg" value="#{tempShirt.image}" />
+					     <p>#{tempShirt.description} <br/> #{tempShirt.finalPrice} &#x20AA;</p>
+					</h:commandLink>
+				</h:form>
+			</div>			
+			
 		</ui:repeat>
 	</div>
 

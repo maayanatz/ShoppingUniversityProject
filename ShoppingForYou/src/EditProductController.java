@@ -99,17 +99,18 @@ public class EditProductController {
 	public String loadProduct(int catalogNumber) {
 		
 		logger.info("loading product: " + catalogNumber);
+		products.clear();
 		
 		try {
 			// get product from database
-			Product theProduct = shoppingDbUtil.getProduct(catalogNumber);
+			products = shoppingDbUtil.getProduct(catalogNumber);
 			
 			// put in the request attribute ... so we can use it on the form page
 			ExternalContext externalContext = 
 						FacesContext.getCurrentInstance().getExternalContext();		
 
 			Map<String, Object> requestMap = externalContext.getRequestMap();
-			requestMap.put("product", theProduct);	
+			requestMap.put("product", products);	
 			
 		} catch (Exception exc) {
 			// send this to server logs
@@ -195,5 +196,35 @@ public class EditProductController {
 		FacesMessage message = new FacesMessage("Error: " + exc.getMessage());
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
+	
+	public String loadProductDetails(int catalogNumber) {
+		
+		logger.info("loading details of product: " + catalogNumber);
+		
+		products.clear();
+		
+		try {
+			// get product from database
+			products = shoppingDbUtil.getProduct(catalogNumber);
+			
+			// put in the request attribute ... so we can use it on the form page
+			ExternalContext externalContext = 
+						FacesContext.getCurrentInstance().getExternalContext();		
+
+			Map<String, Object> requestMap = externalContext.getRequestMap();
+			requestMap.put("product", products);	
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error loading product number:" + catalogNumber, exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+			
+			return null;
+		}
+				
+		return "product-details.xhtml";
+	}	
 	
 }

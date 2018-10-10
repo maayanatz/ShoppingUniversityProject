@@ -262,7 +262,7 @@ public class ShoppingDbUtil {
 				float size = myRs.getFloat("size");
 				int amount = myRs.getInt("Amount_In_Stock");
 				
-				Product tempProduct;
+				Product tempProduct=null;
 				
 				switch (category) {
 		        case "Shirts":
@@ -362,11 +362,12 @@ public class ShoppingDbUtil {
 		}		
 	}	
 
-	public Product getProduct(int productNumber) throws Exception {
+	public List<Product> getProduct(int productNumber) throws Exception {
 			
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
 		ResultSet myRs = null;
+		List<Product> products = new ArrayList<>();
 		
 		try {
 			myConn = getConnection();
@@ -380,10 +381,7 @@ public class ShoppingDbUtil {
 			
 			myRs = myStmt.executeQuery();
 
-			Product theProduct = null;
-			
-			// retrieve data from result set row
-			if (myRs.next()) {
+			while (myRs.next()) {
 				
 				// retrieve data from result set row
 				int catalogNumber = myRs.getInt("Catalog_Number");
@@ -396,14 +394,35 @@ public class ShoppingDbUtil {
 				float size = myRs.getFloat("size");
 				int amount = myRs.getInt("Amount_In_Stock");
 				
-				theProduct = new Product(catalogNumber, description, category, price, 
-						discount, finalPrice, image, size, amount);	
+				Product tempProduct;
+				
+				switch (category) {
+		        case "Shirts":
+		        	tempProduct = new Shirt(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		            break;
+		        case "Skirts":
+		        	tempProduct = new Skirt(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		        	break;
+		        case "Dresses":
+		        	tempProduct = new Dress(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		        	break;
+		        case "Shoes":
+		        	tempProduct = new Shoe(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		        	break;
+		        default:
+		        	tempProduct = new Product(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		        	break;
+				}
+				
+				// add it to the list of products
+				products.add(tempProduct);
 			}
-			else {
-				throw new Exception("Could not find catalog numebr: " + productNumber);
-			}
-
-			return theProduct;
+			return products;		
 		}
 		finally {
 			close (myConn, myStmt, myRs);

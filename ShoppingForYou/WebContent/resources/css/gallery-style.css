@@ -9,22 +9,18 @@
 .grid-item {
     margin: 5px;
     border: 1px solid #ccc;
-    width: 180px;
+    width: 200px;
+    height: auto;
     position: relative;
+    text-align: center;
 }
 
 .grid-item:hover {
     border: 1px solid #777;
 }
 
-.grid-item img {
+.grid-item .productDesc .productImg {
     width: 100%;
-    height: auto
-    
-}
-
-.grid-item .desc {
-    padding: 15px;
-    text-align: center;
-    border: 1px solid #ccc;
+    height: auto;
+    vertical-align: middle
 }
