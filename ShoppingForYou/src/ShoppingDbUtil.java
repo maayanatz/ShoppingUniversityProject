@@ -262,8 +262,30 @@ public class ShoppingDbUtil {
 				float size = myRs.getFloat("size");
 				int amount = myRs.getInt("Amount_In_Stock");
 				
-				Product tempProduct = new Product(catalogNumber, description, category, price,
+				Product tempProduct;
+				
+				switch (category) {
+		        case "Shirts":
+		        	tempProduct = new Shirt(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
+		            break;
+		        case "Skirts":
+		        	tempProduct = new Skirt(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		        	break;
+		        case "Dresses":
+		        	tempProduct = new Dress(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		        	break;
+		        case "Shoes":
+		        	tempProduct = new Shoe(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		        	break;
+		        default:
+		        	tempProduct = new Product(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		        	break;
+				}
 				
 				// add it to the list of products
 				products.add(tempProduct);
@@ -494,4 +516,5 @@ public class ShoppingDbUtil {
 			close (myConn, myStmt);
 		}
 	}
+	
 }
