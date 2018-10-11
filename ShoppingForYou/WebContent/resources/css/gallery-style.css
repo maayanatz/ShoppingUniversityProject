@@ -13,6 +13,7 @@
     height: auto;
     position: relative;
     text-align: center;
+    background-color: #f3f3f3;
 }
 
 .grid-item:hover {

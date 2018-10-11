@@ -12,6 +12,7 @@ public class Product {
 	protected String image;
 	protected String size;
 	protected int amount;
+	protected boolean soldOut;
 
 	public Product() {
 	}
@@ -27,6 +28,28 @@ public class Product {
 		this.image = image;
 		this.size = size;
 		this.amount = amount;
+		if (this.amount > 0)
+		{
+			this.soldOut = false;
+		}
+		else
+		{
+			this.soldOut = true;
+		}
+	}
+
+	/**
+	 * @return the soldOut
+	 */
+	public boolean isSoldOut() {
+		return soldOut;
+	}
+
+	/**
+	 * @param soldOut the soldOut to set
+	 */
+	public void setSoldOut(boolean soldOut) {
+		this.soldOut = soldOut;
 	}
 
 	/**

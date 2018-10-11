@@ -19,9 +19,12 @@
 	<div class="product-container">
 		<h:form>
 			<h:graphicImage class="productImg" value="#{product.image}" />
-			<h:outputLabel class="productDesc">#{product.description}</h:outputLabel>
-			<h:outputLabel class="productPrice">#{product.finalPrice}</h:outputLabel>
-   		
+			<h:graphicImage class="soldOutImg" rendered="#{product.soldOut}" value="https://preview.ibb.co/cvhAKU/sold_out_png.png" />
+			<p>#{product.description}</p>
+			<p>#{product.finalPrice} &#x20AA;</p>
+			<p>#{product.size}</p>
+			<h:commandButton class="addToCart" value="Add to Shopping Cart" 
+				disabled="#{product.soldOut}" action="#{editCustomerController.addToCart(product.catalogNumber)}"/>
 		</h:form>
 		
 
