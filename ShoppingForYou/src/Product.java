@@ -12,9 +12,6 @@ public class Product {
 	protected String image;
 	protected float size;
 	protected int amount;
-	
-	SortedMap<Integer, Integer> sizes = 
-            new TreeMap<Integer, Integer>();
 
 	public Product() {
 	}

@@ -20,10 +20,7 @@
 		<h:form>
 			<h:graphicImage class="productImg" value="#{product.image}" />
 			<h:outputLabel class="productDesc">#{product.description}</h:outputLabel>
-			<h:selectOneMenu value="#{user.favCoffee3}">
-   			<f:selectItems value="#{user.favCoffee3Value}" var="c"
-   			itemLabel="#{c.coffeeLabel}" itemValue="#{c.coffeeValue}" />
-   		</h:selectOneMenu>
+			<h:outputLabel class="productPrice">#{product.finalPrice}</h:outputLabel>
    		
 		</h:form>
 		
