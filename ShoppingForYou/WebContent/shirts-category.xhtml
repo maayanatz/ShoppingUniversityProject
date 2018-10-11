@@ -26,7 +26,7 @@
 
     		<div class="grid-item">
     			<h:form>
-					<h:commandLink class="productDesc" action="#{editProductController.loadProductDetails(tempShirt.catalogNumber)}">
+					<h:commandLink class="productDesc" action="#{editProductController.loadProduct(tempShirt.catalogNumber, 1)}">
 					     <h:graphicImage class="productImg" value="#{tempShirt.image}" />
 					     <p>#{tempShirt.description} <br/> #{tempShirt.finalPrice} &#x20AA;</p>
 					</h:commandLink>

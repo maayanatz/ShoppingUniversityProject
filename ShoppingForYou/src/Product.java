@@ -10,14 +10,14 @@ public class Product {
 	protected float discount;
 	protected float finalPrice;
 	protected String image;
-	protected float size;
+	protected String size;
 	protected int amount;
 
 	public Product() {
 	}
 	
 	public Product(int catalogNumber, String description, String category, float price,
-			float discount, float finalPrice, String image, float size, int amount) {
+			float discount, float finalPrice, String image, String size, int amount) {
 		this.catalogNumber = catalogNumber;
 		this.description = description;
 		this.category = category;
@@ -130,14 +130,14 @@ public class Product {
 	/**
 	 * @return the size
 	 */
-	public float getSize() {
+	public String getSize() {
 		return size;
 	}
 
 	/**
 	 * @param size the size to set
 	 */
-	public void setSize(float size) {
+	public void setSize(String size) {
 		this.size = size;
 	}
 

@@ -242,7 +242,7 @@ public class ShoppingDbUtil {
 		try {
 			myConn = getConnection();
 
-			String sql = "select * from products natural join sizes order by category, catalog_number";
+			String sql = "select * from products order by category, catalog_number";
 
 			myStmt = myConn.createStatement();
 
@@ -259,7 +259,7 @@ public class ShoppingDbUtil {
 				float discount = myRs.getFloat("Discount");
 				float finalPrice = myRs.getFloat("Final_Price");
 				String image = myRs.getString("Image");
-				float size = myRs.getFloat("size");
+				String size = myRs.getString("size");
 				int amount = myRs.getInt("Amount_In_Stock");
 				
 				Product tempProduct=null;
@@ -271,14 +271,6 @@ public class ShoppingDbUtil {
 		            break;
 		        case "Skirts":
 		        	tempProduct = new Skirt(catalogNumber, description, category, price,
-		        			discount, finalPrice, image, size, amount);
-		        	break;
-		        case "Dresses":
-		        	tempProduct = new Dress(catalogNumber, description, category, price,
-		        			discount, finalPrice, image, size, amount);
-		        	break;
-		        case "Shoes":
-		        	tempProduct = new Shoe(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		        	break;
 		        default:
@@ -300,79 +292,64 @@ public class ShoppingDbUtil {
 	public void addProduct(Product theProduct) throws Exception {
 
 		Connection myConn = null;
-		PreparedStatement myStmt_products = null;
-		PreparedStatement myStmt_sizes = null;
+		PreparedStatement myStmt = null;
 
 		try {
 			myConn = getConnection();
 			
-			String sql_products = "insert into products (Catalog_Number, Description, Category, Price, Discount, Image) values (?, ?, ?, ?, ?, ?)";
-			String sql_sizes = "insert into sizes (Size, Catalog_Number, Amount_In_Stock) values (?, ?, ?)";
+			String sql = "insert into products (Catalog_Number, Description, Category, Price, Discount, Image, Size, Amount_In_Stock) values (?, ?, ?, ?, ?, ?, ?, ?)";
 			
-			myStmt_products = myConn.prepareStatement(sql_products);
-			myStmt_sizes = myConn.prepareStatement(sql_sizes);
+			myStmt = myConn.prepareStatement(sql);
 			
 			// set params
-			myStmt_products.setInt(1, theProduct.getCatalogNumber());
-			myStmt_products.setString(2, theProduct.getDescription());
-			myStmt_products.setString(3, theProduct.getCategory());
-			myStmt_products.setFloat(4, theProduct.getPrice());
-			myStmt_products.setFloat(5, theProduct.getDiscount());
-			myStmt_products.setString(6, theProduct.getImage());
+			myStmt.setInt(1, theProduct.getCatalogNumber());
+			myStmt.setString(2, theProduct.getDescription());
+			myStmt.setString(3, theProduct.getCategory());
+			myStmt.setFloat(4, theProduct.getPrice());
+			myStmt.setFloat(5, theProduct.getDiscount());
+			myStmt.setString(6, theProduct.getImage());
+			myStmt.setString(7, theProduct.getSize());
+			myStmt.setInt(8, theProduct.getAmount());
 			
-			myStmt_sizes.setFloat(1, theProduct.getSize());
-			myStmt_sizes.setInt(2, theProduct.getCatalogNumber());
-			myStmt_sizes.setInt(3, theProduct.getAmount());
-			
-			myStmt_products.execute();
-			myStmt_sizes.execute();
+			myStmt.execute();
 		}
 		finally {
-			close (myConn, myStmt_products);
-			close (myConn, myStmt_sizes);
+			close (myConn, myStmt);
 		}
-		
 	}
 
 	public void deleteProduct(Product theProduct) throws Exception {
 
 		Connection myConn = null;
-		PreparedStatement myStmt_sizes = null;
-		PreparedStatement myStmt_products = null;
+		PreparedStatement myStmt = null;
 
 		try {
 			myConn = getConnection();
 				
-			String sql_sizes = "delete from sizes where Catalog_Number = ?";
-			String sql_products = "delete from products where Catalog_Number = ?";
+			String sql = "delete from products where Catalog_Number = ?";
 
-			myStmt_sizes = myConn.prepareStatement(sql_sizes);
-			myStmt_products = myConn.prepareStatement(sql_products);
+			myStmt = myConn.prepareStatement(sql);
 			
 			// set params
-			myStmt_sizes.setInt(1, theProduct.getCatalogNumber());
-			myStmt_products.setInt(1, theProduct.getCatalogNumber());
+			myStmt.setInt(1, theProduct.getCatalogNumber());
 			
-			myStmt_sizes.execute();
-			myStmt_products.execute();
+			myStmt.execute();
 		}
 		finally {
-			close (myConn, myStmt_sizes);
-			close (myConn, myStmt_products);
+			close (myConn, myStmt);
 		}		
 	}	
 
-	public List<Product> getProduct(int productNumber) throws Exception {
+	public Product getProduct(int productNumber) throws Exception {
 			
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
 		ResultSet myRs = null;
-		List<Product> products = new ArrayList<>();
 		
 		try {
 			myConn = getConnection();
 
-			String sql = "select * from products natural join sizes where Catalog_Number = ?";
+			String sql = "select * from products where Catalog_Number = ?";
 
 			myStmt = myConn.prepareStatement(sql);
 			
@@ -381,7 +358,10 @@ public class ShoppingDbUtil {
 			
 			myRs = myStmt.executeQuery();
 
-			while (myRs.next()) {
+			Product theProduct = null;
+			
+			// retrieve data from result set row
+			if (myRs.next()) {
 				
 				// retrieve data from result set row
 				int catalogNumber = myRs.getInt("Catalog_Number");
@@ -391,38 +371,29 @@ public class ShoppingDbUtil {
 				float discount = myRs.getFloat("Discount");
 				float finalPrice = myRs.getFloat("Final_Price");
 				String image = myRs.getString("Image");
-				float size = myRs.getFloat("size");
+				String size = myRs.getString("size");
 				int amount = myRs.getInt("Amount_In_Stock");
-				
-				Product tempProduct;
 				
 				switch (category) {
 		        case "Shirts":
-		        	tempProduct = new Shirt(catalogNumber, description, category, price,
+		        	theProduct = new Shirt(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		            break;
 		        case "Skirts":
-		        	tempProduct = new Skirt(catalogNumber, description, category, price,
-		        			discount, finalPrice, image, size, amount);
-		        	break;
-		        case "Dresses":
-		        	tempProduct = new Dress(catalogNumber, description, category, price,
-		        			discount, finalPrice, image, size, amount);
-		        	break;
-		        case "Shoes":
-		        	tempProduct = new Shoe(catalogNumber, description, category, price,
+		        	theProduct = new Skirt(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		        	break;
 		        default:
-		        	tempProduct = new Product(catalogNumber, description, category, price,
+		        	theProduct = new Product(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		        	break;
-				}
-				
-				// add it to the list of products
-				products.add(tempProduct);
+				}	
 			}
-			return products;		
+			else {
+				throw new Exception("Could not find catalog numebr: " + productNumber);
+			}
+
+			return theProduct;
 		}
 		finally {
 			close (myConn, myStmt, myRs);
@@ -433,36 +404,29 @@ public class ShoppingDbUtil {
 
 		Connection myConn = null;
 		
-		PreparedStatement myStmt_products = null;
-		PreparedStatement myStmt_sizes = null;
+		PreparedStatement myStmt = null;
 
 		try {
 			myConn = getConnection();
 
-			String sql_products = "update products set Description=?, Category=?, Price=?, Discount=?, Image=? where Catalog_Number=?";
-			String sql_sizes = "update sizes set Amount_In_Stock=? where Catalog_Number=? and Size=?";
+			String sql = "update products set Description=?, Category=?, Price=?, Discount=?, Image=?, Size=?, Amount_In_Stock=? where Catalog_Number=?";
 			
-			myStmt_products = myConn.prepareStatement(sql_products);
-			myStmt_sizes = myConn.prepareStatement(sql_sizes);
+			myStmt = myConn.prepareStatement(sql);
 			
 			// set params
-			myStmt_products.setString(1, theProduct.getDescription());
-			myStmt_products.setString(2, theProduct.getCategory());
-			myStmt_products.setFloat(3, theProduct.getPrice());
-			myStmt_products.setFloat(4, theProduct.getDiscount());
-			myStmt_products.setString(5, theProduct.getImage());
-			myStmt_products.setInt(6, theProduct.getCatalogNumber());
+			myStmt.setString(1, theProduct.getDescription());
+			myStmt.setString(2, theProduct.getCategory());
+			myStmt.setFloat(3, theProduct.getPrice());
+			myStmt.setFloat(4, theProduct.getDiscount());
+			myStmt.setString(5, theProduct.getImage());
+			myStmt.setString(6, theProduct.getSize());
+			myStmt.setInt(7, theProduct.getAmount());
+			myStmt.setInt(8, theProduct.getCatalogNumber());
 			
-			myStmt_sizes.setInt(1, theProduct.getAmount());
-			myStmt_sizes.setInt(2, theProduct.getCatalogNumber());
-			myStmt_sizes.setFloat(3, theProduct.getSize());
-			
-			myStmt_products.execute();
-			myStmt_sizes.execute();
+			myStmt.execute();
 		}
 		finally {
-			close (myConn, myStmt_products);
-			close (myConn, myStmt_sizes);
+			close (myConn, myStmt);
 		}
 	}
 
@@ -477,7 +441,7 @@ public class ShoppingDbUtil {
 		try {
 			myConn = getConnection();
 
-			String sql = "select * from products natural join sizes where category='shirts' group by catalog_number";
+			String sql = "select * from products where category='shirts' group by catalog_number";
 
 			myStmt = myConn.createStatement();
 
@@ -494,7 +458,7 @@ public class ShoppingDbUtil {
 				float discount = myRs.getFloat("Discount");
 				float finalPrice = myRs.getFloat("Final_Price");
 				String image = myRs.getString("Image");
-				float size = myRs.getFloat("size");
+				String size = myRs.getString("Size");
 				int amount = myRs.getInt("Amount_In_Stock");
 				
 				// create new product object
@@ -520,14 +484,13 @@ public class ShoppingDbUtil {
 		try {
 			myConn = getConnection();
 				
-			String sql = "update sizes set Amount_In_Stock=? where Catalog_Number=? and size=?";
+			String sql = "update products set Amount_In_Stock=? where Catalog_Number=?";
 
 			myStmt = myConn.prepareStatement(sql);
 
 			// set params
 			myStmt.setInt(1, (theProduct.getAmount()));
 			myStmt.setInt(2, theProduct.getCatalogNumber());
-			myStmt.setFloat(3, theProduct.getSize());
 			
 			myStmt.execute();
 		}
