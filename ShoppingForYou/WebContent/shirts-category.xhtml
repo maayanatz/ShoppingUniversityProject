@@ -26,10 +26,10 @@
 
     		<div class="grid-item">
     			<h:form>
-					<h:commandLink class="productDesc" action="#{editProductController.loadProduct(tempShirt.catalogNumber, 1)}">
+					<h:commandLink class="productDetails" action="#{editProductController.loadProduct(tempShirt.catalogNumber, 1)}">
 					     <h:graphicImage class="productImg" value="#{tempShirt.image}" />
-					     <p>#{tempShirt.description}</p>
-					     <p>#{tempShirt.finalPrice} &#x20AA;</p>
+					     <p class="desc">#{tempShirt.description}</p>
+					     <p class="price">#{tempShirt.finalPrice} &#x20AA;</p>
 					</h:commandLink>
 				</h:form>
 			</div>			

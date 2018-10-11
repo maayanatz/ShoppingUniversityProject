@@ -13,15 +13,30 @@
     height: auto;
     position: relative;
     text-align: center;
-    background-color: #f3f3f3;
 }
 
 .grid-item:hover {
     border: 1px solid #777;
 }
 
-.grid-item .productDesc .productImg {
+.grid-item .productDetails {
+	text-decoration: none;
+}
+
+.grid-item .productDetails .productImg {
     width: 100%;
     height: auto;
     vertical-align: middle
+}
+
+.grid-item .productDetails .desc {
+  font-size: 20px;
+  font-weight: 300;
+  color: #696969;
+}
+
+.grid-item .productDetails .price {
+  font-size: 20px;
+  font-weight: 300;
+  color: #000000;
 }
