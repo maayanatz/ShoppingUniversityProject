@@ -266,11 +266,19 @@ public class ShoppingDbUtil {
 				
 				switch (category) {
 		        case "Shirts":
-		        	tempProduct = new Shirt(catalogNumber, description, category, price,
+		        	tempProduct = new Shoe(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		            break;
 		        case "Skirts":
 		        	tempProduct = new Skirt(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		        	break;
+		        case "Dresses":
+		        	tempProduct = new Dress(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		        	break;
+		        case "Shoes":
+		        	tempProduct = new Shoe(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		        	break;
 		        default:
@@ -376,11 +384,19 @@ public class ShoppingDbUtil {
 				
 				switch (category) {
 		        case "Shirts":
-		        	theProduct = new Shirt(catalogNumber, description, category, price,
+		        	theProduct = new Shoe(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		            break;
 		        case "Skirts":
 		        	theProduct = new Skirt(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		        	break;
+		        case "Dresses":
+		        	theProduct = new Dress(catalogNumber, description, category, price,
+		        			discount, finalPrice, image, size, amount);
+		        	break;
+		        case "Shoes":
+		        	theProduct = new Shoe(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		        	break;
 		        default:
@@ -496,6 +512,144 @@ public class ShoppingDbUtil {
 		}
 		finally {
 			close (myConn, myStmt);
+		}
+	}
+	
+	public List<Skirt> getSkirts() throws Exception {
+		
+		List<Skirt> skirts = new ArrayList<>();
+
+		Connection myConn = null;
+		Statement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			myConn = getConnection();
+
+			String sql = "select * from products where category='skirts' group by catalog_number";
+
+			myStmt = myConn.createStatement();
+
+			myRs = myStmt.executeQuery(sql);
+
+			// process result set
+			while (myRs.next()) {
+				
+				// retrieve data from result set row
+				int catalogNumber = myRs.getInt("Catalog_Number");
+				String description = myRs.getString("Description");
+				String category = myRs.getString("Category");
+				float price = myRs.getFloat("Price");
+				float discount = myRs.getFloat("Discount");
+				float finalPrice = myRs.getFloat("Final_Price");
+				String image = myRs.getString("Image");
+				String size = myRs.getString("Size");
+				int amount = myRs.getInt("Amount_In_Stock");
+				
+				// create new product object
+				Skirt tempSkirt = new Skirt(catalogNumber, description, category, price, 
+						discount, finalPrice, image, size, amount);
+
+				// add it to the list of skirts
+				skirts.add(tempSkirt);
+			}
+			
+			return skirts;		
+		}
+		finally {
+			close (myConn, myStmt, myRs);
+		}
+	}
+	
+	public List<Dress> getDresses() throws Exception {
+		
+		List<Dress> dresses = new ArrayList<>();
+
+		Connection myConn = null;
+		Statement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			myConn = getConnection();
+
+			String sql = "select * from products where category='dresses' group by catalog_number";
+
+			myStmt = myConn.createStatement();
+
+			myRs = myStmt.executeQuery(sql);
+
+			// process result set
+			while (myRs.next()) {
+				
+				// retrieve data from result set row
+				int catalogNumber = myRs.getInt("Catalog_Number");
+				String description = myRs.getString("Description");
+				String category = myRs.getString("Category");
+				float price = myRs.getFloat("Price");
+				float discount = myRs.getFloat("Discount");
+				float finalPrice = myRs.getFloat("Final_Price");
+				String image = myRs.getString("Image");
+				String size = myRs.getString("Size");
+				int amount = myRs.getInt("Amount_In_Stock");
+				
+				// create new product object
+				Dress tempDress = new Dress(catalogNumber, description, category, price, 
+						discount, finalPrice, image, size, amount);
+
+				// add it to the list of dresses
+				dresses.add(tempDress);
+			}
+			
+			return dresses;		
+		}
+		finally {
+			close (myConn, myStmt, myRs);
+		}
+	}
+	
+	public List<Shoe> getShoes() throws Exception {
+		
+		List<Shoe> shoes = new ArrayList<>();
+
+		Connection myConn = null;
+		Statement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			myConn = getConnection();
+
+			String sql = "select * from products where category='shoes' group by catalog_number";
+
+			myStmt = myConn.createStatement();
+
+			myRs = myStmt.executeQuery(sql);
+
+			// process result set
+			while (myRs.next()) {
+				
+				// retrieve data from result set row
+				int catalogNumber = myRs.getInt("Catalog_Number");
+				String description = myRs.getString("Description");
+				String category = myRs.getString("Category");
+				float price = myRs.getFloat("Price");
+				float discount = myRs.getFloat("Discount");
+				float finalPrice = myRs.getFloat("Final_Price");
+				String image = myRs.getString("Image");
+				String size = myRs.getString("Size");
+				int amount = myRs.getInt("Amount_In_Stock");
+				
+				// create new product object
+				Shoe tempDress = new Shoe(catalogNumber, description, category, price, 
+						discount, finalPrice, image, size, amount);
+
+				// add it to the list of shoes
+				shoes.add(tempDress);
+			}
+			
+			return shoes;		
+		}
+		finally {
+			close (myConn, myStmt, myRs);
 		}
 	}
 	

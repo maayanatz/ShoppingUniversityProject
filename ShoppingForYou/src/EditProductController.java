@@ -16,12 +16,18 @@ public class EditProductController {
 
 	private List<Product> products;
 	private List<Shirt> shirts;
+	private List<Skirt> skirts;
+	private List<Dress> dresses;
+	private List<Shoe> shoes;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
 	public EditProductController() throws Exception {
 		products = new ArrayList<>();
 		shirts = new ArrayList<>();
+		skirts = new ArrayList<>();
+		dresses = new ArrayList<>();
+		shoes = new ArrayList<>();
 		
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
@@ -32,6 +38,18 @@ public class EditProductController {
 	
 	public List<Shirt> getShirts() {
 		return shirts;
+	}
+	
+	public List<Skirt> getSkirts() {
+		return skirts;
+	}
+	
+	public List<Dress> getDresses() {
+		return dresses;
+	}
+	
+	public List<Shoe> getShoes() {
+		return shoes;
 	}
 
 	public void loadProducts() {
@@ -73,7 +91,67 @@ public class EditProductController {
 			addErrorMessage(exc);
 		}
 	}
+	
+	public void loadSkirts() {
+
+		logger.info("Loading skirts");
 		
+		skirts.clear();
+
+		try {
+			
+			// get all skirts from database
+			skirts = shoppingDbUtil.getSkirts();
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error loading skirts", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+		}
+	}
+	
+	public void loadDresses() {
+
+		logger.info("Loading dresses");
+		
+		dresses.clear();
+
+		try {
+			
+			// get all dresses from database
+			dresses = shoppingDbUtil.getDresses();
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error loading dresses", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+		}
+	}
+	
+	public void loadShoes() {
+
+		logger.info("Loading shoes");
+		
+		shoes.clear();
+
+		try {
+			
+			// get all shoes from database
+			shoes = shoppingDbUtil.getShoes();
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error loading shoes", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+		}
+	}
+	
 	public String addProduct(Product theProduct) {
 
 		logger.info("Adding product: " + theProduct);
