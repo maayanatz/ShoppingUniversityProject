@@ -18,7 +18,7 @@ public class EditProductController {
 	private List<Shirt> shirts;
 	private List<Skirt> skirts;
 	private List<Dress> dresses;
-	private List<Shoe> shoes;
+	private List<Jacket> jackets;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
@@ -27,7 +27,7 @@ public class EditProductController {
 		shirts = new ArrayList<>();
 		skirts = new ArrayList<>();
 		dresses = new ArrayList<>();
-		shoes = new ArrayList<>();
+		jackets = new ArrayList<>();
 		
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
@@ -48,8 +48,8 @@ public class EditProductController {
 		return dresses;
 	}
 	
-	public List<Shoe> getShoes() {
-		return shoes;
+	public List<Jacket> getJackets() {
+		return jackets;
 	}
 
 	public void loadProducts() {
@@ -132,20 +132,20 @@ public class EditProductController {
 		}
 	}
 	
-	public void loadShoes() {
+	public void loadJackets() {
 
-		logger.info("Loading shoes");
+		logger.info("Loading jackets");
 		
-		shoes.clear();
+		jackets.clear();
 
 		try {
 			
-			// get all shoes from database
-			shoes = shoppingDbUtil.getShoes();
+			// get all jackets from database
+			jackets = shoppingDbUtil.getJackets();
 			
 		} catch (Exception exc) {
 			// send this to server logs
-			logger.log(Level.SEVERE, "Error loading shoes", exc);
+			logger.log(Level.SEVERE, "Error loading jackets", exc);
 			
 			// add error message for JSF page
 			addErrorMessage(exc);

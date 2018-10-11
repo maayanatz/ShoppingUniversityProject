@@ -266,7 +266,7 @@ public class ShoppingDbUtil {
 				
 				switch (category) {
 		        case "Shirts":
-		        	tempProduct = new Shoe(catalogNumber, description, category, price,
+		        	tempProduct = new Jacket(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		            break;
 		        case "Skirts":
@@ -277,8 +277,8 @@ public class ShoppingDbUtil {
 		        	tempProduct = new Dress(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		        	break;
-		        case "Shoes":
-		        	tempProduct = new Shoe(catalogNumber, description, category, price,
+		        case "Jackets":
+		        	tempProduct = new Jacket(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		        	break;
 		        default:
@@ -384,7 +384,7 @@ public class ShoppingDbUtil {
 				
 				switch (category) {
 		        case "Shirts":
-		        	theProduct = new Shoe(catalogNumber, description, category, price,
+		        	theProduct = new Jacket(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		            break;
 		        case "Skirts":
@@ -395,8 +395,8 @@ public class ShoppingDbUtil {
 		        	theProduct = new Dress(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		        	break;
-		        case "Shoes":
-		        	theProduct = new Shoe(catalogNumber, description, category, price,
+		        case "Jackets":
+		        	theProduct = new Jacket(catalogNumber, description, category, price,
 		        			discount, finalPrice, image, size, amount);
 		        	break;
 		        default:
@@ -607,9 +607,9 @@ public class ShoppingDbUtil {
 		}
 	}
 	
-	public List<Shoe> getShoes() throws Exception {
+	public List<Jacket> getJackets() throws Exception {
 		
-		List<Shoe> shoes = new ArrayList<>();
+		List<Jacket> jackets = new ArrayList<>();
 
 		Connection myConn = null;
 		Statement myStmt = null;
@@ -618,7 +618,7 @@ public class ShoppingDbUtil {
 		try {
 			myConn = getConnection();
 
-			String sql = "select * from products where category='shoes' group by catalog_number";
+			String sql = "select * from products where category='jackets' group by catalog_number";
 
 			myStmt = myConn.createStatement();
 
@@ -639,14 +639,14 @@ public class ShoppingDbUtil {
 				int amount = myRs.getInt("Amount_In_Stock");
 				
 				// create new product object
-				Shoe tempDress = new Shoe(catalogNumber, description, category, price, 
+				Jacket tempJacket = new Jacket(catalogNumber, description, category, price, 
 						discount, finalPrice, image, size, amount);
 
-				// add it to the list of shoes
-				shoes.add(tempDress);
+				// add it to the list of jackets
+				jackets.add(tempJacket);
 			}
 			
-			return shoes;		
+			return jackets;		
 		}
 		finally {
 			close (myConn, myStmt, myRs);
