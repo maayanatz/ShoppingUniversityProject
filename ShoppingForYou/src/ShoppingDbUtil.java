@@ -1,4 +1,5 @@
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -47,7 +48,7 @@ public class ShoppingDbUtil {
 		try {
 			myConn = getConnection();
 
-			String sql = "select * from customers order by Last_Name";
+			String sql = "select * from Customers natural join addresses natural join credit_cards order by Last_Name";
 
 			myStmt = myConn.createStatement();
 
@@ -64,9 +65,27 @@ public class ShoppingDbUtil {
 				String password = myRs.getString("Password");
 				int phoneNumber = myRs.getInt("Phone_Number");
 				
-				// create new customer object
+				int addressID = myRs.getInt("Address_ID");
+				String streetName = myRs.getString("Street_Name");
+				int houseNumber = myRs.getInt("House_Number");
+				int apartmentNumber = myRs.getInt("Apartment_Number");
+				String city = myRs.getString("City");
+				String country = myRs.getString("Country");
+				int postalCode = myRs.getInt("Postal_Code");
+				
+				String cardNumber = myRs.getString("Credit_Card_Number");
+				int cardOwner = myRs.getInt("User_ID");
+				Date expiration = myRs.getDate("Expiration");
+				int cvv = myRs.getInt("CVV");
+				
+				// create new address, creditCard and customer objects
+				Address customerAddress = new Address(addressID, id, streetName, houseNumber, 
+						apartmentNumber, city, country, postalCode);
+				
+				CreditCard customerCard = new CreditCard(cardNumber, id, cardOwner, expiration, cvv);
+				
 				Customer tempCustomer = new Customer(id, firstName, lastName,
-						email, password, phoneNumber);
+						email, password, phoneNumber, customerAddress, customerCard);
 
 				// add it to the list of customers
 				customers.add(tempCustomer);
@@ -82,27 +101,52 @@ public class ShoppingDbUtil {
 	public void addCustomer(Customer theCustomer) throws Exception {
 
 		Connection myConn = null;
-		PreparedStatement myStmt = null;
+		PreparedStatement myStmtCustomers = null;
+		PreparedStatement myStmtAddresses = null;
+		PreparedStatement myStmtCards = null;
 
 		try {
 			myConn = getConnection();
 
-			String sql = "insert into customers (Customer_ID, First_Name, Last_Name, Email_Address, Password, Phone_Number) values (?, ?, ?, ?, ?, ?)";
-
-			myStmt = myConn.prepareStatement(sql);
-
+			String sqlCustomers = "insert into customers (Customer_ID, First_Name, Last_Name, Email_Address, Password, Phone_Number) values (?, ?, ?, ?, ?, ?)";
+			String sqlAddresses = "insert into addresses (Address_ID, Customer_ID, Street_Name, House_Number, Apartment_Number, City, Country, Postal_Code) values (?, ?, ?, ?, ?, ?, ?, ?)";
+			String sqlCards = "insert into Credit_Cards (Credit_Card_Number, Customer_ID, User_ID, Expiration, CVV) values (?, ?, ?, ?, ?)";
+			
+			myStmtCustomers = myConn.prepareStatement(sqlCustomers);
+			myStmtAddresses = myConn.prepareStatement(sqlAddresses);
+			myStmtCards = myConn.prepareStatement(sqlCards);
+			
 			// set params
-			myStmt.setInt(1, theCustomer.getId());
-			myStmt.setString(2, theCustomer.getFirstName());
-			myStmt.setString(3, theCustomer.getLastName());
-			myStmt.setString(4, theCustomer.getEmail());
-			myStmt.setString(5, theCustomer.getPassword());
-			myStmt.setInt(6, theCustomer.getPhoneNumber());
+			myStmtCustomers.setInt(1, theCustomer.getId());
+			myStmtCustomers.setString(2, theCustomer.getFirstName());
+			myStmtCustomers.setString(3, theCustomer.getLastName());
+			myStmtCustomers.setString(4, theCustomer.getEmail());
+			myStmtCustomers.setString(5, theCustomer.getPassword());
+			myStmtCustomers.setInt(6, theCustomer.getPhoneNumber());
+			
+			myStmtAddresses.setInt(1, theCustomer.getCustomerAddress().getAddressID());
+			myStmtAddresses.setInt(2, theCustomer.getCustomerAddress().getCustomerID());
+			myStmtAddresses.setString(3, theCustomer.getCustomerAddress().getStreetName());
+			myStmtAddresses.setInt(4, theCustomer.getCustomerAddress().getHouseNumber());
+			myStmtAddresses.setInt(5, theCustomer.getCustomerAddress().getApartmentNumber());
+			myStmtAddresses.setString(6, theCustomer.getCustomerAddress().getCity());
+			myStmtAddresses.setString(7, theCustomer.getCustomerAddress().getCountry());
+			myStmtAddresses.setInt(8, theCustomer.getCustomerAddress().getPostalCode());
+			
+			myStmtCards.setString(1, theCustomer.getCustomerCard().getCardNumber());
+			myStmtCards.setInt(2, theCustomer.getCustomerCard().getCardCustomer());
+			myStmtCards.setInt(3, theCustomer.getCustomerCard().getCardOwner());
+			myStmtCards.setDate(4, theCustomer.getCustomerCard().getExpiration());
+			myStmtCards.setInt(5, theCustomer.getCustomerCard().getCvv());
 						
-			myStmt.execute();			
+			myStmtCustomers.execute();
+			myStmtAddresses.execute();
+			myStmtCards.execute();
 		}
 		finally {
-			close (myConn, myStmt);
+			close (myConn, myStmtCustomers);
+			close (myConn, myStmtAddresses);
+			close (myConn, myStmtCards);
 		}
 		
 	}
@@ -116,7 +160,7 @@ public class ShoppingDbUtil {
 		try {
 			myConn = getConnection();
 
-			String sql = "select * from customers where Customer_ID = ?";
+			String sql = "select * from Customers natural join addresses natural join credit_cards where Customer_ID = ?";
 
 			myStmt = myConn.prepareStatement(sql);
 			
@@ -136,8 +180,27 @@ public class ShoppingDbUtil {
 				String password = myRs.getString("Password");
 				int phoneNumber = myRs.getInt("Phone_Number");
 				
+				int addressID = myRs.getInt("Address_ID");
+				String streetName = myRs.getString("Street_Name");
+				int houseNumber = myRs.getInt("House_Number");
+				int apartmentNumber = myRs.getInt("Apartment_Number");
+				String city = myRs.getString("City");
+				String country = myRs.getString("Country");
+				int postalCode = myRs.getInt("Postal_Code");
+				
+				String cardNumber = myRs.getString("Credit_Card_Number");
+				int cardOwner = myRs.getInt("User_ID");
+				Date expiration = myRs.getDate("Expiration");
+				int cvv = myRs.getInt("CVV");
+				
+				// create new address, creditCard and customer objects
+				Address customerAddress = new Address(addressID, id, streetName, houseNumber, 
+						apartmentNumber, city, country, postalCode);
+				
+				CreditCard customerCard = new CreditCard(cardNumber, id, cardOwner, expiration, cvv);
+				
 				theCustomer = new Customer(id, firstName, lastName,
-						email, password, phoneNumber);
+						email, password, phoneNumber, customerAddress, customerCard);
 			}
 			else {
 				throw new Exception("Could not find customer id: " + customerId);
@@ -153,50 +216,86 @@ public class ShoppingDbUtil {
 	public void updateCustomer(Customer theCustomer) throws Exception {
 
 		Connection myConn = null;
-		PreparedStatement myStmt = null;
+		PreparedStatement myStmtCustomers = null;
+		PreparedStatement myStmtAddresses = null;
+		PreparedStatement myStmtCards = null;
 
 		try {
 			myConn = getConnection();
 
-			String sql = "update customers set First_Name=?, Last_Name=?, Email_Address=?, Password=?, Phone_Number=? where Customer_ID=?";
-
-			myStmt = myConn.prepareStatement(sql);
-
-			// set params
-			myStmt.setString(1, theCustomer.getFirstName());
-			myStmt.setString(2, theCustomer.getLastName());
-			myStmt.setString(3, theCustomer.getEmail());
-			myStmt.setString(4, theCustomer.getPassword());
-			myStmt.setInt(5, theCustomer.getPhoneNumber());
-			myStmt.setInt(6, theCustomer.getId());
+			String sqlCustomers = "update customers set First_Name=?, Last_Name=?, Email_Address=?, Password=?, Phone_Number=? where Customer_ID=?";
+			String sqlAddresses = "update addresses set Address_ID=?, Street_Name=?, House_Number=?, Apartment_Number=?, City=?, Country=?, Postal_Code=? where Customer_ID=?";
+			String sqlCards = "update Credit_Cards set Credit_Card_Number=?, User_ID=?, Expiration=?, CVV=?  where Customer_ID=?";
 			
-			myStmt.execute();
+			myStmtCustomers = myConn.prepareStatement(sqlCustomers);
+			myStmtAddresses = myConn.prepareStatement(sqlAddresses);
+			myStmtCards = myConn.prepareStatement(sqlCards);
+			
+			// set params
+			myStmtCustomers.setString(1, theCustomer.getFirstName());
+			myStmtCustomers.setString(2, theCustomer.getLastName());
+			myStmtCustomers.setString(3, theCustomer.getEmail());
+			myStmtCustomers.setString(4, theCustomer.getPassword());
+			myStmtCustomers.setInt(5, theCustomer.getPhoneNumber());
+			myStmtCustomers.setInt(6, theCustomer.getId());
+			
+			myStmtAddresses.setInt(1, theCustomer.getCustomerAddress().getAddressID());
+			myStmtAddresses.setString(2, theCustomer.getCustomerAddress().getStreetName());
+			myStmtAddresses.setInt(3, theCustomer.getCustomerAddress().getHouseNumber());
+			myStmtAddresses.setInt(4, theCustomer.getCustomerAddress().getApartmentNumber());
+			myStmtAddresses.setString(5, theCustomer.getCustomerAddress().getCity());
+			myStmtAddresses.setString(6, theCustomer.getCustomerAddress().getCountry());
+			myStmtAddresses.setInt(7, theCustomer.getCustomerAddress().getPostalCode());
+			myStmtAddresses.setInt(8, theCustomer.getCustomerAddress().getCustomerID());
+			
+			myStmtCards.setString(1, theCustomer.getCustomerCard().getCardNumber());
+			myStmtCards.setInt(2, theCustomer.getCustomerCard().getCardOwner());
+			myStmtCards.setDate(3, theCustomer.getCustomerCard().getExpiration());
+			myStmtCards.setInt(4, theCustomer.getCustomerCard().getCvv());
+			myStmtCards.setInt(5, theCustomer.getCustomerCard().getCardCustomer());
+						
+			myStmtCustomers.execute();
+			myStmtAddresses.execute();
+			myStmtCards.execute();
 		}
 		finally {
-			close (myConn, myStmt);
+			close (myConn, myStmtCustomers);
+			close (myConn, myStmtAddresses);
+			close (myConn, myStmtCards);
 		}
-		
 	}
 	
 	public void deleteCustomer(int customerId) throws Exception {
 
 		Connection myConn = null;
-		PreparedStatement myStmt = null;
+		PreparedStatement myStmtCustomers = null;
+		PreparedStatement myStmtAddresses = null;
+		PreparedStatement myStmtCards = null;
 
 		try {
 			myConn = getConnection();
 
-			String sql = "delete from customers where Customer_ID = ?";
+			String sqlCustomers = "delete from customers where Customer_ID = ?";
+			String sqlAddresses = "delete from addresses where Customer_ID = ?";
+			String sqlCards = "delete from credit_cards where Customer_ID = ?";
 
-			myStmt = myConn.prepareStatement(sql);
+			myStmtCustomers = myConn.prepareStatement(sqlCustomers);
+			myStmtAddresses = myConn.prepareStatement(sqlAddresses);
+			myStmtCards = myConn.prepareStatement(sqlCards);
 
 			// set params
-			myStmt.setInt(1, customerId);
+			myStmtCustomers.setInt(1, customerId);
+			myStmtAddresses.setInt(1, customerId);
+			myStmtCards.setInt(1, customerId);
 			
-			myStmt.execute();
+			myStmtAddresses.execute();
+			myStmtCards.execute();			
+			myStmtCustomers.execute();
 		}
 		finally {
-			close (myConn, myStmt);
+			close (myConn, myStmtCustomers);
+			close (myConn, myStmtAddresses);
+			close (myConn, myStmtCards);
 		}		
 	}	
 	

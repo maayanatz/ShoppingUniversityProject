@@ -91,6 +91,22 @@
 
 				<h:column>
 					<!-- the column header -->
+					<f:facet name="header">Address</f:facet>
+					
+					<!--  the value for each row -->
+					#{tempCustomer.customerAddress.addressID}
+				</h:column>
+
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Credit Card</f:facet>
+					
+					<!--  the value for each row -->
+					#{tempCustomer.customerCard.cardNumber}
+				</h:column>
+
+				<h:column>
+					<!-- the column header -->
 					<f:facet name="header">Action</f:facet>
 
 					<!--  the value for each row -->

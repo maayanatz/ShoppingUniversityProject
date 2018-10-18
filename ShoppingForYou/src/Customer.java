@@ -9,18 +9,50 @@ public class Customer {
 	private String email;
 	private String password;
 	private int phoneNumber;
+	private Address customerAddress;
+	private CreditCard customerCard;
 	
 	public Customer() {
 	}
 	
 	public Customer(int id, String firstName, String lastName, String email,
-			String password, int phoneNumber) {
+			String password, int phoneNumber, Address customerAddress, CreditCard customerCard) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
 		this.phoneNumber = phoneNumber;
+		this.customerAddress = customerAddress;
+		this.customerCard = customerCard;
+	}
+
+	/**
+	 * @return the customerAddress
+	 */
+	public Address getCustomerAddress() {
+		return customerAddress;
+	}
+
+	/**
+	 * @param customerAddress the customerAddress to set
+	 */
+	public void setCustomerAddress(Address customerAddress) {
+		this.customerAddress = customerAddress;
+	}
+
+	/**
+	 * @return the customerCard
+	 */
+	public CreditCard getCustomerCard() {
+		return customerCard;
+	}
+
+	/**
+	 * @param customerCard the customerCard to set
+	 */
+	public void setCustomerCard(CreditCard customerCard) {
+		this.customerCard = customerCard;
 	}
 
 	public int getId() {
