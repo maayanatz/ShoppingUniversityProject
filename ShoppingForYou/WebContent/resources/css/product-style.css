@@ -61,8 +61,21 @@
 }
 
 .product-container .price {
+  font-size: 24px;
+  font-weight: 300;
+  color: #808080;
+}
+
+.product-container .discount {
+  font-size: 24px;
+  font-weight: 300;
+  color: #FA8072;
+}
+
+.product-container .finalPrice {
   font-size: 34px;
   font-weight: 300;
+  background-color: #FFE4E1;
   color: #C71585;
 }
 

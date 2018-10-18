@@ -13,7 +13,8 @@ public class Product {
 	protected String size;
 	protected int amount;
 	protected boolean soldOut;
-
+	protected boolean onSale;
+	
 	public Product() {
 	}
 	
@@ -36,6 +37,28 @@ public class Product {
 		{
 			this.soldOut = true;
 		}
+		if (this.discount > 0)
+		{
+			this.onSale = true;
+		}
+		else
+		{
+			this.onSale = false;
+		}
+	}
+
+	/**
+	 * @return the notOnSale
+	 */
+	public boolean isOnSale() {
+		return onSale;
+	}
+
+	/**
+	 * @param notOnSale the notOnSale to set
+	 */
+	public void setOnSale(boolean onSale) {
+		this.onSale = onSale;
 	}
 
 	/**
