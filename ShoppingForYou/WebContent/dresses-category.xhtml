@@ -28,6 +28,7 @@
     			<h:form>
 					<h:commandLink class="productDetails" action="#{editProductController.loadProduct(tempDress.catalogNumber, 1)}">
 					     <h:graphicImage class="productImg" value="#{tempDress.image}" />
+					     <h:graphicImage class="soldOutImg" rendered="#{tempDress.soldOut}" value="https://preview.ibb.co/cvhAKU/sold_out_png.png" />
 					     <p class="desc">#{tempDress.description}</p>
 					     <p class="price">#{tempDress.finalPrice} &#x20AA;</p>
 					</h:commandLink>
