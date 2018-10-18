@@ -13,7 +13,7 @@ html,body{
  
 .demo-table-header {
 	border-bottom:1px solid gray;
-	background:none repeat scroll 0 0 #0775d3;
+	background:none repeat scroll 0 0 #C71585;
 	padding:10px;
 	color: #FFFFFF;
 }
@@ -31,7 +31,7 @@ html,body{
 }
 
 #wrapper {width: 100%; margin-top: 0px; }
-#header {width: 70%; background: #0775d3; margin-top: 0px; padding:15px 0px 15px 15px;}
+#header {width: 70%; background: #DB7093; margin-top: 0px; padding:15px 0px 15px 15px;}
 #header h2 {width: 100%; margin:auto; color: #FFFFFF;}
 #container {width: 100%; margin:auto}
 #container h3 {color: #000;}
@@ -41,7 +41,7 @@ html,body{
 #container form#find input {border: 1px solid #ccc; border-radius: 3px; padding: 5px 10px; width: 86%;}
 #container #content {margin-top: 20px;}
 
-.add-customer-button {
+.add-product-button {
 	border: 1px solid #666; 
 	border-radius: 5px; 
 	padding: 4px; 

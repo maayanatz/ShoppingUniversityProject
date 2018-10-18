@@ -22,7 +22,7 @@
 			<h:graphicImage class="soldOutImg" rendered="#{product.soldOut}" value="https://preview.ibb.co/cvhAKU/sold_out_png.png" />
 			<p class="desc">#{product.description}</p>
 			<h:outputLabel class="price" rendered="#{product.onSale}"><strike>#{product.price} &#x20AA;</strike></h:outputLabel>
-			<br></br><br></br>
+			<br/><br/>
 			<h:outputLabel class="discount" rendered="#{product.onSale}">-#{product.discount}%</h:outputLabel>
 			<p class="finalPrice">#{product.finalPrice} &#x20AA;</p>
 			<p class="size">#{product.size}</p>

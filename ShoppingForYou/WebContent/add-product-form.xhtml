@@ -7,10 +7,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-	<title>Update Product</title>
+	<title>ShoppingForYou | Add Product</title>
 	
-	<h:outputStylesheet library="css" name="list-customers-style.css"  />
-	<h:outputStylesheet library="css" name="add-customer-style.css"  />
+	<h:outputStylesheet library="css" name="list-items-style.css"  />
+	<h:outputStylesheet library="css" name="add-item-style.css"  />
 	
 </h:head>
 
@@ -18,17 +18,19 @@
 
 	<div id="wrapper">
 		<div id="header">
-			<h2>Shopping For You</h2>
+			<h2>Shopping for You - Products Management</h2>
 		</div>
 	</div>
 	
 	<div id="container">
-		<h3>Update Product</h3>
+		<h3>Add Product</h3>
 
 		<h:messages globalOnly="true" />
 
 		<h:form id="form" style="margin-top: 10px;" >
 			<h:panelGrid columns="3">
+			
+				<h:outputLabel>Catalog Number:</h:outputLabel> <h:inputText value="#{product.catalogNumber}" id="catalogNumber" /> <h:message for="catalogNumber" />
 			
 				<h:outputLabel>Description:</h:outputLabel> <h:inputText value="#{product.description}" id="description" /> <h:message for="description" />
 	
@@ -42,12 +44,9 @@
 	
 				<h:outputLabel>Size:</h:outputLabel> <h:inputText value="#{product.size}" id="size" /> <h:message for="size" />
             							
-				<h:outputLabel>Amount in Stock:</h:outputLabel> <h:inputText value="#{product.amount}" id="amount" /> <h:message for="amount" /> 
+				<h:outputLabel>Amount in Stock:</h:outputLabel> <h:inputText value="#{product.amount}" id="amount" /> <h:message for="amount" />            							
 				
-				 <h:inputHidden value="#{product.catalogNumber}" />
-				
-				 <h:commandButton value="Save" styleClass="save" 
-				 			action="#{editProductController.updateProduct(product)}"/>
+				<h:outputLabel /> <h:commandButton value="Save" styleClass="save" action="#{editProductController.addProduct(product)}"/>
 			
 			</h:panelGrid>
 		</h:form>
