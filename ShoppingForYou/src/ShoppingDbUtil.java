@@ -225,7 +225,7 @@ public class ShoppingDbUtil {
 
 			String sqlCustomers = "update customers set First_Name=?, Last_Name=?, Email_Address=?, Password=?, Phone_Number=? where Customer_ID=?";
 			String sqlAddresses = "update addresses set Address_ID=?, Street_Name=?, House_Number=?, Apartment_Number=?, City=?, Country=?, Postal_Code=? where Customer_ID=?";
-			String sqlCards = "update Credit_Cards set Credit_Card_Number=?, User_ID=?, Expiration=?, CVV=?  where Customer_ID=?";
+			String sqlCards = "update Credit_Cards set Credit_Card_Number=?, User_ID=?, Expiration=?, CVV=? where Customer_ID=?";
 			
 			myStmtCustomers = myConn.prepareStatement(sqlCustomers);
 			myStmtAddresses = myConn.prepareStatement(sqlAddresses);

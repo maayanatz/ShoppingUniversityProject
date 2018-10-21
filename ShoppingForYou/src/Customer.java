@@ -34,12 +34,12 @@ public class Customer {
 		return customerAddress;
 	}
 
-	/**
-	 * @param customerAddress the customerAddress to set
-	 */
-	public void setCustomerAddress(Address customerAddress) {
-		this.customerAddress = customerAddress;
-	}
+//	/**
+//	 * @param customerAddress the customerAddress to set
+//	 */
+//	public void setCustomerAddress(Address customerAddress) {
+//		this.customerAddress = customerAddress;
+//	}
 
 	/**
 	 * @return the customerCard

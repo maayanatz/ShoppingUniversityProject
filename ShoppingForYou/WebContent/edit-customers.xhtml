@@ -94,15 +94,22 @@
 					<f:facet name="header">Address</f:facet>
 					
 					<!--  the value for each row -->
-					#{tempCustomer.customerAddress.addressID}
+					#{tempCustomer.customerAddress.streetName}
+					#{tempCustomer.customerAddress.houseNumber}/#{tempCustomer.customerAddress.apartmentNumber},
+					#{tempCustomer.customerAddress.city},
+					#{tempCustomer.customerAddress.postalCode};
+					#{tempCustomer.customerAddress.country}
 				</h:column>
 
 				<h:column>
 					<!-- the column header -->
-					<f:facet name="header">Credit Card</f:facet>
+					<f:facet name="header">Credit Card Details</f:facet>
 					
 					<!--  the value for each row -->
 					#{tempCustomer.customerCard.cardNumber}
+					Owner ID: #{tempCustomer.customerCard.cardOwner}<br/>
+					Expiration: #{tempCustomer.customerCard.expiration}
+					CVV: #{tempCustomer.customerCard.cvv}
 				</h:column>
 
 				<h:column>
