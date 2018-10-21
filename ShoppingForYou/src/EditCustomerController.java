@@ -14,6 +14,8 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 public class EditCustomerController {
 
+	private List<Test1> tests;
+	
 	private List<Customer> customers;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
@@ -26,6 +28,57 @@ public class EditCustomerController {
 	
 	public List<Customer> getCustomers() {
 		return customers;
+	}
+	
+	public List<Test1> getTests() {
+		return tests;
+	}
+	
+	public String loadTest(int testing) {
+		
+		logger.info("loading customer: " + testing);
+		
+		try {
+			// get customer from database
+			Test1 theCustomer = shoppingDbUtil.getTest(testing);
+			
+			// put in the request attribute ... so we can use it on the form page
+			ExternalContext externalContext = 
+						FacesContext.getCurrentInstance().getExternalContext();		
+
+			Map<String, Object> requestMap = externalContext.getRequestMap();
+			requestMap.put("customer", theCustomer);	
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error loading customer id:" + testing, exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+			
+			return null;
+		}
+				
+		return "update-test-form.xhtml";
+	}	
+	
+	
+	public void loadTests() {
+		
+		tests.clear();
+
+		try {
+			
+			// get all customers from database
+			tests = shoppingDbUtil.getTests();
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error loading tests", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+		}
 	}
 
 	public void loadCustomers() {

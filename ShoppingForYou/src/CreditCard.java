@@ -1,7 +1,8 @@
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import javax.faces.bean.ManagedBean;
 
-@ManagedBean
+@ManagedBean(name = "creditCard", eager = true)
 public class CreditCard {
 	private String cardNumber;
 	private int cardCustomer;

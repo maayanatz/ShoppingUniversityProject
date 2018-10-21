@@ -43,29 +43,27 @@
             	
             	<h:outputLabel>Phone Number:</h:outputLabel> <h:inputText value="#{customer.phoneNumber}" id="phoneNumber" /> <h:message for="phoneNumber" />
 				
-				<h:outputLabel>Street name:</h:outputLabel> <h:inputText value="#{customer.customerAddress.streetName}" id="streetName" /> <h:message for="streetName" />
+				<h:outputLabel>Street name:</h:outputLabel> <h:inputText value="#{customer.streetName}" id="streetName" /> <h:message for="streetName" />
 				
-				<h:outputLabel>House number:</h:outputLabel> <h:inputText value="#{customer.customerAddress.houseNumber}" id="houseNumber" /> <h:message for="houseNumber" />
+				<h:outputLabel>House number:</h:outputLabel> <h:inputText value="#{customer.houseNumber}" id="houseNumber" /> <h:message for="houseNumber" />
 				
-				<h:outputLabel>Apartment number:</h:outputLabel> <h:inputText value="#{customer.customerAddress.apartmentNumber}" id="apartmantNumber" /> <h:message for="apartmantNumber" />
+				<h:outputLabel>Apartment number:</h:outputLabel> <h:inputText value="#{customer.apartmentNumber}" id="apartmantNumber" /> <h:message for="apartmantNumber" />
 				
-				<h:outputLabel>City:</h:outputLabel> <h:inputText value="#{customer.customerAddress.city}" id="city" /> <h:message for="city" />
+				<h:outputLabel>City:</h:outputLabel> <h:inputText value="#{customer.city}" id="city" /> <h:message for="city" />
 				
-				<h:outputLabel>Country:</h:outputLabel> <h:inputText value="#{customer.customerAddress.country}" id="country" /> <h:message for="country" />
+				<h:outputLabel>Country:</h:outputLabel> <h:inputText value="#{customer.country}" id="country" /> <h:message for="country" />
 				
-				<h:outputLabel>Postal code:</h:outputLabel> <h:inputText value="#{customer.customerAddress.postalCode}" id="postalCode" /> <h:message for="postalCode" />
+				<h:outputLabel>Postal code:</h:outputLabel> <h:inputText value="#{customer.postalCode}" id="postalCode" /> <h:message for="postalCode" />
 				
-				<h:outputLabel>Credit card number:</h:outputLabel> <h:inputText value="#{customer.customerCard.cardNumber}" id="cardNumber" /> <h:message for="cardNumber" />
+				<h:outputLabel>Credit card number:</h:outputLabel> <h:inputText value="#{customer.cardNumber}" id="customerCardNumber" /> <h:message for="customerCardNumber" />
 				
-				<h:outputLabel>Credit card owner ID:</h:outputLabel> <h:inputText value="#{customer.customerCard.cardOwner}" id="cardOwner" /> <h:message for="cardOwner" />
+				<h:outputLabel>Credit card owner ID:</h:outputLabel> <h:inputText value="#{customer.cardOwner}" id="cardOwner" /> <h:message for="cardOwner" />
 				
-				<h:outputLabel>Credit card expiration:</h:outputLabel> <h:inputText value="#{customer.customerCard.expiration}" id="expiration" /> <h:message for="expiration" />
+				<h:outputLabel>Credit card expiration:</h:outputLabel> <h:inputText value="#{customer.expiration}" id="expiration"> <f:convertDateTime pattern="yyyy-MM-dd" /> </h:inputText> <h:message for="expiration" />
 				
-				<h:outputLabel>Credit card CVV:</h:outputLabel> <h:inputText value="#{customer.customerCard.cvv}" id="cvv" /> <h:message for="cvv" />
+				<h:outputLabel>Credit card CVV:</h:outputLabel> <h:inputText value="#{customer.cvv}" id="cvv" /> <h:message for="cvv" />
 				
 				 <h:inputHidden value="#{customer.id}" />
-				 
-				 <h:inputHidden value="#{customer.customerAddress.addressID}" />
 				 
 				 <h:commandButton value="Save" styleClass="save" 
 				 			action="#{editCustomerController.updateCustomer(customer)}"/>

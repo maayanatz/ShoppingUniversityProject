@@ -1,6 +1,6 @@
 import javax.faces.bean.ManagedBean;
 
-@ManagedBean
+@ManagedBean(name = "address", eager = true)
 public class Address {
 	
 	private int addressID;

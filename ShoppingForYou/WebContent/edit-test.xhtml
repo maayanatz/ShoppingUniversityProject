@@ -5,7 +5,7 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 	
 <f:metadata>
-  <f:event type="preRenderView" listener="#{editCustomerController.loadCustomers()}"/>
+  <f:event type="preRenderView" listener="#{editCustomerController.loadTests()}"/>
 </f:metadata>
 	
 <h:head>
@@ -36,80 +36,52 @@
 
 			<h:form>
 						
-			<h:dataTable value="#{editCustomerController.customers}" var="tempCustomer"
+			<h:dataTable value="#{editCustomerController.tests}" var="tempTest"
 				styleClass="demo-table" 
 				headerClass="demo-table-header"
 				rowClasses="demo-table-odd-row,demo-table-even-row">
 
 				<h:column>
 					<!-- the column header -->
-					<f:facet name="header">ID</f:facet>
+					<f:facet name="header">testing</f:facet>
 
 					<!--  the value for each row -->
-					#{tempCustomer.id}
+					#{tempTest.testing}
 				</h:column>
 
 				<h:column>
 					<!-- the column header -->
-					<f:facet name="header">First Name</f:facet>
+					<f:facet name="header">one</f:facet>
 
 					<!--  the value for each row -->
-					#{tempCustomer.firstName}
+					#{tempTest.one}
 				</h:column>
 
 				<h:column>
 					<!-- the column header -->
-					<f:facet name="header">Last Name</f:facet>
+					<f:facet name="header">two</f:facet>
 
 					<!--  the value for each row -->
-					#{tempCustomer.lastName}
+					#{tempTest.two}
 				</h:column>
 
 				<h:column>
 					<!-- the column header -->
-					<f:facet name="header">Email</f:facet>
+					<f:facet name="header">three</f:facet>
 
 					<!--  the value for each row -->
-					#{tempCustomer.email}
-				</h:column>
-				
-				<h:column>
-					<!-- the column header -->
-					<f:facet name="header">Password</f:facet>
-					
-					<!--  the value for each row -->
-					#{tempCustomer.password}
+					#{tempTest.three}
 				</h:column>
 				
 				<h:column>
 					<!-- the column header -->
-					<f:facet name="header">Phone Number</f:facet>
+					<f:facet name="header">test2</f:facet>
 					
 					<!--  the value for each row -->
-					#{tempCustomer.phoneNumber}
-				</h:column>
-
-				<h:column>
-					<!-- the column header -->
-					<f:facet name="header">Address</f:facet>
-					
-					<!--  the value for each row -->
-					#{tempCustomer.streetName}
-					#{tempCustomer.houseNumber}/#{tempCustomer.apartmentNumber},
-					#{tempCustomer.city},
-					#{tempCustomer.postalCode};
-					#{tempCustomer.country}
-				</h:column>
-
-				<h:column>
-					<!-- the column header -->
-					<f:facet name="header">Credit Card Details</f:facet>
-					
-					<!--  the value for each row -->
-					#{tempCustomer.cardNumber}
-					Owner ID: #{tempCustomer.cardOwner}<br/>
-					Expiration: #{tempCustomer.expiration}
-					CVV: #{tempCustomer.cvv}
+					#{tempTest.test2.testing2}
+					#{tempTest.test2.uno},
+					#{tempTest.test2.dos},
+					#{tempTest.test2.tres}
 				</h:column>
 
 				<h:column>
@@ -118,12 +90,12 @@
 
 					<!--  the value for each row -->
 					<h:commandLink value="Update"
-						action="#{editCustomerController.loadCustomer(tempCustomer.id)}"/>
+						action="#{editCustomerController.loadTest(tempTest.testing)}"/>
 					|
 
 					<h:commandLink value="Delete"
-						onclick="if (!confirm('Are you sure you want to delete this customer?')) return false"
-						action="#{editCustomerController.deleteCustomer(tempCustomer.id)}"/>
+						onclick="if (!confirm('Are you sure you want to delete this test?')) return false"
+						action="#{editCustomerController.deleteTest(tempTest.testing)}"/>
 					
 				</h:column>
 

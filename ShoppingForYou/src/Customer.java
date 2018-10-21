@@ -1,6 +1,9 @@
+//import java.sql.Date;
+import java.util.Date;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 
-@ManagedBean
+@ManagedBean(name = "customer", eager = true)
 public class Customer {
 
 	private int id;
@@ -9,8 +12,23 @@ public class Customer {
 	private String email;
 	private String password;
 	private int phoneNumber;
+	@ManagedProperty(value="#{address}")
 	private Address customerAddress;
+	private int addressID;
+	private int customerID;
+	private String streetName;
+	private int houseNumber;
+	private int apartmentNumber;
+	private String city;
+	private String country;
+	private int postalCode;
+	@ManagedProperty(value="#{creditCard}")
 	private CreditCard customerCard;
+	private String cardNumber;
+	private int cardCustomer;
+	private int cardOwner;
+	private Date expiration;
+	private int cvv;
 	
 	public Customer() {
 	}
@@ -28,18 +46,252 @@ public class Customer {
 	}
 
 	/**
+	 * @return the addressID
+	 */
+	public int getAddressID() {
+		if(this.customerAddress != null) {
+			this.addressID = this.customerAddress.getAddressID();
+			}
+		return this.addressID;
+	}
+
+	/**
+	 * @param addressID the addressID to set
+	 */
+	public void setAddressID(int addressID) {
+		this.customerAddress.setAddressID(addressID);
+		//this.addressID = this.getAddressID();
+	}
+
+	/**
+	 * @return the customerID
+	 */
+	public int getCustomerID() {
+		if(this.customerAddress != null) {
+			this.customerID = this.customerAddress.getCustomerID();
+			}
+		return this.customerID;
+	}
+
+	/**
+	 * @param customerID the customerID to set
+	 */
+	public void setCustomerID(int customerID) {
+		this.customerAddress.setCustomerID(customerID);
+		//this.customerID = this.getCustomerID();
+	}
+
+	/**
+	 * @return the streetName
+	 */
+	public String getStreetName() {
+		if(this.customerAddress != null) {
+			this.streetName = this.customerAddress.getStreetName();
+			}
+		return this.streetName;
+	}
+
+	/**
+	 * @param streetName the streetName to set
+	 */
+	public void setStreetName(String streetName) {
+		this.customerAddress.setStreetName(streetName);
+		//this.streetName = this.getStreetName();
+	}
+
+	/**
+	 * @return the houseNumber
+	 */
+	public int getHouseNumber() {
+		if(this.customerAddress != null) {
+			this.houseNumber = this.customerAddress.getHouseNumber();
+			}
+		return this.houseNumber;
+	}
+
+	/**
+	 * @param houseNumber the houseNumber to set
+	 */
+	public void setHouseNumber(int houseNumber) {
+		this.customerAddress.setHouseNumber(houseNumber);
+		//this.houseNumber = this.getHouseNumber();
+	}
+
+	/**
+	 * @return the apartmentNumber
+	 */
+	public int getApartmentNumber() {
+		if(this.customerAddress != null) {
+			this.apartmentNumber = this.customerAddress.getApartmentNumber();
+			}
+		return this.apartmentNumber;
+	}
+
+	/**
+	 * @param apartmentNumber the apartmentNumber to set
+	 */
+	public void setApartmentNumber(int apartmentNumber) {
+		this.customerAddress.setApartmentNumber(apartmentNumber);
+		//this.apartmentNumber = this.getApartmentNumber();
+	}
+
+	/**
+	 * @return the city
+	 */
+	public String getCity() {
+		if(this.customerAddress != null) {
+			this.city = this.customerAddress.getCity();
+			}
+		return this.city;
+	}
+
+	/**
+	 * @param city the city to set
+	 */
+	public void setCity(String city) {
+		this.customerAddress.setCity(city);
+		//this.city = this.getCity();
+	}
+
+	/**
+	 * @return the country
+	 */
+	public String getCountry() {
+		if(this.customerAddress != null) {
+			this.country = this.customerAddress.getCountry();
+			}
+		return this.country;
+	}
+
+	/**
+	 * @param country the country to set
+	 */
+	public void setCountry(String country) {
+		this.customerAddress.setCountry(country);
+		//this.country = this.getCountry();
+	}
+
+	/**
+	 * @return the postalCode
+	 */
+	public int getPostalCode() {
+		if(this.customerAddress != null) {
+			this.postalCode = this.customerAddress.getPostalCode();
+			}
+		return this.postalCode;
+	}
+
+	/**
+	 * @param postalCode the postalCode to set
+	 */
+	public void setPostalCode(int postalCode) {
+		this.customerAddress.setPostalCode(postalCode);
+		//this.postalCode = this.getPostalCode();
+	}
+
+	/**
+	 * @return the cardNumber
+	 */
+	public String getCardNumber() {
+		if(this.customerCard != null) {
+			this.cardNumber = this.customerCard.getCardNumber();
+			}
+		return this.cardNumber;
+	}
+
+	/**
+	 * @param cardNumber the cardNumber to set
+	 */
+	public void setCardNumber(String cardNumber) {
+		this.customerCard.setCardNumber(cardNumber);
+		//this.cardNumber = this.getCardNumber();
+	}
+
+	/**
+	 * @return the cardCustomer
+	 */
+	public int getCardCustomer() {
+		if(this.customerCard != null) {
+			this.cardCustomer = this.customerCard.getCardCustomer();
+			}
+		return this.cardCustomer;
+	}
+
+	/**
+	 * @param cardCustomer the cardCustomer to set
+	 */
+	public void setCardCustomer(int cardCustomer) {
+		this.customerCard.setCardCustomer(cardCustomer);
+		//this.cardCustomer = this.getCardCustomer();
+	}
+
+	/**
+	 * @return the cardOwner
+	 */
+	public int getCardOwner() {
+		if(this.customerCard != null) {
+			this.cardOwner = this.customerCard.getCardOwner();
+			}
+		return this.cardOwner;
+	}
+
+	/**
+	 * @param cardOwner the cardOwner to set
+	 */
+	public void setCardOwner(int cardOwner) {
+		this.customerCard.setCardOwner(cardOwner);
+		//this.cardOwner = this.getCardOwner();
+	}
+
+	/**
+	 * @return the expiration
+	 */
+	public Date getExpiration() {
+		if(this.customerCard != null) {
+			this.expiration = this.customerCard.getExpiration();
+			}
+		return this.expiration;
+	}
+
+	/**
+	 * @param expiration the expiration to set
+	 */
+	public void setExpiration(Date expiration) {
+		this.customerCard.setExpiration(expiration);
+		//this.expiration = this.getExpiration();
+	}
+
+	/**
+	 * @return the cvv
+	 */
+	public int getCvv() {
+		if(this.customerCard != null) {
+			this.cvv = this.customerCard.getCvv();
+			}
+		return this.cvv;
+	}
+
+	/**
+	 * @param cvv the cvv to set
+	 */
+	public void setCvv(int cvv) {
+		this.customerCard.setCvv(cvv);
+		//this.cvv = this.getCvv();
+	}
+
+	/**
 	 * @return the customerAddress
 	 */
 	public Address getCustomerAddress() {
 		return customerAddress;
 	}
 
-//	/**
-//	 * @param customerAddress the customerAddress to set
-//	 */
-//	public void setCustomerAddress(Address customerAddress) {
-//		this.customerAddress = customerAddress;
-//	}
+	/**
+	 * @param customerAddress the customerAddress to set
+	 */
+	public void setCustomerAddress(Address customerAddress) {
+		this.customerAddress = customerAddress;
+	}
 
 	/**
 	 * @return the customerCard
