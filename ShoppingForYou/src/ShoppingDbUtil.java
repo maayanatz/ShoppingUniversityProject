@@ -36,6 +36,171 @@ public class ShoppingDbUtil {
 		return theDataSource;
 	}
 	
+	public List<Administrator> getAdministrators() throws Exception {
+
+		List<Administrator> administrators = new ArrayList<>();
+
+		Connection myConn = null;
+		Statement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			myConn = getConnection();
+
+			String sql = "select * from administrators order by Last_Name";
+
+			myStmt = myConn.createStatement();
+
+			myRs = myStmt.executeQuery(sql);
+
+			// process result set
+			while (myRs.next()) {
+				
+				// retrieve data from result set row
+				int adminID = myRs.getInt("Admin_ID");
+				String firstName = myRs.getString("First_Name");
+				String lastName = myRs.getString("Last_Name");
+				String email = myRs.getString("Email_Address");
+				String password = myRs.getString("Password");
+				int phoneNumber = myRs.getInt("Phone_Number");
+
+				// create new Administrator object
+
+				Administrator tempAdministrator = new Administrator(adminID, firstName, lastName, email, password, phoneNumber);
+
+				// add it to the list of administrators
+				administrators.add(tempAdministrator);
+			}
+			
+			return administrators;		
+		}
+		finally {
+			close (myConn, myStmt, myRs);
+		}
+	}
+	
+	public Administrator getAdministrator(int adminID) throws Exception {
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			myConn = getConnection();
+
+			String sql = "select * from administrators where Admin_ID = ?";
+
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setInt(1, adminID);
+			
+			myRs = myStmt.executeQuery();
+
+			Administrator theAdministrator = null;
+			
+			// retrieve data from result set row
+			if (myRs.next()) {
+				// retrieve data from result set row
+				int id = myRs.getInt("Admin_ID");
+				String firstName = myRs.getString("First_Name");
+				String lastName = myRs.getString("Last_Name");
+				String email = myRs.getString("Email_Address");
+				String password = myRs.getString("Password");
+				int phoneNumber = myRs.getInt("Phone_Number");
+
+				// create new Administrator object
+
+				theAdministrator = new Administrator(id, firstName, lastName, email, password, phoneNumber);
+			}
+			else {
+				throw new Exception("Could not find administrator id: " + adminID);
+			}
+
+			return theAdministrator;
+		}
+		finally {
+			close (myConn, myStmt, myRs);
+		}
+	}
+	
+	public void addAdministrator(Administrator theAdministrator) throws Exception {
+
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+
+		try {
+			myConn = getConnection();
+
+			String sql = "insert into administrators (Admin_ID, First_Name, Last_Name, Email_Address, Password, Phone_Number) values (?, ?, ?, ?, ?, ?)";
+			
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setInt(1, theAdministrator.getAdminID());
+			myStmt.setString(2, theAdministrator.getFirstName());
+			myStmt.setString(3, theAdministrator.getLastName());
+			myStmt.setString(4, theAdministrator.getEmail());
+			myStmt.setString(5, theAdministrator.getPassword());
+			myStmt.setInt(6, theAdministrator.getPhoneNumber());
+			
+			myStmt.execute();
+		}
+		finally {
+			close (myConn, myStmt);
+		}
+	}
+	
+	public void updateAdministrator(Administrator theAdministrator) throws Exception {
+
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+
+		try {
+			myConn = getConnection();
+
+			String sql = "update administrators set First_Name=?, Last_Name=?, Email_Address=?, Password=?, Phone_Number=? where Admin_ID=?";
+			
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setString(1, theAdministrator.getFirstName());
+			myStmt.setString(2, theAdministrator.getLastName());
+			myStmt.setString(3, theAdministrator.getEmail());
+			myStmt.setString(4, theAdministrator.getPassword());
+			myStmt.setInt(5, theAdministrator.getPhoneNumber());
+			myStmt.setInt(6, theAdministrator.getAdminID());
+			
+			myStmt.execute();
+		}
+		finally {
+			close (myConn, myStmt);
+		}
+	}
+	
+	public void deleteAdministrator(int adminID) throws Exception {
+
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+
+		try {
+			myConn = getConnection();
+
+			String sql = "delete from administrators where Admin_ID = ?";
+
+			myStmt = myConn.prepareStatement(sql);
+
+			// set params
+			myStmt.setInt(1, adminID);
+			
+			myStmt.execute();
+		}
+		finally {
+			close (myConn, myStmt);
+		}		
+	}	
+	
+	
 	public Test1 getTest(int testing) throws Exception {
 		
 		Connection myConn = null;
