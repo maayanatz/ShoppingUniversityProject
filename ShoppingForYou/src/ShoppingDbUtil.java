@@ -214,7 +214,7 @@ public class ShoppingDbUtil {
 			myStmtCustomers.setInt(6, theCustomer.getPhoneNumber());
 			
 			myStmtAddresses.setInt(1, theCustomer.getCustomerAddress().getAddressID());
-			myStmtAddresses.setInt(2, theCustomer.getCustomerAddress().getCustomerID());
+			myStmtAddresses.setInt(2, theCustomer.getId());
 			myStmtAddresses.setString(3, theCustomer.getCustomerAddress().getStreetName());
 			myStmtAddresses.setInt(4, theCustomer.getCustomerAddress().getHouseNumber());
 			myStmtAddresses.setInt(5, theCustomer.getCustomerAddress().getApartmentNumber());
@@ -223,7 +223,7 @@ public class ShoppingDbUtil {
 			myStmtAddresses.setInt(8, theCustomer.getCustomerAddress().getPostalCode());
 			
 			myStmtCards.setString(1, theCustomer.getCustomerCard().getCardNumber());
-			myStmtCards.setInt(2, theCustomer.getCustomerCard().getCardCustomer());
+			myStmtCards.setInt(2, theCustomer.getId());
 			myStmtCards.setInt(3, theCustomer.getCustomerCard().getCardOwner());
 						
 			myStmtCustomers.execute();
