@@ -60,6 +60,9 @@
 				<h:outputLabel>Credit card owner ID:</h:outputLabel> <h:inputText value="#{customer.cardOwner}" id="cardOwner" /> <h:message for="cardOwner" />
 				
 				 <h:inputHidden value="#{customer.id}" />
+				 <h:inputHidden value="#{customer.customerID}" />
+				 <h:inputHidden value="#{customer.addressID}" />
+				 <h:inputHidden value="#{customer.cardCustomer}" />
 				 
 				 <h:commandButton value="Save" styleClass="save" 
 				 			action="#{editCustomerController.updateCustomer(customer)}"/>
