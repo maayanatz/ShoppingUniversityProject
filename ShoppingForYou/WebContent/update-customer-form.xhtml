@@ -59,10 +59,6 @@
 				
 				<h:outputLabel>Credit card owner ID:</h:outputLabel> <h:inputText value="#{customer.cardOwner}" id="cardOwner" /> <h:message for="cardOwner" />
 				
-				<h:outputLabel>Credit card expiration:</h:outputLabel> <h:inputText value="#{customer.expiration}" id="expiration"> <f:convertDateTime pattern="yyyy-MM-dd" /> </h:inputText> <h:message for="expiration" />
-				
-				<h:outputLabel>Credit card CVV:</h:outputLabel> <h:inputText value="#{customer.cvv}" id="cvv" /> <h:message for="cvv" />
-				
 				 <h:inputHidden value="#{customer.id}" />
 				 
 				 <h:commandButton value="Save" styleClass="save" 

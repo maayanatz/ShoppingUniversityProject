@@ -1,5 +1,3 @@
-//import java.sql.Date;
-import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
@@ -27,8 +25,6 @@ public class Customer {
 	private String cardNumber;
 	private int cardCustomer;
 	private int cardOwner;
-	private Date expiration;
-	private int cvv;
 	
 	public Customer() {
 	}
@@ -241,42 +237,6 @@ public class Customer {
 	public void setCardOwner(int cardOwner) {
 		this.customerCard.setCardOwner(cardOwner);
 		//this.cardOwner = this.getCardOwner();
-	}
-
-	/**
-	 * @return the expiration
-	 */
-	public Date getExpiration() {
-		if(this.customerCard != null) {
-			this.expiration = this.customerCard.getExpiration();
-			}
-		return this.expiration;
-	}
-
-	/**
-	 * @param expiration the expiration to set
-	 */
-	public void setExpiration(Date expiration) {
-		this.customerCard.setExpiration(expiration);
-		//this.expiration = this.getExpiration();
-	}
-
-	/**
-	 * @return the cvv
-	 */
-	public int getCvv() {
-		if(this.customerCard != null) {
-			this.cvv = this.customerCard.getCvv();
-			}
-		return this.cvv;
-	}
-
-	/**
-	 * @param cvv the cvv to set
-	 */
-	public void setCvv(int cvv) {
-		this.customerCard.setCvv(cvv);
-		//this.cvv = this.getCvv();
 	}
 
 	/**

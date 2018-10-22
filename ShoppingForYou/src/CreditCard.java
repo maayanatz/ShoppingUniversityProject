@@ -1,5 +1,3 @@
-//import java.sql.Date;
-import java.util.Date;
 import javax.faces.bean.ManagedBean;
 
 @ManagedBean(name = "creditCard", eager = true)
@@ -7,19 +5,15 @@ public class CreditCard {
 	private String cardNumber;
 	private int cardCustomer;
 	private int cardOwner;
-	private Date expiration;
-	private int cvv;
 	
 	public CreditCard() {
 	}
 	
-	public CreditCard(String cardNumber, int cardCustomer, int cardOwner, Date expiration, int cvv) {
+	public CreditCard(String cardNumber, int cardCustomer, int cardOwner) {
 		super();
 		this.cardNumber = cardNumber;
 		this.cardCustomer = cardCustomer;
 		this.cardOwner = cardOwner;
-		this.expiration = expiration;
-		this.cvv = cvv;
 	}
 
 	/**
@@ -62,33 +56,5 @@ public class CreditCard {
 	 */
 	public void setCardOwner(int cardOwner) {
 		this.cardOwner = cardOwner;
-	}
-
-	/**
-	 * @return the expiration
-	 */
-	public Date getExpiration() {
-		return expiration;
-	}
-
-	/**
-	 * @param expiration the expiration to set
-	 */
-	public void setExpiration(Date expiration) {
-		this.expiration = expiration;
-	}
-
-	/**
-	 * @return the cvv
-	 */
-	public int getCvv() {
-		return cvv;
-	}
-
-	/**
-	 * @param cvv the cvv to set
-	 */
-	public void setCvv(int cvv) {
-		this.cvv = cvv;
 	}
 }

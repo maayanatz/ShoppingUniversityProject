@@ -1,6 +1,4 @@
 import java.sql.Connection;
-//import java.sql.Date;
-import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -168,14 +166,12 @@ public class ShoppingDbUtil {
 				
 				String cardNumber = myRs.getString("Credit_Card_Number");
 				int cardOwner = myRs.getInt("User_ID");
-				Date expiration = myRs.getDate("Expiration");
-				int cvv = myRs.getInt("CVV");
 				
 				// create new address, creditCard and customer objects
 				Address customerAddress = new Address(addressID, id, streetName, houseNumber, 
 						apartmentNumber, city, country, postalCode);
 				
-				CreditCard customerCard = new CreditCard(cardNumber, id, cardOwner, expiration, cvv);
+				CreditCard customerCard = new CreditCard(cardNumber, id, cardOwner);
 				
 				Customer tempCustomer = new Customer(id, firstName, lastName,
 						email, password, phoneNumber, customerAddress, customerCard);
@@ -203,7 +199,7 @@ public class ShoppingDbUtil {
 
 			String sqlCustomers = "insert into customers (Customer_ID, First_Name, Last_Name, Email_Address, Password, Phone_Number) values (?, ?, ?, ?, ?, ?)";
 			String sqlAddresses = "insert into addresses (Address_ID, Customer_ID, Street_Name, House_Number, Apartment_Number, City, Country, Postal_Code) values (?, ?, ?, ?, ?, ?, ?, ?)";
-			String sqlCards = "insert into Credit_Cards (Credit_Card_Number, Customer_ID, User_ID, Expiration, CVV) values (?, ?, ?, ?, ?)";
+			String sqlCards = "insert into Credit_Cards (Credit_Card_Number, Customer_ID, User_ID) values (?, ?, ?)";
 			
 			myStmtCustomers = myConn.prepareStatement(sqlCustomers);
 			myStmtAddresses = myConn.prepareStatement(sqlAddresses);
@@ -229,8 +225,6 @@ public class ShoppingDbUtil {
 			myStmtCards.setString(1, theCustomer.getCustomerCard().getCardNumber());
 			myStmtCards.setInt(2, theCustomer.getCustomerCard().getCardCustomer());
 			myStmtCards.setInt(3, theCustomer.getCustomerCard().getCardOwner());
-			myStmtCards.setDate(4, theCustomer.getCustomerCard().getExpiration());
-			myStmtCards.setInt(5, theCustomer.getCustomerCard().getCvv());
 						
 			myStmtCustomers.execute();
 			myStmtAddresses.execute();
@@ -283,14 +277,12 @@ public class ShoppingDbUtil {
 				
 				String cardNumber = myRs.getString("Credit_Card_Number");
 				int cardOwner = myRs.getInt("User_ID");
-				Date expiration = myRs.getDate("Expiration");
-				int cvv = myRs.getInt("CVV");
 				
 				// create new address, creditCard and customer objects
 				Address customerAddress = new Address(addressID, id, streetName, houseNumber, 
 						apartmentNumber, city, country, postalCode);
 				
-				CreditCard customerCard = new CreditCard(cardNumber, id, cardOwner, expiration, cvv);
+				CreditCard customerCard = new CreditCard(cardNumber, id, cardOwner);
 				
 				theCustomer = new Customer(id, firstName, lastName,
 						email, password, phoneNumber, customerAddress, customerCard);
@@ -318,7 +310,7 @@ public class ShoppingDbUtil {
 
 			String sqlCustomers = "update customers set First_Name=?, Last_Name=?, Email_Address=?, Password=?, Phone_Number=? where Customer_ID=?";
 			String sqlAddresses = "update addresses set Address_ID=?, Street_Name=?, House_Number=?, Apartment_Number=?, City=?, Country=?, Postal_Code=? where Customer_ID=?";
-			String sqlCards = "update Credit_Cards set Credit_Card_Number=?, User_ID=?, Expiration=?, CVV=? where Customer_ID=?";
+			String sqlCards = "update Credit_Cards set Credit_Card_Number=?, User_ID=? where Customer_ID=?";
 			
 			myStmtCustomers = myConn.prepareStatement(sqlCustomers);
 			myStmtAddresses = myConn.prepareStatement(sqlAddresses);
@@ -343,9 +335,7 @@ public class ShoppingDbUtil {
 			
 			myStmtCards.setString(1, theCustomer.getCustomerCard().getCardNumber());
 			myStmtCards.setInt(2, theCustomer.getCustomerCard().getCardOwner());
-			myStmtCards.setDate(3, theCustomer.getCustomerCard().getExpiration());
-			myStmtCards.setInt(4, theCustomer.getCustomerCard().getCvv());
-			myStmtCards.setInt(5, theCustomer.getCustomerCard().getCardCustomer());
+			myStmtCards.setInt(3, theCustomer.getCustomerCard().getCardCustomer());
 						
 			myStmtCustomers.execute();
 			myStmtAddresses.execute();
