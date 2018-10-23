@@ -29,8 +29,8 @@
     <filter-name>AdminAuthFilter</filter-name>
     <filter-class>AdminFilter</filter-class>
   </filter>
-  <filter-mapping> 
+<filter-mapping>
     <filter-name>AdminAuthFilter</filter-name>
-    <servlet-name>Faces Servlet</servlet-name> 
-  </filter-mapping> 
+    <url-pattern>/faces/adminRestricted/*</url-pattern>
+</filter-mapping>
 </web-app>
