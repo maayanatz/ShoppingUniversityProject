@@ -1000,30 +1000,47 @@ public class ShoppingDbUtil {
 		}
 	}
 	
-	public boolean validateAdmin(String email, String password) throws Exception {
+	public Administrator validateAdmin(String currentEmail, String currentPass) throws Exception {
 		
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
 		ResultSet myRs = null;
 
 		try {
+
 			myConn = getConnection();
 
-			String sql = "select email_address, password from administrators where email_address = ? and password = ?";
+			String sql = "select * from administrators where email_address = ? and password = ?";
 
 			myStmt = myConn.prepareStatement(sql);
 			
 			// set params
-			myStmt.setString(1, email);
-			myStmt.setString(2, password);
+			myStmt.setString(1, currentEmail);
+			myStmt.setString(2, currentPass);
 			
 			myRs = myStmt.executeQuery();
-
+			
+			Administrator theAdministrator = null;
+			
 			// retrieve data from result set row
 			if (myRs.next()) {
-				return true;
+				// retrieve data from result set row
+				int id = myRs.getInt("Admin_ID");
+				String firstName = myRs.getString("First_Name");
+				String lastName = myRs.getString("Last_Name");
+				String email = myRs.getString("Email_Address");
+				String password = myRs.getString("Password");
+				int phoneNumber = myRs.getInt("Phone_Number");
+
+				// create new Administrator object
+
+				theAdministrator = new Administrator(id, firstName, lastName, email, password, phoneNumber);
 			}
-			return false;
+			else {
+				throw new Exception("Could not find administrator email: " + currentEmail);
+			}
+
+			return theAdministrator;
 		}
 		finally {
 			close (myConn, myStmt, myRs);

@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf15361349887620" configfile="/ShoppingForYou/WebContent/WEB-INF/faces-config.xml"/>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf15361349887620" configfile="/ShoppingForYou/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="login-admin.xhtml" id="pf15403114830540" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf15403114830541" path="/login-admin.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="admin.xhtml" id="pf15403114830542" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf15403114830541" path="/admin.xhtml"/>
+  <links id="pf15403114830541" target="pf15403114830542" source="pf15403114830540" outcome="admin"/>
+</pageflow:Pageflow>

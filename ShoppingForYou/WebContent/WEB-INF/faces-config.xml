@@ -6,7 +6,7 @@
     version="2.2">
     
 	<navigation-rule>
-		<from-view-id>/loginAdmin.xhtml</from-view-id>
+		<from-view-id>/login-admin.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>admin</from-outcome>
 			<to-view-id>/admin.xhtml</to-view-id>

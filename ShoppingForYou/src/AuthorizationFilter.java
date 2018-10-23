@@ -31,13 +31,13 @@ public class AuthorizationFilter implements Filter {
 			HttpSession ses = reqt.getSession(false);
 
 			String reqURI = reqt.getRequestURI();
-			if (reqURI.indexOf("/loginAdmin.xhtml") >= 0
+			if (reqURI.indexOf("/login-admin.xhtml") >= 0
 					|| (ses != null && ses.getAttribute("currentEmail") != null)
 					|| reqURI.indexOf("/public/") >= 0
 					|| reqURI.contains("javax.faces.resource"))
 				chain.doFilter(request, response);
 			else
-				resp.sendRedirect(reqt.getContextPath() + "/faces/loginAdmin.xhtml");
+				resp.sendRedirect(reqt.getContextPath() + "/faces/login-admin.xhtml");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

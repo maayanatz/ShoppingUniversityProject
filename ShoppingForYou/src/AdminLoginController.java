@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -7,6 +8,7 @@ import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -142,34 +144,33 @@ public class AdminLoginController {
 		logger.info("validating admin credentials: " + currentEmail + currentPass);
 		
 		try {
-			boolean valid = shoppingDbUtil.validateAdmin(currentEmail, currentPass);
-			if (valid) {
-				HttpSession session = SessionUtils.getSession();
-				session.setAttribute("currentEmail", currentEmail);
-				return "admin.xhtml";
-			}
-			else {
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_WARN, "Incorrect Username and Passowrd", 
-								"Please enter correct username and Password"));
-			} 
+			currentAdmin = shoppingDbUtil.validateAdmin(currentEmail, currentPass);
+			
+			// put in the request attribute ... so we can use it on the form page
+			ExternalContext externalContext = 
+						FacesContext.getCurrentInstance().getExternalContext();		
+
+			Map<String, Object> requestMap = externalContext.getRequestMap();
+			requestMap.put("currentAdmin", currentAdmin);
+			HttpSession session = SessionUtils.getSession();
+			session.setAttribute("currentAdmin", currentAdmin);
+			
 		} catch (Exception exc) {
 			// send this to server logs
-			logger.log(Level.SEVERE, "Login error administrator email:" + currentEmail, exc);
+			logger.log(Level.SEVERE, "Incorrect Username and Passowrd", exc);
 			
 			// add error message for JSF page
 			addErrorMessage(exc);
 			
-			return null;
+			return "login-admin.xhtml";
 		}
-		return "loginAdmin.xhtml";
+		return "admin.xhtml";
 	}
-			
 
 	//logout event, invalidate session
 	public String adminLogout() {
 		HttpSession session = SessionUtils.getSession();
 		session.invalidate();
-		return "loginAdmin.xhtml";
+		return "login-admin.xhtml";
 	}
 }
