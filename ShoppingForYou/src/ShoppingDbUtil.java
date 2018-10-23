@@ -999,4 +999,34 @@ public class ShoppingDbUtil {
 			close (myConn, myStmt, myRs);
 		}
 	}
+	
+	public boolean validateAdmin(String email, String password) throws Exception {
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+
+		try {
+			myConn = getConnection();
+
+			String sql = "select email_address, password from administrators where email_address = ? and password = ?";
+
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setString(1, email);
+			myStmt.setString(2, password);
+			
+			myRs = myStmt.executeQuery();
+
+			// retrieve data from result set row
+			if (myRs.next()) {
+				return true;
+			}
+			return false;
+		}
+		finally {
+			close (myConn, myStmt, myRs);
+		}
+	}
 }

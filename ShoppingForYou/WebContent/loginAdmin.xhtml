@@ -26,11 +26,11 @@
 			<h:messages globalOnly="true" />
 			<h:form id="form" style="margin-top: 10px;" >
 				<h:panelGrid columns="3">
-					<h:outputLabel>Email address:</h:outputLabel> <h:inputText value="#{administrator.email}" id="email" /> <h:message for="email" />
-					<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{administrator.password}" id="password" /> <h:message for="password" />
+					<h:outputLabel>Email address:</h:outputLabel> <h:inputText value="#{adminLoginController.currentEmail}" id="email" /> <h:message for="email" />
+					<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{adminLoginController.currentPass}" id="password" /> <h:message for="password" />
 					
 					<h:commandButton value="Login" styleClass="login" 
-				 			action="#{editAdminController.validateAdmin(administrator)}"/>
+				 			action="#{adminLoginController.adminLogin()}"/>
 				 			
 				</h:panelGrid>
 			</h:form>

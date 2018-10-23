@@ -3,12 +3,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.annotation.PostConstruct;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import org.w3c.dom.UserDataHandler;
+import javax.servlet.http.HttpSession;
 
 @SessionScoped
 @ManagedBean
@@ -134,33 +134,42 @@ public class AdminLoginController {
 			addErrorMessage(exc);
 		}
 	}
-
-	public String adminLogin() {
-		this.loadAdministrators();
-		for (Administrator administrator : this.getAdministrators()) {
-			   if (administrator.getEmail().equals(this.getCurrentEmail()))
-			   {
-				   if (administrator.getPassword().equals(this.getCurrentPass()))
-				   {
-					   this.setCurrentAdmin(administrator);
-					   FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentAdmin", currentAdmin);
-			           return "inner/index.xhtml?faces-redirect=true";
-				   }
-				   else
-				   {
-					   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Password is invalid"));
-					   return "index.xhtml";
-				   }
-			   }
-			}
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("This administrator does not exist!"));
-		return "index.xhtml";
-	}
 	
-    public String adminLogout(){
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("currentAdmin");
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        this.setCurrentAdmin(null);
-        return "index.xhtml?faces-redirect=true";
-    }
+
+	//validate login
+	public String adminLogin() {
+		
+		logger.info("validating admin credentials: " + currentEmail + currentPass);
+		
+		try {
+			boolean valid = shoppingDbUtil.validateAdmin(currentEmail, currentPass);
+			if (valid) {
+				HttpSession session = SessionUtils.getSession();
+				session.setAttribute("currentEmail", currentEmail);
+				return "admin.xhtml";
+			}
+			else {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN, "Incorrect Username and Passowrd", 
+								"Please enter correct username and Password"));
+			} 
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Login error administrator email:" + currentEmail, exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+			
+			return null;
+		}
+		return "loginAdmin.xhtml";
+	}
+			
+
+	//logout event, invalidate session
+	public String adminLogout() {
+		HttpSession session = SessionUtils.getSession();
+		session.invalidate();
+		return "loginAdmin.xhtml";
+	}
 }
