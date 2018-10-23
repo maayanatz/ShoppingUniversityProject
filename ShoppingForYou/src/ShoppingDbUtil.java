@@ -999,28 +999,4 @@ public class ShoppingDbUtil {
 			close (myConn, myStmt, myRs);
 		}
 	}
-	
-	public boolean validateAdmin(Administrator theAdministrator) throws Exception  {
-		
-		Connection myConn = null;
-		PreparedStatement myStmt = null;
-
-		try {
-			myConn = getConnection();
-
-			String sql = "Select Admin_ID, Password from Administrators where Admin_ID = ? and Password = ?";
-			
-			myStmt = myConn.prepareStatement(sql);
-			
-			// set params
-			myStmt.setInt(1, theAdministrator.getAdminID());
-			myStmt.setString(2, theAdministrator.getPassword());
-			
-			myStmt.execute();
-		}
-		finally {
-			close (myConn, myStmt);
-		}
-	}
-	
 }

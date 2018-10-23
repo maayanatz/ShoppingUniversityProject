@@ -182,30 +182,6 @@ public class EditAdminController {
 		return "edit-administrators";	
 	}
 	
-	//validate login
-	public String validateAdmin(Administrator theAdministrator) {
-		boolean valid = shoppingDbUtil.validateAdmin(theAdministrator);
-		if (valid) {
-			HttpSession session = SessionUtils.getSession();
-			session.setAttribute("email", theAdministrator.getEmail());
-			return "admin";
-		} else {
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN,
-							"Incorrect Username and Passowrd",
-							"Please enter correct username and Password"));
-			return "login";
-		}
-	}
-	
-	//logout event, invalidate session
-	public String logout() {
-		HttpSession session = SessionUtils.getSession();
-		session.invalidate();
-		return "login";
-	}
-	
 	private void addErrorMessage(Exception exc) {
 		FacesMessage message = new FacesMessage("Error: " + exc.getMessage());
 		FacesContext.getCurrentInstance().addMessage(null, message);
