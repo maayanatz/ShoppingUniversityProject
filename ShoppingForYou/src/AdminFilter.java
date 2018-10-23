@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(filterName = "AdminAuthFilter", urlPatterns = {"/adminRestricted/*"})
+@WebFilter(filterName = "AdminAuthFilter")
 public class AdminFilter implements Filter {
 
 	public AdminFilter() {
@@ -35,9 +35,21 @@ public class AdminFilter implements Filter {
 					|| (ses != null && ses.getAttribute("currentEmail") != null)
 					|| reqURI.indexOf("/publicArea/") >= 0
 					|| reqURI.contains("javax.faces.resource"))
+				{
 				chain.doFilter(request, response);
-			else
-				resp.sendRedirect(reqt.getContextPath() + "/login-admin.xhtml");
+			
+				System.out.println("====================================================================");
+				System.out.println(chain.toString());
+				System.out.println(reqt.getContextPath());
+				System.out.println(ses.getAttribute("currentEmail"));
+				System.out.println("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||");
+				}
+			else {
+				System.out.println("====================================================================");
+				System.out.println(reqt.getContextPath());
+				System.out.println("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||");
+				resp.sendRedirect(reqt.getContextPath() + "/publicArea/login-admin.xhtml");
+			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
