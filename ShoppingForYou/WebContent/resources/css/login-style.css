@@ -1,6 +1,10 @@
+#wrapper {width: 100%; margin-top: 0px;}
+#header {width: 70%; margin-top: 0px;}
+#container {width: 100%; margin:auto;}
+
 label {
 	font-size: 16px; 
-	width: 300px; 
+	width: 120px; 
 	display: block; 
 	text-align: left;
 	margin-right: 10px;
@@ -16,10 +20,10 @@ input {
 	font-size: 16px;
 }
 
-.save {
+.login {
 	font-weight: bold;
 	width: 130px; 
 	padding: 5px 10px; 
 	margin-top: 30px;
-	background: #cccccc;
+	background: #32CD32;
 }
