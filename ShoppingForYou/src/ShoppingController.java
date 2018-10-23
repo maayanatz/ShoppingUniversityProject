@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -10,8 +11,9 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @SessionScoped
-public class ShoppingController {
+public class ShoppingController implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private List<Customer> customers;
 	private List<Product> products;
 	private ShoppingDbUtil shoppingDbUtil;

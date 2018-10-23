@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +16,9 @@ import org.apache.catalina.manager.util.SessionUtils;
 
 @ManagedBean
 @SessionScoped
-public class EditAdminController {
+public class EditAdminController implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private List<Administrator> administrators;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());

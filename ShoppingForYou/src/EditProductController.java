@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +13,9 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @SessionScoped
-public class EditProductController {
+public class EditProductController implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private List<Product> products;
 	private List<Shirt> shirts;
 	private List<Skirt> skirts;

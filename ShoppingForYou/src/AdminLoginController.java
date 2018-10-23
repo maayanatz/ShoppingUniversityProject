@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -13,8 +14,9 @@ import javax.servlet.http.HttpSession;
 
 @SessionScoped
 @ManagedBean(name = "AdminLoginController", eager = true)
-public class AdminLoginController {
+public class AdminLoginController implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private List<Administrator> administrators;
 	@ManagedProperty(value="#{Administrator}")
 	private Administrator currentAdmin;
@@ -31,6 +33,7 @@ public class AdminLoginController {
 	
 	public AdminLoginController() throws Exception {
 		administrators = new ArrayList<>();
+		currentAdmin = null;
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
@@ -266,7 +269,7 @@ public class AdminLoginController {
 			
 			return "login-admin.xhtml";
 		}
-		return "admin.xhtml";
+		return "login-admin.xhtml";
 	}
 
 	//logout event, invalidate session

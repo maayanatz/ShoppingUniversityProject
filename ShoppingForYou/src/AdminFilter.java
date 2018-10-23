@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(filterName = "AdminAuthFilter", urlPatterns = { "/adminRestricted/*" })
+@WebFilter(filterName = "AdminAuthFilter", urlPatterns = {"/adminRestricted/*"})
 public class AdminFilter implements Filter {
 
 	public AdminFilter() {
@@ -24,6 +24,7 @@ public class AdminFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
+		System.out.println("INNNNNNNNNNNNNNNNNNNN");
 		try {
 
 			HttpServletRequest reqt = (HttpServletRequest) request;
@@ -32,12 +33,12 @@ public class AdminFilter implements Filter {
 
 			String reqURI = reqt.getRequestURI();
 			if (reqURI.indexOf("/login-admin.xhtml") >= 0
-					|| (ses != null && ses.getAttribute("currentEmail") != null)
-					|| reqURI.indexOf("/public/") >= 0
+					|| (ses != null && ses.getAttribute("currentAdmin") != null)
+					|| reqURI.indexOf("/publicArea/") >= 0
 					|| reqURI.contains("javax.faces.resource"))
 				chain.doFilter(request, response);
 			else
-				resp.sendRedirect(reqt.getContextPath() + "/faces/login-admin.xhtml");
+				resp.sendRedirect(reqt.getContextPath() + "/login-admin.xhtml");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
