@@ -1,6 +1,7 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -907,7 +908,7 @@ public class ShoppingDbUtil {
 		}
 	}
 	
-	public Administrator validateAdmin(String currentEmail, String currentPass) throws Exception {
+	public boolean validateAdmin(String currentEmail, String currentPass) throws Exception {
 		
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
@@ -917,7 +918,7 @@ public class ShoppingDbUtil {
 
 			myConn = getConnection();
 
-			String sql = "select * from administrators where email_address = ? and password = ?";
+			String sql = "select email_address, password from administrators where email_address = ? and password = ?";
 
 			myStmt = myConn.prepareStatement(sql);
 			
@@ -927,30 +928,16 @@ public class ShoppingDbUtil {
 			
 			myRs = myStmt.executeQuery();
 			
-			Administrator theAdministrator = null;
-			
-			// retrieve data from result set row
 			if (myRs.next()) {
-				// retrieve data from result set row
-				int id = myRs.getInt("Admin_ID");
-				String firstName = myRs.getString("First_Name");
-				String lastName = myRs.getString("Last_Name");
-				String email = myRs.getString("Email_Address");
-				String password = myRs.getString("Password");
-				int phoneNumber = myRs.getInt("Phone_Number");
-
-				// create new Administrator object
-
-				theAdministrator = new Administrator(id, firstName, lastName, email, password, phoneNumber);
+				return true;
 			}
-			else {
-				throw new Exception("Could not find administrator email: " + currentEmail);
-			}
-
-			return theAdministrator;
+			} catch (SQLException ex) {
+				System.out.println("Administrator login error:" + ex.getMessage());
+				return false;
 		}
 		finally {
 			close (myConn, myStmt, myRs);
 		}
+		return false;
 	}
 }

@@ -1,6 +1,6 @@
 import javax.faces.bean.ManagedBean;
 
-@ManagedBean(name = "Administrator", eager = true)
+@ManagedBean(name = "administrator", eager = true)
 public class Administrator {
 	private int adminID;
 	private String firstName;

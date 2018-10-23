@@ -24,7 +24,6 @@ public class AdminFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		System.out.println("INNNNNNNNNNNNNNNNNNNN");
 		try {
 
 			HttpServletRequest reqt = (HttpServletRequest) request;
@@ -33,7 +32,7 @@ public class AdminFilter implements Filter {
 
 			String reqURI = reqt.getRequestURI();
 			if (reqURI.indexOf("/login-admin.xhtml") >= 0
-					|| (ses != null && ses.getAttribute("currentAdmin") != null)
+					|| (ses != null && ses.getAttribute("currentEmail") != null)
 					|| reqURI.indexOf("/publicArea/") >= 0
 					|| reqURI.contains("javax.faces.resource"))
 				chain.doFilter(request, response);
