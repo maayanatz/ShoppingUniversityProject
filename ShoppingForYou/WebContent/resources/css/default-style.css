@@ -27,33 +27,6 @@ body {
   color: black;
 }
 
-.navigator .search-box {
-  float: right;
-}
-
-/* Style the search box inside the navigation bar */
-.navigator input[type=text] {
-  padding: 6px;
-  margin-top: 8px;
-  font-size: 17px;
-  border: none;
-}
-
-.navigator .search-box button {
-  float: right;
-  padding: 6px;
-  margin-top: 8px;
-  margin-right: 16px;
-  background: #ddd;
-  font-size: 17px;
-  border: none;
-  cursor: pointer;
-}
-
-.navigator .search-box button:hover {
-  background: #ccc;
-}
-
 @media screen and (max-width: 600px) {
   .navigator .search-box {
     float: none;

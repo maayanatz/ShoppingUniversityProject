@@ -1,25 +1,31 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 @SessionScoped
-@ManagedBean
+@ManagedBean(name = "AdminLoginController", eager = true)
 public class AdminLoginController {
 	
 	private List<Administrator> administrators;
+	@ManagedProperty(value="#{Administrator}")
 	private Administrator currentAdmin;
 	private String currentEmail;
 	private String currentPass;
+	private int adminID;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String password;
+	private int phoneNumber;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
@@ -28,6 +34,108 @@ public class AdminLoginController {
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
+	/**
+	 * @return the adminID
+	 */
+	public int getAdminID() {
+		if(this.currentAdmin != null) {
+			this.adminID = this.currentAdmin.getAdminID();
+			}
+		return this.adminID;
+	}
+
+	/**
+	 * @param adminID the adminID to set
+	 */
+	public void setAdminID(int adminID) {
+		this.currentAdmin.setAdminID(adminID);
+	}
+
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		if(this.currentAdmin != null) {
+			this.firstName = this.currentAdmin.getFirstName();
+			}
+		return this.firstName;
+	}
+
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.currentAdmin.setFirstName(firstName);
+	}
+
+	/**
+	 * @return the lastName
+	 */
+	public String getLastName() {
+		if(this.currentAdmin != null) {
+			this.lastName = this.currentAdmin.getLastName();
+			}
+		return this.lastName;
+	}
+
+	/**
+	 * @param lastName the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.currentAdmin.setLastName(lastName);
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		if(this.currentAdmin != null) {
+			this.email = this.currentAdmin.getEmail();
+			}
+		return this.email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.currentAdmin.setEmail(email);
+	}
+
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		if(this.currentAdmin != null) {
+			this.password = this.currentAdmin.getPassword();
+			}
+		return this.password;
+	}
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.currentAdmin.setPassword(password);
+	}
+
+	/**
+	 * @return the phoneNumber
+	 */
+	public int getPhoneNumber() {
+		if(this.currentAdmin != null) {
+			this.phoneNumber = this.currentAdmin.getPhoneNumber();
+			}
+		return this.phoneNumber;
+	}
+
+	/**
+	 * @param phoneNumber the phoneNumber to set
+	 */
+	public void setPhoneNumber(int phoneNumber) {
+		this.currentAdmin.setPhoneNumber(phoneNumber);
+	}
+
 	/**
 	 * @return the currentEmail
 	 */
@@ -146,12 +254,6 @@ public class AdminLoginController {
 		try {
 			currentAdmin = shoppingDbUtil.validateAdmin(currentEmail, currentPass);
 			
-			// put in the request attribute ... so we can use it on the form page
-			ExternalContext externalContext = 
-						FacesContext.getCurrentInstance().getExternalContext();		
-
-			Map<String, Object> requestMap = externalContext.getRequestMap();
-			requestMap.put("currentAdmin", currentAdmin);
 			HttpSession session = SessionUtils.getSession();
 			session.setAttribute("currentAdmin", currentAdmin);
 			

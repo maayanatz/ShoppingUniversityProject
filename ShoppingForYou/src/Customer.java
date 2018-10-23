@@ -56,7 +56,6 @@ public class Customer {
 	 */
 	public void setAddressID(int addressID) {
 		this.customerAddress.setAddressID(addressID);
-		//this.addressID = this.getAddressID();
 	}
 
 	/**
@@ -74,7 +73,6 @@ public class Customer {
 	 */
 	public void setCustomerID(int customerID) {
 		this.customerAddress.setCustomerID(customerID);
-		//this.customerID = this.getCustomerID();
 	}
 
 	/**
@@ -92,7 +90,6 @@ public class Customer {
 	 */
 	public void setStreetName(String streetName) {
 		this.customerAddress.setStreetName(streetName);
-		//this.streetName = this.getStreetName();
 	}
 
 	/**
@@ -110,7 +107,6 @@ public class Customer {
 	 */
 	public void setHouseNumber(int houseNumber) {
 		this.customerAddress.setHouseNumber(houseNumber);
-		//this.houseNumber = this.getHouseNumber();
 	}
 
 	/**
@@ -128,7 +124,6 @@ public class Customer {
 	 */
 	public void setApartmentNumber(int apartmentNumber) {
 		this.customerAddress.setApartmentNumber(apartmentNumber);
-		//this.apartmentNumber = this.getApartmentNumber();
 	}
 
 	/**
@@ -146,7 +141,6 @@ public class Customer {
 	 */
 	public void setCity(String city) {
 		this.customerAddress.setCity(city);
-		//this.city = this.getCity();
 	}
 
 	/**
@@ -164,7 +158,6 @@ public class Customer {
 	 */
 	public void setCountry(String country) {
 		this.customerAddress.setCountry(country);
-		//this.country = this.getCountry();
 	}
 
 	/**
@@ -182,7 +175,6 @@ public class Customer {
 	 */
 	public void setPostalCode(int postalCode) {
 		this.customerAddress.setPostalCode(postalCode);
-		//this.postalCode = this.getPostalCode();
 	}
 
 	/**
@@ -200,7 +192,6 @@ public class Customer {
 	 */
 	public void setCardNumber(String cardNumber) {
 		this.customerCard.setCardNumber(cardNumber);
-		//this.cardNumber = this.getCardNumber();
 	}
 
 	/**
@@ -218,7 +209,6 @@ public class Customer {
 	 */
 	public void setCardCustomer(int cardCustomer) {
 		this.customerCard.setCardCustomer(cardCustomer);
-		//this.cardCustomer = this.getCardCustomer();
 	}
 
 	/**
@@ -236,7 +226,6 @@ public class Customer {
 	 */
 	public void setCardOwner(int cardOwner) {
 		this.customerCard.setCardOwner(cardOwner);
-		//this.cardOwner = this.getCardOwner();
 	}
 
 	/**

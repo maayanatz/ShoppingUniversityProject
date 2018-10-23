@@ -19,12 +19,4 @@ public class SessionUtils {
 				.getExternalContext().getSession(false);
 		return session.getAttribute("currentEmail").toString();
 	}
-
-//	public static String getUserId() {
-//		HttpSession session = getSession();
-//		if (session != null)
-//			return (String) session.getAttribute("userid");
-//		else
-//			return null;
-//	}
 }
