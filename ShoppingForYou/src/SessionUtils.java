@@ -14,9 +14,9 @@ public class SessionUtils {
 				.getExternalContext().getRequest();
 	}
 
-	public static String getEmail() {
-		HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-				.getExternalContext().getSession(false);
-		return session.getAttribute("currentEmail").toString();
-	}
+//	public static String getEmail() {
+//		HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+//				.getExternalContext().getSession(false);
+//		return session.getAttribute("currentEmail").toString();
+//	}
 }

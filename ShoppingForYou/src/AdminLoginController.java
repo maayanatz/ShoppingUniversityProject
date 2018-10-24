@@ -14,73 +14,73 @@ import javax.servlet.http.HttpSession;
 public class AdminLoginController implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private String currentEmail;
-	private String currentPass;
-	private boolean loggedIn;
-	private boolean loginFailure;
+	private String currentAdminEmail;
+	private String currentAdminPass;
+	private boolean adminLoggedIn;
+	private boolean adminLoginFailure;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
 	public AdminLoginController() throws Exception {
-		loggedIn = false;
-		loginFailure = false;
+		adminLoggedIn = false;
+		adminLoginFailure = false;
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
 	/**
 	 * @return the loginFailure
 	 */
-	public boolean isLoginFailure() {
-		return loginFailure;
+	public boolean isAdminLoginFailure() {
+		return adminLoginFailure;
 	}
 
 	/**
 	 * @param loginFailure the loginFailure to set
 	 */
-	public void setLoginFailure(boolean loginFailure) {
-		this.loginFailure = loginFailure;
+	public void setAdminLoginFailure(boolean loginFailure) {
+		this.adminLoginFailure = loginFailure;
 	}
 
 	/**
 	 * @return the isLoggedIn
 	 */
-	public boolean getLoggedIn() {
-		return loggedIn;
+	public boolean getAdminLoggedIn() {
+		return adminLoggedIn;
 	}
 
 	/**
 	 * @param isLoggedIn the isLoggedIn to set
 	 */
-	public void setLoggedIn(boolean loggedIn) {
-		this.loggedIn = loggedIn;
+	public void setAdminLoggedIn(boolean loggedIn) {
+		this.adminLoggedIn = loggedIn;
 	}
 
 	/**
 	 * @return the currentEmail
 	 */
-	public String getCurrentEmail() {
-		return currentEmail;
+	public String getAdminCurrentEmail() {
+		return currentAdminEmail;
 	}
 
 	/**
 	 * @param currentEmail the currentEmail to set
 	 */
-	public void setCurrentEmail(String currentEmail) {
-		this.currentEmail = currentEmail;
+	public void setAdminCurrentEmail(String currentEmail) {
+		this.currentAdminEmail = currentEmail;
 	}
 
 	/**
 	 * @return the currentPass
 	 */
-	public String getCurrentPass() {
-		return currentPass;
+	public String getAdminCurrentPass() {
+		return currentAdminPass;
 	}
 
 	/**
 	 * @param currentPass the currentPass to set
 	 */
-	public void setCurrentPass(String currentPass) {
-		this.currentPass = currentPass;
+	public void setAdminCurrentPass(String currentPass) {
+		this.currentAdminPass = currentPass;
 	}
 	
 	/**
@@ -119,21 +119,21 @@ public class AdminLoginController implements Serializable {
 	//validate login
 	public String adminLogin() {
 		
-		logger.info("validating admin credentials: " + currentEmail + currentPass);
+		logger.info("validating admin credentials: " + currentAdminEmail + currentAdminPass);
 		
 		try {
-			boolean valid = shoppingDbUtil.validateAdmin(currentEmail, currentPass);
+			boolean valid = shoppingDbUtil.validateAdmin(currentAdminEmail, currentAdminPass);
 			
 			if (valid) {
 				HttpSession session = SessionUtils.getSession();
-				session.setAttribute("currentEmail", currentEmail);
-				setLoggedIn(true);
-				setLoginFailure(false);
+				session.setAttribute("currentAdminEmail", currentAdminEmail);
+				setAdminLoggedIn(true);
+				setAdminLoginFailure(false);
 				return "/adminRestricted/logout-admin.xhtml?faces-redirect=true";
 			}
 			else {
 				clearAdminReferences();
-				setLoginFailure(true);
+				setAdminLoginFailure(true);
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_WARN,
 								"Incorrect Username and Passowrd",
@@ -142,7 +142,7 @@ public class AdminLoginController implements Serializable {
 			}
 			} catch (Exception exc) {
 				clearAdminReferences();
-				setLoginFailure(true);
+				setAdminLoginFailure(true);
 				// send this to server logs
 				logger.log(Level.SEVERE, "Error in validating admin credentials.", exc);
 				// add error message for JSF page
@@ -156,13 +156,13 @@ public class AdminLoginController implements Serializable {
 		HttpSession session = SessionUtils.getSession();
 		session.invalidate();
 		clearAdminReferences();
-		setLoginFailure(false);
+		setAdminLoginFailure(false);
 		return "/home-page.xhtml?faces-redirect=true";
 	}
 
 	private void clearAdminReferences() {
-		setCurrentEmail(null);
-		setCurrentPass(null);
-		setLoggedIn(false);
+		setAdminCurrentEmail(null);
+		setAdminCurrentPass(null);
+		setAdminLoggedIn(false);
 	}
 }

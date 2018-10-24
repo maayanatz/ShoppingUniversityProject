@@ -73,12 +73,12 @@
 			<h:messages globalOnly="true" />
 			<h:form id="form" style="margin-top: 10px;" >
 				<h:panelGrid columns="3">
-					<h:outputLabel>Email address:</h:outputLabel> <h:inputText value="#{adminLoginController.currentEmail}" id="email" /> <h:message for="email" />
-					<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{adminLoginController.currentPass}" id="password" /> <h:message for="password" />
+					<h:outputLabel>Email address:</h:outputLabel> <h:inputText value="#{adminLoginController.adminCurrentEmail}" id="email" /> <h:message for="email" />
+					<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{adminLoginController.adminCurrentPass}" id="password" /> <h:message for="password" />
 					
-					<h:commandButton styleClass="login" value="Login" disabled="#{adminLoginController.loggedIn}" action="#{adminLoginController.adminLogin()}"/>
+					<h:commandButton styleClass="login" value="Login" disabled="#{adminLoginController.adminLoggedIn}" action="#{adminLoginController.adminLogin()}"/>
 					
-					<h:outputLabel styleClass="loginFailure" rendered="#{adminLoginController.loginFailure}">Login Failed! Wrong email address or password.</h:outputLabel>
+					<h:outputLabel styleClass="loginFailure" rendered="#{adminLoginController.adminLoginFailure}">Login Failed! Wrong email address or password.</h:outputLabel>
 					
 				</h:panelGrid>
 			</h:form>

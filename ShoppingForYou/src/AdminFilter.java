@@ -30,7 +30,7 @@ public class AdminFilter implements Filter {
 			HttpServletResponse resp = (HttpServletResponse) response;
 			HttpSession ses = reqt.getSession(false);
 			
-			if (ses != null && ses.getAttribute("currentEmail") != null)
+			if (ses != null && ses.getAttribute("currentAdminEmail") != null)
 				chain.doFilter(request, response);
 			else
 				resp.sendRedirect(reqt.getContextPath() + "/faces/login-admin.xhtml");
