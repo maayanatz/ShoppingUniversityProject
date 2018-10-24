@@ -5,7 +5,30 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 	
 <h:head>
-	<link rel="stylesheet" type="text/css" href="/ShoppingForYou/faces/resources/css/logout-style.css"/>
+	<style>
+		#wrapper {width: 100%; margin-top: 0px;}
+		#header {width: 70%; margin-top: 0px;}
+		#container {width: 100%; margin:auto;}
+		
+		.welcome {
+			font-size: 24px; 
+			width: 800px; 
+			display: block; 
+			text-align: left;
+			margin-right: 10px;
+			margin-top: 8px;
+			margin-bottom: 8px;
+			color: #C71585;
+		}
+		
+		.logout {
+			font-weight: bold;
+			width: 130px; 
+			padding: 5px 10px; 
+			margin-top: 30px;
+			background: #3CB371;
+		}
+	</style>
 </h:head>
 
 <h:body>
@@ -26,8 +49,8 @@
 			<h:messages globalOnly="true" />
 			<h:form id="form" style="margin-top: 10px;" >
 			
-				<h:outputLabel class="welcome">Welcome #{adminLoginController.currentEmail}!</h:outputLabel>	
-				<h:commandButton class="logout" value="Logout" action="#{adminLoginController.adminLogout}"/>
+				<h:outputLabel styleClass="welcome">Welcome #{adminLoginController.currentEmail}!</h:outputLabel>	
+				<h:commandButton styleClass="logout" value="Logout" action="#{adminLoginController.adminLogout}"/>
 				
 			</h:form>
 			<div style="clear: both;"></div>
