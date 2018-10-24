@@ -25,12 +25,17 @@ public class Customer {
 	private String cardNumber;
 	private int cardCustomer;
 	private int cardOwner;
+	@ManagedProperty(value="#{order}")
+	private Order customerOrder;
+	private int orderNumber;
+	private int orderCustomerID;
+	private float totalPrice;
 	
 	public Customer() {
 	}
 	
 	public Customer(int id, String firstName, String lastName, String email,
-			String password, int phoneNumber, Address customerAddress, CreditCard customerCard) {
+			String password, int phoneNumber, Address customerAddress, CreditCard customerCard, Order customerOrder) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -39,6 +44,72 @@ public class Customer {
 		this.phoneNumber = phoneNumber;
 		this.customerAddress = customerAddress;
 		this.customerCard = customerCard;
+		this.customerOrder = customerOrder;
+	}
+
+	/**
+	 * @return the customerOrder
+	 */
+	public Order getCustomerOrder() {
+		return customerOrder;
+	}
+
+	/**
+	 * @param customerOrder the customerOrder to set
+	 */
+	public void setCustomerOrder(Order customerOrder) {
+		this.customerOrder = customerOrder;
+	}
+
+	/**
+	 * @return the orderNumber
+	 */
+	public int getOrderNumber() {
+		if(this.customerOrder != null) {
+			this.orderNumber = this.customerOrder.getOrderNumber();
+			}
+		return this.orderNumber;
+	}
+
+	/**
+	 * @param orderNumber the orderNumber to set
+	 */
+	public void setOrderNumber(int orderNumber) {
+		this.customerOrder.setOrderNumber(orderNumber);
+	}
+
+	/**
+	 * @return the orderCustomerID
+	 */
+	public int getOrderCustomerID() {
+		if(this.customerOrder != null) {
+			this.orderCustomerID = this.customerOrder.getOrderCustomerID();
+			}
+		return this.orderCustomerID;
+	}
+
+	/**
+	 * @param orderCustomerID the orderCustomerID to set
+	 */
+	public void setOrderCustomerID(int orderCustomerID) {
+		this.customerOrder.setOrderCustomerID(orderCustomerID);
+	}
+
+	/**
+	 * @return the totalPrice
+	 */
+	public float getTotalPrice() {
+		if(this.customerOrder != null) {
+			this.totalPrice = this.customerOrder.getTotalPrice();
+			}
+		return this.totalPrice;
+	}
+
+	/**
+	 * @param totalPrice the totalPrice to set
+	 */
+	public void setTotalPrice(float totalPrice) {
+		this.customerOrder.setTotalPrice(totalPrice);
 	}
 
 	/**
@@ -303,11 +374,4 @@ public class Customer {
 	public void setPhoneNumber(int phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-
-	@Override
-	public String toString() {
-		return "Customer [id=" + id + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", email=" + email + ", password=" + password + ", phoneNumber=" + phoneNumber + "]";
-	}
-
 }
