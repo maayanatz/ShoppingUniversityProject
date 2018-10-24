@@ -5,7 +5,7 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 	
 <h:head>
-	<h:outputStylesheet library="css" name="login-style.css" />
+	<link rel="stylesheet" type="text/css" href="/ShoppingForYou/faces/resources/css/login-style.css"/>
 </h:head>
 
 <h:body>
@@ -29,9 +29,11 @@
 					<h:outputLabel>Email address:</h:outputLabel> <h:inputText value="#{adminLoginController.currentEmail}" id="email" /> <h:message for="email" />
 					<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{adminLoginController.currentPass}" id="password" /> <h:message for="password" />
 					
-					<h:commandButton value="Login" styleClass="login" 
-				 			action="#{adminLoginController.adminLogin()}"/>
-				 			
+					<h:commandButton class="login" value="Login" disabled="#{adminLoginController.loggedIn}" action="#{adminLoginController.adminLogin()}"/>
+					
+					<br/><br/><br/><br/>
+					<h:outputLabel class="loginFailure" rendered="#{adminLoginController.loginFailure}">Login Failed! Wrong email address or password.</h:outputLabel>
+					
 				</h:panelGrid>
 			</h:form>
 			<div style="clear: both;"></div>

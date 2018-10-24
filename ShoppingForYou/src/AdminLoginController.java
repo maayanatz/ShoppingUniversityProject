@@ -16,13 +16,45 @@ public class AdminLoginController implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String currentEmail;
 	private String currentPass;
+	private boolean loggedIn;
+	private boolean loginFailure;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
 	public AdminLoginController() throws Exception {
+		loggedIn = false;
+		loginFailure = false;
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
+	/**
+	 * @return the loginFailure
+	 */
+	public boolean isLoginFailure() {
+		return loginFailure;
+	}
+
+	/**
+	 * @param loginFailure the loginFailure to set
+	 */
+	public void setLoginFailure(boolean loginFailure) {
+		this.loginFailure = loginFailure;
+	}
+
+	/**
+	 * @return the isLoggedIn
+	 */
+	public boolean getLoggedIn() {
+		return loggedIn;
+	}
+
+	/**
+	 * @param isLoggedIn the isLoggedIn to set
+	 */
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
+	}
+
 	/**
 	 * @return the currentEmail
 	 */
@@ -95,9 +127,13 @@ public class AdminLoginController implements Serializable {
 			if (valid) {
 				HttpSession session = SessionUtils.getSession();
 				session.setAttribute("currentEmail", currentEmail);
-				return "admin.xhtml?faces-redirect=true";
+				setLoggedIn(true);
+				setLoginFailure(false);
+				return "/adminRestricted/logout-admin.xhtml?faces-redirect=true";
 			}
 			else {
+				clearAdminReferences();
+				setLoginFailure(true);
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_WARN,
 								"Incorrect Username and Passowrd",
@@ -105,11 +141,13 @@ public class AdminLoginController implements Serializable {
 				return "login-admin.xhtml?faces-redirect=true";
 			}
 			} catch (Exception exc) {
-			// send this to server logs
-			logger.log(Level.SEVERE, "Error in validating admin credentials.", exc);
-			// add error message for JSF page
-			addErrorMessage(exc);
-			return "login-admin.xhtml?faces-redirect=true";
+				clearAdminReferences();
+				setLoginFailure(true);
+				// send this to server logs
+				logger.log(Level.SEVERE, "Error in validating admin credentials.", exc);
+				// add error message for JSF page
+				addErrorMessage(exc);
+				return "login-admin.xhtml?faces-redirect=true";
 		}
 	}
 
@@ -118,11 +156,13 @@ public class AdminLoginController implements Serializable {
 		HttpSession session = SessionUtils.getSession();
 		session.invalidate();
 		clearAdminReferences();
-		return "home-page.xhtml?faces-redirect=true";
+		setLoginFailure(false);
+		return "/home-page.xhtml?faces-redirect=true";
 	}
 
 	private void clearAdminReferences() {
-		currentEmail = null;
-		currentPass = null;
+		setCurrentEmail(null);
+		setCurrentPass(null);
+		setLoggedIn(false);
 	}
 }

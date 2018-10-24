@@ -932,7 +932,7 @@ public class ShoppingDbUtil {
 				return true;
 			}
 			} catch (SQLException ex) {
-				System.out.println("Administrator login error:" + ex.getMessage());
+				System.out.println("Administrator login error: " + ex.getMessage());
 				return false;
 		}
 		finally {
