@@ -29,8 +29,17 @@
     <filter-name>AdminAuthFilter</filter-name>
     <filter-class>AdminFilter</filter-class>
   </filter>
-<filter-mapping>
+  <filter-mapping>
     <filter-name>AdminAuthFilter</filter-name>
     <url-pattern>/faces/adminRestricted/*</url-pattern>
-</filter-mapping>
+  </filter-mapping>
+  
+   <filter>
+    <filter-name>CustomerAuthFilter</filter-name>
+    <filter-class>CustomerFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CustomerAuthFilter</filter-name>
+    <url-pattern>/faces/customerRestricted/*</url-pattern>
+  </filter-mapping>
 </web-app>

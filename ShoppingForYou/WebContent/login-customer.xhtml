@@ -5,7 +5,54 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 	
 <h:head>
-	<h:outputStylesheet library="css" name="login-style.css" />
+	<style>
+		#wrapper {width: 100%; margin-top: 0px;}
+		#header {width: 70%; margin-top: 0px;}
+		#container {width: 100%; margin:auto;}
+		
+		label {
+			font-size: 16px; 
+			width: 120px; 
+			display: block; 
+			text-align: left;
+			margin-right: 10px;
+			margin-top: 8px;
+			margin-bottom: 8px;
+		}
+		
+		input {
+			width: 250px;
+			border: 1px solid #666; 
+			border-radius: 5px; 
+			padding: 4px; 
+			font-size: 16px;
+		}
+		
+		.login {
+			font-weight: bold;
+			width: 130px; 
+			padding: 5px 10px; 
+			margin-top: 30px;
+			background: #3CB371;
+		}
+		
+		.login:disabled {
+			font-weight: bold;
+			width: 130px; 
+			padding: 5px 10px; 
+			margin-top: 30px;
+			background: #D3D3D3;
+		}
+		
+		.loginFailure {
+			font-weight: bold;
+			font-size: 16px; 
+			width: 800px; 
+			display: block; 
+			text-align: left;
+			color: #FF0000;
+		}
+	</style>
 </h:head>
 
 <h:body>
@@ -26,12 +73,13 @@
 			<h:messages globalOnly="true" />
 			<h:form id="form" style="margin-top: 10px;" >
 				<h:panelGrid columns="3">
-					<h:outputLabel>Email address:</h:outputLabel> <h:inputText value="#{customer.email}" id="email" /> <h:message for="email" />
-					<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{customer.password}" id="password" /> <h:message for="password" />
+					<h:outputLabel>Email address:</h:outputLabel> <h:inputText value="#{customerLoginController.currentEmail}" id="email" /> <h:message for="email" />
+					<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{customerLoginController.currentPass}" id="password" /> <h:message for="password" />
 					
-					<h:commandButton value="Login" styleClass="login" 
-				 			action="#{editCustomerController.validateCustomer(customer)}"/>
-				 			
+					<h:commandButton styleClass="login" value="Login" disabled="#{customerLoginController.loggedIn}" action="#{customerLoginController.customerLogin()}"/>
+					
+					<h:outputLabel styleClass="loginFailure" rendered="#{customerLoginController.loginFailure}">Login Failed! Wrong email address or password.</h:outputLabel>
+					
 				</h:panelGrid>
 			</h:form>
 			<div style="clear: both;"></div>

@@ -940,4 +940,37 @@ public class ShoppingDbUtil {
 		}
 		return false;
 	}
+
+	public boolean validateCustomer(String currentEmail, String currentPass) throws Exception {
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+
+		try {
+
+			myConn = getConnection();
+
+			String sql = "select email_address, password from customers where email_address = ? and password = ?";
+
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setString(1, currentEmail);
+			myStmt.setString(2, currentPass);
+			
+			myRs = myStmt.executeQuery();
+			
+			if (myRs.next()) {
+				return true;
+			}
+			} catch (SQLException ex) {
+				System.out.println("Customer login error: " + ex.getMessage());
+				return false;
+		}
+		finally {
+			close (myConn, myStmt, myRs);
+		}
+		return false;
+	}
 }
