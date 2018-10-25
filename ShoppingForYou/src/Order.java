@@ -9,7 +9,7 @@ public class Order {
 	private int orderCustomerID;
 	private float totalPrice;
 	private List<ItemInOrder> orderItems;
-	
+		
 	public Order() {
 	}
 
