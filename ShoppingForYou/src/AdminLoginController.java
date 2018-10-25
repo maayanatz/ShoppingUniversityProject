@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 public class AdminLoginController implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private String currentAdminEmail;
+	private static String currentAdminEmail;
 	private String currentAdminPass;
 	private boolean adminLoggedIn;
 	private boolean adminLoginFailure;
@@ -58,7 +58,7 @@ public class AdminLoginController implements Serializable {
 	/**
 	 * @return the currentEmail
 	 */
-	public String getAdminCurrentEmail() {
+	public static String getAdminCurrentEmail() {
 		return currentAdminEmail;
 	}
 

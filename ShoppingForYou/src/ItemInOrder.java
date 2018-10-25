@@ -10,19 +10,34 @@ public class ItemInOrder {
 	private int itemCatalogNumber;
 	private int itemOrderNumber;
 	private int itemAmount;
-	private float itemTotalPrice;
+	private float itemPrice;
+	private float totalPrice;
 	
 	public ItemInOrder() {
 	}
 
 	public ItemInOrder(int itemOrderID, int itemCatalogNumber, int itemOrderNumber, int itemAmount,
-			float itemTotalPrice) {
+			float itemPrice) {
 		super();
 		this.itemOrderID = itemOrderID;
 		this.itemCatalogNumber = itemCatalogNumber;
 		this.itemOrderNumber = itemOrderNumber;
 		this.itemAmount = itemAmount;
-		this.itemTotalPrice = itemTotalPrice;
+		this.itemPrice = itemPrice;
+	}
+
+	/**
+	 * @return the totalPrice
+	 */
+	public float getTotalPrice() {
+		return totalPrice;
+	}
+
+	/**
+	 * @param totalPrice the totalPrice to set
+	 */
+	public void setTotalPrice(float totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	/**
@@ -82,16 +97,16 @@ public class ItemInOrder {
 	}
 
 	/**
-	 * @return the itemTotalPrice
+	 * @return the itemPrice
 	 */
-	public float getItemTotalPrice() {
-		return itemTotalPrice;
+	public float getItemPrice() {
+		return itemPrice;
 	}
 
 	/**
-	 * @param itemTotalPrice the itemTotalPrice to set
+	 * @param itemTotalPrice the itemPrice to set
 	 */
-	public void setItemTotalPrice(float itemTotalPrice) {
-		this.itemTotalPrice = itemTotalPrice;
+	public void setItemPrice(float itemPrice) {
+		this.itemPrice = itemPrice;
 	}
 }
