@@ -1287,5 +1287,65 @@ public class ShoppingDbUtil {
 			close (myConn, myStmt, myRs);
 		}
 	}
+
+	public Order getOrder(int orderNumber) throws Exception {
+		Connection myConn = null;
+		PreparedStatement myStmtOrders = null;
+		PreparedStatement myStmtItems = null;
+		ResultSet myRsOrders = null;
+		ResultSet myRsItems = null;
+		
+		Order thisOrder = null;
+		
+		try {
+			myConn = getConnection();
+				
+			String sqlOrders = "select * from Orders where Order_Number = ?";
+			myStmtOrders = myConn.prepareStatement(sqlOrders);
+			myStmtOrders.setInt(1, orderNumber);
+			myRsOrders = myStmtOrders.executeQuery();
+			
+			if (myRsOrders.next()) {
+				int orderCustomerID = myRsOrders.getInt("Customer_ID");
+				float totalPrice = myRsOrders.getFloat("Total_Price");
+				
+				List<ItemInOrder> orderItems = new ArrayList<>();
+				
+				String sqlItems = "select * from Item_In_Order where Order_Number = ?";
+				
+				myStmtItems = myConn.prepareStatement(sqlItems);
+				
+				// set params
+				myStmtItems.setInt(1, orderNumber);
+				
+				myRsItems = myStmtItems.executeQuery();
+				
+				while (myRsItems.next()) {
+					int itemOrderID = myRsItems.getInt("Item_In_Order_ID");
+					int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
+					int itemAmount = myRsItems.getInt("Amount");
+					float itemPrice = myRsItems.getInt("Item_Price");
+					float itemTotalPrice = myRsItems.getInt("Total_Price");
+					
+					ItemInOrder tempItem = new ItemInOrder(itemOrderID, itemCatalogNumber, 
+							orderNumber, itemAmount, itemPrice, itemTotalPrice);
+					
+					// add it to the list of orderItems
+					orderItems.add(tempItem);
+				}
+				
+				thisOrder = new Order(orderNumber, orderCustomerID, totalPrice, orderItems);
+				}
+			else {
+				throw new Exception("Could not find order number: " + orderNumber);
+				}
+	
+			return thisOrder;
+		}
+		finally {
+			close (myConn, myStmtOrders, myRsOrders);
+			close (myConn, myStmtItems, myRsItems);
+		}
+	}
 	
 }
