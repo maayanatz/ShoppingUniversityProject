@@ -1,7 +1,6 @@
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 
 @ManagedBean(name = "order", eager = true)
 public class Order {

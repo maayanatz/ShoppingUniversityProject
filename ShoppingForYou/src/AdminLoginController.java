@@ -65,8 +65,8 @@ public class AdminLoginController implements Serializable {
 	/**
 	 * @param currentEmail the currentEmail to set
 	 */
-	public void setAdminCurrentEmail(String currentEmail) {
-		this.currentAdminEmail = currentEmail;
+	public static void setAdminCurrentEmail(String currentEmail) {
+		AdminLoginController.currentAdminEmail = currentEmail;
 	}
 
 	/**

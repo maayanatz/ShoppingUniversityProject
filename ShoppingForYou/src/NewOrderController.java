@@ -1,7 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,7 +8,6 @@ import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 @ManagedBean
@@ -150,17 +148,17 @@ public class NewOrderController implements Serializable {
 			return null;
 		}
 		
-		this.getTheOrder().getOrderItems().add(theItem);
-		this.getTheOrder().setTotalPrice(this.getTheOrder().getTotalPrice() + (itemAmount * itemPrice));
-		
-		updateOrder(this.getTheOrder());
+		updateOrder(theItem);
 		
 		return "product-details?faces-redirect=true";
 	}
 	
-	public void updateOrder() {
+	public void updateOrder(ItemInOrder newItem) {
 		
 		logger.info("Updating order: " + this.getTheOrder().getOrderNumber());
+		
+		this.getTheOrder().getOrderItems().add(newItem);
+		this.getTheOrder().setTotalPrice(this.getTheOrder().getTotalPrice() + (newItem.getItemAmount() * newItem.getItemPrice()));
 		
 		try {
 			
@@ -182,8 +180,8 @@ public class NewOrderController implements Serializable {
 		
 		try {
 
-			// delete the product from the database
-			shoppingDbUtil.cancelOrder(this.getTheOrder());
+			// delete the order and orderItems from the database
+			shoppingDbUtil.cancelOrder(this.getTheOrder().getOrderNumber());
 			
 		} catch (Exception exc) {
 			// send this to server logs

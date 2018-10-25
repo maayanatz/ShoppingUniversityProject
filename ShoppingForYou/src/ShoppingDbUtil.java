@@ -1083,4 +1083,141 @@ public class ShoppingDbUtil {
 		}
 		return false;
 	}
+
+	public int getLoggedInCustomerID(String loggedInCustomerEmail) throws Exception {
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		int loggedInCustomerID = 0;
+
+		try {
+
+			myConn = getConnection();
+
+			String sql = "select customer_id from customers where email_address = ?";
+
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setString(1, loggedInCustomerEmail);
+			
+			myRs = myStmt.executeQuery();
+			
+			while (myRs.next()) {
+				
+				// retrieve data from result set row
+				loggedInCustomerID = myRs.getInt("Customer_ID");
+			}
+			} catch (SQLException ex) {
+				System.out.println("Could not find customer email: " + loggedInCustomerEmail + ex.getMessage());
+				return 0;
+		}
+		finally {
+			close (myConn, myStmt, myRs);
+		}
+		return loggedInCustomerID;
+	}
+
+	public void addOrder(Order theOrder) throws Exception {
+
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+
+		try {
+			myConn = getConnection();
+
+			String sql = "insert into orders (Order_Number, Customer_ID, Total_Price) values (?, ?, ?)";
+			
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setInt(1, theOrder.getOrderNumber());
+			myStmt.setInt(2, theOrder.getOrderCustomerID());
+			myStmt.setFloat(3, theOrder.getTotalPrice());
+			
+			myStmt.execute();
+		}
+		finally {
+			close (myConn, myStmt);
+		}
+	}
+
+	public void addOrderItem(ItemInOrder theItem) throws Exception {
+
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+
+		try {
+			myConn = getConnection();
+
+			String sql = "insert into item_in_order (Item_In_Order_ID, Catalog_Number, Order_Number, Amount, Item_Price) values (?, ?, ?, ?, ?)";
+			
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setInt(1, theItem.getItemOrderID());
+			myStmt.setInt(2, theItem.getItemCatalogNumber());
+			myStmt.setInt(3, theItem.getItemOrderNumber());
+			myStmt.setInt(4, theItem.getItemAmount());
+			myStmt.setFloat(5, theItem.getItemPrice());
+			
+			myStmt.execute();
+		}
+		finally {
+			close (myConn, myStmt);
+		}
+	}
+
+	public void updateOrder(Order theOrder) throws Exception {
+
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+
+		try {
+			myConn = getConnection();
+
+			String sql = "update orders set Total_Price=? where Order_Number=?";
+			
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setFloat(1, theOrder.getTotalPrice());
+			myStmt.setInt(2, theOrder.getOrderNumber());
+			
+			myStmt.execute();
+		}
+		finally {
+			close (myConn, myStmt);
+		}
+	}
+
+	public void cancelOrder(int orderNumber) throws Exception {
+
+		Connection myConn = null;
+		PreparedStatement myStmtItems = null;
+		PreparedStatement myStmtOrders = null;
+
+		try {
+			myConn = getConnection();
+
+			String sqlItems = "delete from Item_In_Order where Order_Number = ?";
+			String sqlOrders = "delete from Orders where Order_Number = ?";
+
+			myStmtItems = myConn.prepareStatement(sqlItems);
+			myStmtOrders = myConn.prepareStatement(sqlOrders);
+
+			// set params
+			myStmtItems.setInt(1, orderNumber);
+			myStmtOrders.setInt(1, orderNumber);
+			
+			myStmtItems.execute();
+			myStmtOrders.execute();
+		}
+		finally {
+			close (myConn, myStmtItems);
+			close (myConn, myStmtOrders);
+		}
+	}
+
 }

@@ -1,5 +1,4 @@
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 
 @ManagedBean(name = "product", eager = true)
 public class Product {
