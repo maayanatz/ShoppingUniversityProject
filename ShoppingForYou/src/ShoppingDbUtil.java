@@ -1253,14 +1253,14 @@ public class ShoppingDbUtil {
 		try {
 			myConn = getConnection();
 
-			String sql = "select * from item_in_order where Order_Number=?";
+			String sql = "select * from item_in_order where Order_Number = ?";
 
 			myStmt = myConn.prepareStatement(sql);
 			
 			// set params
 			myStmt.setInt(1, orderNumber);
 			
-			myRs = myStmt.executeQuery(sql);
+			myRs = myStmt.executeQuery();
 
 			// process result set
 			while (myRs.next()) {
