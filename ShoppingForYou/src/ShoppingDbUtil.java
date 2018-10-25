@@ -6,7 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.bean.ManagedProperty;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

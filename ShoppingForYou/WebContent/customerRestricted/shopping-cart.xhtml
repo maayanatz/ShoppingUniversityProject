@@ -96,7 +96,8 @@
 			<h:commandButton class="submitOrder" value="Submit Order" 
 				action="#{shoppingCartController.submitOrder()}"/>
 				
-			<h:commandLink value="Cancel Order" onclick="if (!confirm('Are you sure you want to cancel this order?')) return false" 
+			<h:commandButton class="cancelOrder" value="Cancel Order" 
+				onclick="if (!confirm('Are you sure you want to cancel this order?')) return false" 
 				action="#{shoppingCartController.cancelOrder()}"/>
 
 			</h:form>

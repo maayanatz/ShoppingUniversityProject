@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -132,7 +131,13 @@ public class ShoppingCartController implements Serializable {
 	
 	public int getLoggedInCustomerID()
 	{
-		String loggedInCustomerEmail = CustomerLoginController.getCurrentEmail();
+		String loggedInCustomerEmail = (String) FacesContext.getCurrentInstance().
+				getExternalContext().getSessionMap().get("currentEmail");
+		
+		if (loggedInCustomerEmail == null) {
+			return 0;
+		}
+
 		int orderCustomerID;
 		
 		logger.info("Getting order customer ID for email: " + loggedInCustomerEmail);
