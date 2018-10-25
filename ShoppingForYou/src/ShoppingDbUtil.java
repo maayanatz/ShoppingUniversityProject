@@ -212,7 +212,8 @@ public class ShoppingDbUtil {
 		try {
 			myConn = getConnection();
 
-			String sql = "select * from Customers natural join addresses natural join credit_cards order by Last_Name";
+			String sql = "select * from Customers natural join addresses "
+					+ "natural join credit_cards natural join orders natural join item_in_order order by Last_Name";
 
 			myStmt = myConn.createStatement();
 
@@ -240,14 +241,28 @@ public class ShoppingDbUtil {
 				String cardNumber = myRs.getString("Credit_Card_Number");
 				int cardOwner = myRs.getInt("User_ID");
 				
-				// create new address, creditCard and customer objects
+				int orderNumber = myRs.getInt("Order_Number");
+				float totalPrice = myRs.getFloat("Total_Price");
+				
+				int itemOrderID = myRs.getInt("Item_In_Order_ID");
+				int itemCatalogNumber = myRs.getInt("Catalog_Number");
+				int itemOrderNumber = myRs.getInt("Order_Number");
+				int itemAmount = myRs.getInt("Amount");
+				float itemTotalPrice = myRs.getFloat("Total_Price");
+
+				// create new address, creditCard, itemInOrder, order and customer objects
 				Address customerAddress = new Address(addressID, id, streetName, houseNumber, 
 						apartmentNumber, city, country, postalCode);
 				
 				CreditCard customerCard = new CreditCard(cardNumber, id, cardOwner);
 				
+				ItemInOrder orderItems = new ItemInOrder(itemOrderID, itemCatalogNumber, itemOrderNumber, 
+						itemAmount, itemTotalPrice);
+				
+				Order customerOrder = new Order(orderNumber, id, totalPrice, orderItems);
+				
 				Customer tempCustomer = new Customer(id, firstName, lastName,
-						email, password, phoneNumber, customerAddress, customerCard);
+						email, password, phoneNumber, customerAddress, customerCard, customerOrder);
 
 				// add it to the list of customers
 				customers.add(tempCustomer);

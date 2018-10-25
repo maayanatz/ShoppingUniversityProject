@@ -30,6 +30,11 @@ public class Customer {
 	private int orderNumber;
 	private int orderCustomerID;
 	private float totalPrice;
+	private int itemOrderID;
+	private int itemCatalogNumber;
+	private int itemOrderNumber;
+	private int itemAmount;
+	private float itemTotalPrice;
 	
 	public Customer() {
 	}
@@ -45,6 +50,91 @@ public class Customer {
 		this.customerAddress = customerAddress;
 		this.customerCard = customerCard;
 		this.customerOrder = customerOrder;
+	}
+
+	/**
+	 * @return the itemOrderID
+	 */
+	public int getItemOrderID() {
+		if(this.customerOrder.getOrderItems() != null) {
+			this.itemOrderID = this.customerOrder.getItemOrderID();
+			}
+		return this.itemOrderID;
+	}
+
+	/**
+	 * @param itemOrderID the itemOrderID to set
+	 */
+	public void setItemOrderID(int itemOrderID) {
+		this.customerOrder.getOrderItems().setItemOrderID(itemOrderID);
+	}
+
+	/**
+	 * @return the itemCatalogNumber
+	 */
+	public int getItemCatalogNumber() {
+		if(this.customerOrder.getOrderItems() != null) {
+			this.itemCatalogNumber = this.customerOrder.getItemCatalogNumber();
+			}
+		return this.itemCatalogNumber;
+	}
+
+	/**
+	 * @param itemCatalogNumber the itemCatalogNumber to set
+	 */
+	public void setItemCatalogNumber(int itemCatalogNumber) {
+		this.customerOrder.getOrderItems().setItemCatalogNumber(itemCatalogNumber);
+	}
+
+	/**
+	 * @return the itemOrderNumber
+	 */
+	public int getItemOrderNumber() {
+		if(this.customerOrder.getOrderItems() != null) {
+			this.itemOrderNumber = this.customerOrder.getItemOrderNumber();
+			}
+		return this.itemOrderNumber;
+	}
+
+	/**
+	 * @param itemOrderNumber the itemOrderNumber to set
+	 */
+	public void setItemOrderNumber(int itemOrderNumber) {
+		this.customerOrder.getOrderItems().setItemOrderNumber(itemOrderNumber);
+	}
+
+	/**
+	 * @return the itemAmount
+	 */
+	public int getItemAmount() {
+		if(this.customerOrder.getOrderItems() != null) {
+			this.itemAmount = this.customerOrder.getItemAmount();
+			}
+		return this.itemAmount;
+	}
+
+	/**
+	 * @param itemAmount the itemAmount to set
+	 */
+	public void setItemAmount(int itemAmount) {
+		this.customerOrder.getOrderItems().setItemAmount(itemAmount);
+	}
+
+	/**
+	 * @return the itemTotalPrice
+	 */
+	public float getItemTotalPrice() {
+		if(this.customerOrder.getOrderItems() != null) {
+			this.itemTotalPrice = this.customerOrder.getItemTotalPrice();
+			}
+		return this.itemTotalPrice;
+	}
+
+	/**
+	 * @param itemTotalPrice the itemTotalPrice to set
+	 */
+	public void setItemTotalPrice(float itemTotalPrice) {
+		this.customerOrder.getOrderItems().setItemTotalPrice(itemTotalPrice);
 	}
 
 	/**
