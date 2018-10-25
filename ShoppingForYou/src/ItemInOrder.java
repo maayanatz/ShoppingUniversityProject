@@ -1,4 +1,7 @@
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 
 @ManagedBean(name = "itemInOrder", eager = true)
 public class ItemInOrder {

@@ -29,23 +29,11 @@ public class Customer {
 	private int cardOwner;
 	private List<Order> customerOrders;
 	
-	
-	@ManagedProperty(value="#{order}")
-	private Order customerOrder;
-	private int orderNumber;
-	private int orderCustomerID;
-	private float totalPrice;
-	private int itemOrderID;
-	private int itemCatalogNumber;
-	private int itemOrderNumber;
-	private int itemAmount;
-	private float itemTotalPrice;
-	
 	public Customer() {
 	}
 	
 	public Customer(int id, String firstName, String lastName, String email,
-			String password, int phoneNumber, Address customerAddress, CreditCard customerCard, Order customerOrder) {
+			String password, int phoneNumber, Address customerAddress, CreditCard customerCard,  List<Order> customerOrders) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -54,157 +42,21 @@ public class Customer {
 		this.phoneNumber = phoneNumber;
 		this.customerAddress = customerAddress;
 		this.customerCard = customerCard;
-		this.customerOrder = customerOrder;
+		this.customerOrders = customerOrders;
 	}
 
 	/**
-	 * @return the itemOrderID
+	 * @return the customerOrders
 	 */
-	public int getItemOrderID() {
-		if(this.customerOrder.getOrderItems() != null) {
-			this.itemOrderID = this.customerOrder.getItemOrderID();
-			}
-		return this.itemOrderID;
+	public List<Order> getCustomerOrders() {
+		return customerOrders;
 	}
 
 	/**
-	 * @param itemOrderID the itemOrderID to set
+	 * @param customerOrders the customerOrders to set
 	 */
-	public void setItemOrderID(int itemOrderID) {
-		this.customerOrder.getOrderItems().setItemOrderID(itemOrderID);
-	}
-
-	/**
-	 * @return the itemCatalogNumber
-	 */
-	public int getItemCatalogNumber() {
-		if(this.customerOrder.getOrderItems() != null) {
-			this.itemCatalogNumber = this.customerOrder.getItemCatalogNumber();
-			}
-		return this.itemCatalogNumber;
-	}
-
-	/**
-	 * @param itemCatalogNumber the itemCatalogNumber to set
-	 */
-	public void setItemCatalogNumber(int itemCatalogNumber) {
-		this.customerOrder.getOrderItems().setItemCatalogNumber(itemCatalogNumber);
-	}
-
-	/**
-	 * @return the itemOrderNumber
-	 */
-	public int getItemOrderNumber() {
-		if(this.customerOrder.getOrderItems() != null) {
-			this.itemOrderNumber = this.customerOrder.getItemOrderNumber();
-			}
-		return this.itemOrderNumber;
-	}
-
-	/**
-	 * @param itemOrderNumber the itemOrderNumber to set
-	 */
-	public void setItemOrderNumber(int itemOrderNumber) {
-		this.customerOrder.getOrderItems().setItemOrderNumber(itemOrderNumber);
-	}
-
-	/**
-	 * @return the itemAmount
-	 */
-	public int getItemAmount() {
-		if(this.customerOrder.getOrderItems() != null) {
-			this.itemAmount = this.customerOrder.getItemAmount();
-			}
-		return this.itemAmount;
-	}
-
-	/**
-	 * @param itemAmount the itemAmount to set
-	 */
-	public void setItemAmount(int itemAmount) {
-		this.customerOrder.getOrderItems().setItemAmount(itemAmount);
-	}
-
-	/**
-	 * @return the itemTotalPrice
-	 */
-	public float getItemTotalPrice() {
-		if(this.customerOrder.getOrderItems() != null) {
-			this.itemTotalPrice = this.customerOrder.getItemTotalPrice();
-			}
-		return this.itemTotalPrice;
-	}
-
-	/**
-	 * @param itemTotalPrice the itemTotalPrice to set
-	 */
-	public void setItemTotalPrice(float itemTotalPrice) {
-		this.customerOrder.getOrderItems().setItemTotalPrice(itemTotalPrice);
-	}
-
-	/**
-	 * @return the customerOrder
-	 */
-	public Order getCustomerOrder() {
-		return customerOrder;
-	}
-
-	/**
-	 * @param customerOrder the customerOrder to set
-	 */
-	public void setCustomerOrder(Order customerOrder) {
-		this.customerOrder = customerOrder;
-	}
-
-	/**
-	 * @return the orderNumber
-	 */
-	public int getOrderNumber() {
-		if(this.customerOrder != null) {
-			this.orderNumber = this.customerOrder.getOrderNumber();
-			}
-		return this.orderNumber;
-	}
-
-	/**
-	 * @param orderNumber the orderNumber to set
-	 */
-	public void setOrderNumber(int orderNumber) {
-		this.customerOrder.setOrderNumber(orderNumber);
-	}
-
-	/**
-	 * @return the orderCustomerID
-	 */
-	public int getOrderCustomerID() {
-		if(this.customerOrder != null) {
-			this.orderCustomerID = this.customerOrder.getOrderCustomerID();
-			}
-		return this.orderCustomerID;
-	}
-
-	/**
-	 * @param orderCustomerID the orderCustomerID to set
-	 */
-	public void setOrderCustomerID(int orderCustomerID) {
-		this.customerOrder.setOrderCustomerID(orderCustomerID);
-	}
-
-	/**
-	 * @return the totalPrice
-	 */
-	public float getTotalPrice() {
-		if(this.customerOrder != null) {
-			this.totalPrice = this.customerOrder.getTotalPrice();
-			}
-		return this.totalPrice;
-	}
-
-	/**
-	 * @param totalPrice the totalPrice to set
-	 */
-	public void setTotalPrice(float totalPrice) {
-		this.customerOrder.setTotalPrice(totalPrice);
+	public void setCustomerOrders(List<Order> customerOrders) {
+		this.customerOrders = customerOrders;
 	}
 
 	/**

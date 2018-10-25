@@ -204,51 +204,88 @@ public class ShoppingDbUtil {
 	public List<Customer> getCustomers() throws Exception {
 
 		List<Customer> customers = new ArrayList<>();
+		List<Order> customerOrders = new ArrayList<>();
+		List<ItemInOrder> orderItems = new ArrayList<>();
 
 		Connection myConn = null;
-		Statement myStmt = null;
-		ResultSet myRs = null;
+		Statement myStmtCustomers = null;
+		PreparedStatement myStmtOrders = null;
+		PreparedStatement myStmtItems = null;
+		ResultSet myRsCustomers = null;
+		ResultSet myRsOrders = null;
+		ResultSet myRsItems = null;
 		
 		try {
 			myConn = getConnection();
 
-			String sql = "select * from Customers natural join addresses "
-					+ "natural join credit_cards natural join orders natural join item_in_order order by Last_Name";
+			String sqlCustomers = "select * from Customers natural join addresses "
+					+ "natural join credit_cards order by Last_Name";
 
-			myStmt = myConn.createStatement();
+			myStmtCustomers = myConn.createStatement();
 
-			myRs = myStmt.executeQuery(sql);
+			myRsCustomers = myStmtCustomers.executeQuery(sqlCustomers);
 
 			// process result set
-			while (myRs.next()) {
+			while (myRsCustomers.next()) {
 				
 				// retrieve data from result set row
-				int id = myRs.getInt("Customer_ID");
-				String firstName = myRs.getString("First_Name");
-				String lastName = myRs.getString("Last_Name");
-				String email = myRs.getString("Email_Address");
-				String password = myRs.getString("Password");
-				int phoneNumber = myRs.getInt("Phone_Number");
+				int id = myRsCustomers.getInt("Customer_ID");
+				String firstName = myRsCustomers.getString("First_Name");
+				String lastName = myRsCustomers.getString("Last_Name");
+				String email = myRsCustomers.getString("Email_Address");
+				String password = myRsCustomers.getString("Password");
+				int phoneNumber = myRsCustomers.getInt("Phone_Number");
 				
-				int addressID = myRs.getInt("Address_ID");
-				String streetName = myRs.getString("Street_Name");
-				int houseNumber = myRs.getInt("House_Number");
-				int apartmentNumber = myRs.getInt("Apartment_Number");
-				String city = myRs.getString("City");
-				String country = myRs.getString("Country");
-				int postalCode = myRs.getInt("Postal_Code");
+				int addressID = myRsCustomers.getInt("Address_ID");
+				String streetName = myRsCustomers.getString("Street_Name");
+				int houseNumber = myRsCustomers.getInt("House_Number");
+				int apartmentNumber = myRsCustomers.getInt("Apartment_Number");
+				String city = myRsCustomers.getString("City");
+				String country = myRsCustomers.getString("Country");
+				int postalCode = myRsCustomers.getInt("Postal_Code");
 				
-				String cardNumber = myRs.getString("Credit_Card_Number");
-				int cardOwner = myRs.getInt("User_ID");
+				String cardNumber = myRsCustomers.getString("Credit_Card_Number");
+				int cardOwner = myRsCustomers.getInt("User_ID");
 				
-				int orderNumber = myRs.getInt("Order_Number");
-				float totalPrice = myRs.getFloat("Total_Price");
+				String sqlOrders = "select * from Orders where Customer_ID = ?";
 				
-				int itemOrderID = myRs.getInt("Item_In_Order_ID");
-				int itemCatalogNumber = myRs.getInt("Catalog_Number");
-				int itemOrderNumber = myRs.getInt("Order_Number");
-				int itemAmount = myRs.getInt("Amount");
-				float itemTotalPrice = myRs.getFloat("Total_Price");
+				myStmtOrders = myConn.prepareStatement(sqlOrders);
+				
+				// set params
+				myStmtOrders.setInt(1, id);
+				
+				myRsOrders = myStmtOrders.executeQuery();
+				
+				while (myRsOrders.next()) {
+					int orderNumber = myRsOrders.getInt("Order_Number");
+					float totalPrice = myRsOrders.getFloat("Total_Price");
+					
+					String sqlItems = "select * from Item_In_Order where Order_Number = ?";
+					
+					myStmtItems = myConn.prepareStatement(sqlItems);
+					
+					// set params
+					myStmtItems.setInt(1, orderNumber);
+					
+					myRsItems = myStmtItems.executeQuery();
+					
+					while (myRsItems.next()) {
+						int itemOrderID = myRsItems.getInt("Item_In_Order_ID");
+						int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
+						int itemAmount = myRsItems.getInt("Amount");
+						float itemTotalPrice = myRsItems.getInt("Total_Price");
+						
+						ItemInOrder tempItem = new ItemInOrder(itemOrderID, itemCatalogNumber, orderNumber, itemAmount, itemTotalPrice);
+						
+						// add it to the list of orderItems
+						orderItems.add(tempItem);
+					}
+					
+					Order tempOrder = new Order(orderNumber, id, totalPrice, orderItems);
+					
+					// add it to the list of customerOrders
+					customerOrders.add(tempOrder);
+				}
 
 				// create new address, creditCard, itemInOrder, order and customer objects
 				Address customerAddress = new Address(addressID, id, streetName, houseNumber, 
@@ -256,13 +293,8 @@ public class ShoppingDbUtil {
 				
 				CreditCard customerCard = new CreditCard(cardNumber, id, cardOwner);
 				
-				ItemInOrder orderItems = new ItemInOrder(itemOrderID, itemCatalogNumber, itemOrderNumber, 
-						itemAmount, itemTotalPrice);
-				
-				Order customerOrder = new Order(orderNumber, id, totalPrice, orderItems);
-				
 				Customer tempCustomer = new Customer(id, firstName, lastName,
-						email, password, phoneNumber, customerAddress, customerCard, customerOrder);
+						email, password, phoneNumber, customerAddress, customerCard, customerOrders);
 
 				// add it to the list of customers
 				customers.add(tempCustomer);
@@ -271,7 +303,9 @@ public class ShoppingDbUtil {
 			return customers;		
 		}
 		finally {
-			close (myConn, myStmt, myRs);
+			close (myConn, myStmtCustomers, myRsCustomers);
+			close (myConn, myStmtOrders, myRsOrders);
+			close (myConn, myStmtItems, myRsItems);
 		}
 	}
 
@@ -329,52 +363,85 @@ public class ShoppingDbUtil {
 	public Customer getCustomer(int customerId) throws Exception {
 	
 		Connection myConn = null;
-		PreparedStatement myStmt = null;
-		ResultSet myRs = null;
+		PreparedStatement myStmtCustomers = null;
+		PreparedStatement myStmtOrders = null;
+		PreparedStatement myStmtItems = null;
+		ResultSet myRsCustomers = null;
+		ResultSet myRsOrders = null;
+		ResultSet myRsItems = null;
 		
 		try {
 			myConn = getConnection();
 
-			String sql = "select * from Customers natural join addresses "
-					+ "natural join credit_cards natural join orders natural join item_in_order where Customer_ID = ?";
+			String sqlCustomers = "select * from Customers natural join addresses natural join credit_cards where Customer_ID = ?";
+			
+			myStmtCustomers = myConn.prepareStatement(sqlCustomers);
 
-			myStmt = myConn.prepareStatement(sql);
-			
 			// set params
-			myStmt.setInt(1, customerId);
-			
-			myRs = myStmt.executeQuery();
+			myStmtCustomers.setInt(1, customerId);
+			myRsCustomers = myStmtCustomers.executeQuery();
 
 			Customer theCustomer = null;
 			
 			// retrieve data from result set row
-			if (myRs.next()) {
-				int id = myRs.getInt("Customer_ID");
-				String firstName = myRs.getString("First_Name");
-				String lastName = myRs.getString("Last_Name");
-				String email = myRs.getString("Email_Address");
-				String password = myRs.getString("Password");
-				int phoneNumber = myRs.getInt("Phone_Number");
+			if (myRsCustomers.next()) {
+				int id = myRsCustomers.getInt("Customer_ID");
+				String firstName = myRsCustomers.getString("First_Name");
+				String lastName = myRsCustomers.getString("Last_Name");
+				String email = myRsCustomers.getString("Email_Address");
+				String password = myRsCustomers.getString("Password");
+				int phoneNumber = myRsCustomers.getInt("Phone_Number");
 				
-				int addressID = myRs.getInt("Address_ID");
-				String streetName = myRs.getString("Street_Name");
-				int houseNumber = myRs.getInt("House_Number");
-				int apartmentNumber = myRs.getInt("Apartment_Number");
-				String city = myRs.getString("City");
-				String country = myRs.getString("Country");
-				int postalCode = myRs.getInt("Postal_Code");
+				int addressID = myRsCustomers.getInt("Address_ID");
+				String streetName = myRsCustomers.getString("Street_Name");
+				int houseNumber = myRsCustomers.getInt("House_Number");
+				int apartmentNumber = myRsCustomers.getInt("Apartment_Number");
+				String city = myRsCustomers.getString("City");
+				String country = myRsCustomers.getString("Country");
+				int postalCode = myRsCustomers.getInt("Postal_Code");
 				
-				String cardNumber = myRs.getString("Credit_Card_Number");
-				int cardOwner = myRs.getInt("User_ID");
+				String cardNumber = myRsCustomers.getString("Credit_Card_Number");
+				int cardOwner = myRsCustomers.getInt("User_ID");
 				
-				int orderNumber = myRs.getInt("Order_Number");
-				float totalPrice = myRs.getFloat("Total_Price");
+				List<Order> customerOrders = new ArrayList<>();
 				
-				int itemOrderID = myRs.getInt("Item_In_Order_ID");
-				int itemCatalogNumber = myRs.getInt("Catalog_Number");
-				int itemOrderNumber = myRs.getInt("Order_Number");
-				int itemAmount = myRs.getInt("Amount");
-				float itemTotalPrice = myRs.getFloat("Total_Price");
+				String sqlOrders = "select * from Orders where Customer_ID = ?";
+				myStmtOrders = myConn.prepareStatement(sqlOrders);
+				myStmtOrders.setInt(1, customerId);
+				myRsOrders = myStmtOrders.executeQuery();
+				
+				while (myRsOrders.next()) {
+					int orderNumber = myRsOrders.getInt("Order_Number");
+					float totalPrice = myRsOrders.getFloat("Total_Price");
+					
+					List<ItemInOrder> orderItems = new ArrayList<>();
+					
+					String sqlItems = "select * from Item_In_Order where Order_Number = ?";
+					
+					myStmtItems = myConn.prepareStatement(sqlItems);
+					
+					// set params
+					myStmtItems.setInt(1, orderNumber);
+					
+					myRsItems = myStmtItems.executeQuery();
+					
+					while (myRsItems.next()) {
+						int itemOrderID = myRsItems.getInt("Item_In_Order_ID");
+						int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
+						int itemAmount = myRsItems.getInt("Amount");
+						float itemTotalPrice = myRsItems.getInt("Total_Price");
+						
+						ItemInOrder tempItem = new ItemInOrder(itemOrderID, itemCatalogNumber, orderNumber, itemAmount, itemTotalPrice);
+						
+						// add it to the list of orderItems
+						orderItems.add(tempItem);
+					}
+					
+					Order tempOrder = new Order(orderNumber, id, totalPrice, orderItems);
+					
+					// add it to the list of customerOrders
+					customerOrders.add(tempOrder);
+				}
 
 				// create new address, creditCard, itemInOrder, order and customer objects
 				Address customerAddress = new Address(addressID, id, streetName, houseNumber, 
@@ -382,14 +449,10 @@ public class ShoppingDbUtil {
 				
 				CreditCard customerCard = new CreditCard(cardNumber, id, cardOwner);
 				
-				ItemInOrder orderItems = new ItemInOrder(itemOrderID, itemCatalogNumber, itemOrderNumber, 
-						itemAmount, itemTotalPrice);
-				
-				Order customerOrder = new Order(orderNumber, id, totalPrice, orderItems);
-				
-				theCustomer = new Customer(id, firstName, lastName,
-						email, password, phoneNumber, customerAddress, customerCard, customerOrder);
+				theCustomer = new Customer(id, firstName, lastName, email, password, phoneNumber, 
+						customerAddress, customerCard, customerOrders);	
 			}
+			
 			else {
 				throw new Exception("Could not find customer id: " + customerId);
 			}
@@ -397,7 +460,9 @@ public class ShoppingDbUtil {
 			return theCustomer;
 		}
 		finally {
-			close (myConn, myStmt, myRs);
+			close (myConn, myStmtCustomers, myRsCustomers);
+			close (myConn, myStmtOrders, myRsOrders);
+			close (myConn, myStmtItems, myRsItems);
 		}
 	}
 	
@@ -467,21 +532,28 @@ public class ShoppingDbUtil {
 			String sqlAddresses = "delete from addresses where Customer_ID = ?";
 			String sqlCards = "delete from credit_cards where Customer_ID = ?";
 			String sqlOrders = "delete from orders where Customer_ID = ?";
-			String sqlOrdersItems = "delete from item_in_order where Order_Number = ?";
 
 			myStmtCustomers = myConn.prepareStatement(sqlCustomers);
 			myStmtAddresses = myConn.prepareStatement(sqlAddresses);
 			myStmtCards = myConn.prepareStatement(sqlCards);
 			myStmtOrders = myConn.prepareStatement(sqlOrders);
-			myStmtOrdersItems = myConn.prepareStatement(sqlOrdersItems);
 
 			// set params
 			myStmtCustomers.setInt(1, theCustomer.getId());
 			myStmtAddresses.setInt(1, theCustomer.getId());
 			myStmtCards.setInt(1, theCustomer.getId());
 			myStmtOrders.setInt(1, theCustomer.getId());
-			myStmtOrdersItems.setInt(1, theCustomer.getOrderNumber());
 			
+		    for (int i = 0; i < theCustomer.getCustomerOrders().size(); i++) {
+		        int orderNumber = theCustomer.getCustomerOrders().get(i).getOrderNumber();
+		        
+		        String sqlOrdersItems = "delete from item_in_order where Order_Number = ?";
+		        myStmtOrdersItems = myConn.prepareStatement(sqlOrdersItems);
+		        myStmtOrdersItems.setInt(1, orderNumber);
+		        myStmtOrdersItems.execute();
+		    }
+			
+		    myStmtOrders.execute();
 			myStmtAddresses.execute();
 			myStmtCards.execute();			
 			myStmtCustomers.execute();

@@ -4,8 +4,8 @@ import javax.faces.bean.ManagedBean;
 public class Dress extends Product{
 
 	public Dress(int catalogNumber, String description, String category, float price, float discount, float finalPrice,
-			String image, String size, int amount, ItemInOrder productOrder) {
-		super(catalogNumber, description, category, price, discount, finalPrice, image, size, amount, productOrder);
+			String image, String size, int amount) {
+		super(catalogNumber, description, category, price, discount, finalPrice, image, size, amount);
 	}
 	
 }
