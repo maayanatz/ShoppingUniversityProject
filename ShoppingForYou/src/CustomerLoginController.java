@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 public class CustomerLoginController implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private String currentEmail;
+	private static String currentEmail;
 	private String currentPass;
 	private boolean loggedIn;
 	private boolean loginFailure;
@@ -58,15 +58,15 @@ public class CustomerLoginController implements Serializable {
 	/**
 	 * @return the currentEmail
 	 */
-	public String getCurrentEmail() {
+	public static String getCurrentEmail() {
 		return currentEmail;
 	}
 
 	/**
 	 * @param currentEmail the currentEmail to set
 	 */
-	public void setCurrentEmail(String currentEmail) {
-		this.currentEmail = currentEmail;
+	public static void setCurrentEmail(String currentEmail) {
+		CustomerLoginController.currentEmail = currentEmail;
 	}
 
 	/**

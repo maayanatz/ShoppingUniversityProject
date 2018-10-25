@@ -4,10 +4,6 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 	
-<f:metadata>
-  <f:event type="preRenderView" listener="#{newOrderController.loadOrderItems()}"/>
-</f:metadata>
-	
 <h:head>
 	<h:outputStylesheet library="css" name="list-items-style.css" />
 </h:head>
@@ -22,7 +18,7 @@
 
 	<div id="wrapper">
 		<div id="header">
-			<h2>Shopping for You - My Shopping Cart</h2>
+			<h2>Shopping for You - Shopping Cart</h2>
 		</div>
 	</div>
 
@@ -34,7 +30,7 @@
 
 			<h:form>
 						
-			<h:dataTable value="#{newOrderController.thisOrderItems}" var="tempItem"
+			<h:dataTable value="#{shoppingCartController.items}" var="tempItem"
 				styleClass="demo-table" 
 				headerClass="demo-table-header"
 				rowClasses="demo-table-odd-row,demo-table-even-row">
@@ -44,49 +40,64 @@
 					<f:facet name="header">Catalog Number</f:facet>
 
 					<!--  the value for each row -->
-					#{tempItem.itemCatalogNumber}
+					#{tempItem.catalogNumber}
 				</h:column>
 
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Description</f:facet>
+
+					<!--  the value for each row -->
+					#{tempItem.description}
+				</h:column>
+				
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Final Price</f:facet>
+					
+					<!--  the value for each row -->
+					#{tempItem.finalPrice}
+				</h:column>
+				
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Image</f:facet>
+					
+					<!--  the value for each row -->
+					<h:graphicImage class="itemImg" value="#{tempItem.image}" />
+				</h:column>
+				
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Size</f:facet>
+					
+					<!--  the value for each row -->
+					#{tempProduct.size}
+				</h:column>
+				
 				<h:column>
 					<!-- the column header -->
 					<f:facet name="header">Quantity</f:facet>
-
+					
 					<!--  the value for each row -->
-					#{tempItem.itemAmount}
+					#{tempItem.amountInOrder}
 				</h:column>
-
+				
 				<h:column>
 					<!-- the column header -->
-					<f:facet name="header">Product Price</f:facet>
-
-					<!--  the value for each row -->
-					#{tempItem.itemPrice}
-				</h:column>
-
-				<h:column>
-					<!-- the column header -->
-					<f:facet name="header">Total Price</f:facet>
-
+					<f:facet name="header">Total price</f:facet>
+					
 					<!--  the value for each row -->
 					#{tempItem.totalPrice}
 				</h:column>
-								
-				<h:column>
-					<!-- the column header -->
-					<f:facet name="header">Action</f:facet>
-
-					<!--  the value for each row -->
-					<h:commandLink value="Approve Order"
-						action="#{newOrderController.approveOrder()}"/>
-					|
-
-					<h:commandLink value="Cancel Order"
-						onclick="if (!confirm('Are you sure you want to cancel this order?')) return false"
-						action="#{newOrderController.cancelOrder()}"/>
-					
-				</h:column>
 
 			</h:dataTable>
+			
+			<h:commandButton class="submitOrder" value="Submit Order" 
+				action="#{shoppingCartController.submitOrder()}"/>
+				
+			<h:commandLink value="Cancel Order" onclick="if (!confirm('Are you sure you want to cancel this order?')) return false" 
+				action="#{shoppingCartController.cancelOrder()}"/>
 
 			</h:form>
 

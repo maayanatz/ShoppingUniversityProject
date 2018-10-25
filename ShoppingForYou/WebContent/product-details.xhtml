@@ -17,6 +17,7 @@
 	<ui:define name="page-content">
 	
 	<div class="product-container">
+	
 		<h:form>
 			<h:graphicImage class="productImg" value="#{product.image}" />
 			<h:graphicImage class="soldOutImg" rendered="#{product.soldOut}" value="https://preview.ibb.co/cvhAKU/sold_out_png.png" />
@@ -28,11 +29,8 @@
 			<p class="size">#{product.size}</p>
 			<h:outputLabel>Quantity:</h:outputLabel> <h:inputText value="#{product.amountInOrder}" id="amountInOrder" /> <h:message for="amountInOrder" />
 			<h:commandButton class="addToCart" value="Add to Shopping Cart" 
-				disabled="#{product.soldOut}" action="#{newOrderController.addOrderItem(product.catalogNumber, product.amountInOrder, product.finalPrice, product.amount)}"/>
-			<h:outputLabel rendered="#{newOrderController.addItemFailure}">Failed to add product to shopping cart!<br/>
-				The requested quantity is not available in stock.</h:outputLabel>
+				disabled="#{product.soldOut}" action="#{shoppingCartController.loadProduct(product.catalogNumber)}"/>
 		</h:form>
-		
 
 	</div>
 

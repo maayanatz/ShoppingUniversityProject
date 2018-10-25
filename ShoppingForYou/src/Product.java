@@ -48,7 +48,7 @@ public class Product {
 		}
 		amountInOrder = 0;
 	}
-	
+
 	/**
 	 * @return the amountInOrder
 	 */

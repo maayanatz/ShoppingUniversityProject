@@ -6,7 +6,6 @@ public class ItemInOrder {
 
 	private int itemOrderID;
 	private int itemOrderNumber;
-	private int itemOrderAmount;
 	private float totalPrice;
 	@ManagedProperty(value="#{Product}")
 	Product itemProduct;
@@ -26,28 +25,29 @@ public class ItemInOrder {
 	public ItemInOrder() {
 	}
 
-	public ItemInOrder(int itemOrderID, int itemOrderNumber, int itemOrderAmount, 
-			float totalPrice, Product itemProduct) {
+	public ItemInOrder(int itemOrderID, int itemOrderNumber, Product itemProduct) {
 		super();
 		this.itemOrderID = itemOrderID;
 		this.itemOrderNumber = itemOrderNumber;
-		this.itemOrderAmount = itemOrderAmount;
-		this.totalPrice = totalPrice;
 		this.itemProduct = itemProduct;
+		this.setTotalPrice();
 	}
 
 	/**
-	 * @return the itemOrderAmount
+	 * @return the amountInOrder
 	 */
-	public int getItemOrderAmount() {
-		return itemOrderAmount;
+	public int getAmountInOrder() {
+		if(this.itemProduct != null) {
+			this.amountInOrder = this.itemProduct.getAmountInOrder();
+			}
+		return this.amountInOrder;
 	}
 
 	/**
-	 * @param itemOrderAmount the itemOrderAmount to set
+	 * @param amountInOrder the amountInOrder to set
 	 */
-	public void setItemOrderAmount(int itemOrderAmount) {
-		this.itemOrderAmount = itemOrderAmount;
+	public void setAmountInOrder(int amountInOrder) {
+		this.itemProduct.setAmountInOrder(amountInOrder);
 	}
 
 	/**
@@ -64,175 +64,191 @@ public class ItemInOrder {
 		this.itemProduct = itemProduct;
 	}
 
-	
-	//////////////////////////TODO///////////////////////////////
 	/**
 	 * @return the catalogNumber
 	 */
 	public int getCatalogNumber() {
-		return catalogNumber;
+		if(this.itemProduct != null) {
+			this.catalogNumber = this.itemProduct.getCatalogNumber();
+			}
+		return this.catalogNumber;
 	}
 
 	/**
 	 * @param catalogNumber the catalogNumber to set
 	 */
 	public void setCatalogNumber(int catalogNumber) {
-		this.catalogNumber = catalogNumber;
+		this.itemProduct.setCatalogNumber(catalogNumber);
 	}
 
 	/**
 	 * @return the description
 	 */
 	public String getDescription() {
-		return description;
+		if(this.itemProduct != null) {
+			this.description = this.itemProduct.getDescription();
+			}
+		return this.description;
 	}
 
 	/**
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
-		this.description = description;
+		this.itemProduct.setDescription(description);
 	}
 
 	/**
 	 * @return the category
 	 */
 	public String getCategory() {
-		return category;
+		if(this.itemProduct != null) {
+			this.category = this.itemProduct.getCategory();
+			}
+		return this.category;
 	}
 
 	/**
 	 * @param category the category to set
 	 */
 	public void setCategory(String category) {
-		this.category = category;
+		this.itemProduct.setCategory(category);
 	}
 
 	/**
 	 * @return the price
 	 */
 	public float getPrice() {
-		return price;
+		if(this.itemProduct != null) {
+			this.price = this.itemProduct.getPrice();
+			}
+		return this.price;
 	}
 
 	/**
 	 * @param price the price to set
 	 */
 	public void setPrice(float price) {
-		this.price = price;
+		this.itemProduct.setPrice(price);
 	}
 
 	/**
 	 * @return the discount
 	 */
 	public float getDiscount() {
-		return discount;
+		if(this.itemProduct != null) {
+			this.discount = this.itemProduct.getDiscount();
+			}
+		return this.discount;
 	}
 
 	/**
 	 * @param discount the discount to set
 	 */
 	public void setDiscount(float discount) {
-		this.discount = discount;
+		this.itemProduct.setDiscount(discount);
 	}
 
 	/**
 	 * @return the finalPrice
 	 */
 	public float getFinalPrice() {
-		return finalPrice;
+		if(this.itemProduct != null) {
+			this.finalPrice = this.itemProduct.getFinalPrice();
+			}
+		return this.finalPrice;
 	}
 
 	/**
 	 * @param finalPrice the finalPrice to set
 	 */
 	public void setFinalPrice(float finalPrice) {
-		this.finalPrice = finalPrice;
+		this.itemProduct.setFinalPrice(finalPrice);
 	}
 
 	/**
 	 * @return the image
 	 */
 	public String getImage() {
-		return image;
+		if(this.itemProduct != null) {
+			this.image = this.itemProduct.getImage();
+			}
+		return this.image;
 	}
 
 	/**
 	 * @param image the image to set
 	 */
 	public void setImage(String image) {
-		this.image = image;
+		this.itemProduct.setImage(image);
 	}
 
 	/**
 	 * @return the size
 	 */
 	public String getSize() {
-		return size;
+		if(this.itemProduct != null) {
+			this.size = this.itemProduct.getSize();
+			}
+		return this.size;
 	}
 
 	/**
 	 * @param size the size to set
 	 */
 	public void setSize(String size) {
-		this.size = size;
+		this.itemProduct.setSize(size);
 	}
 
 	/**
 	 * @return the amount
 	 */
 	public int getAmount() {
-		return amount;
+		if(this.itemProduct != null) {
+			this.amount = this.itemProduct.getAmount();
+			}
+		return this.amount;
 	}
 
 	/**
 	 * @param amount the amount to set
 	 */
 	public void setAmount(int amount) {
-		this.amount = amount;
+		this.itemProduct.setAmount(amount);
 	}
 
 	/**
 	 * @return the soldOut
 	 */
 	public boolean isSoldOut() {
-		return soldOut;
+		if(this.itemProduct != null) {
+			this.soldOut = this.itemProduct.isSoldOut();
+			}
+		return this.soldOut;
 	}
 
 	/**
 	 * @param soldOut the soldOut to set
 	 */
 	public void setSoldOut(boolean soldOut) {
-		this.soldOut = soldOut;
+		this.itemProduct.setSoldOut(soldOut);
 	}
 
 	/**
 	 * @return the onSale
 	 */
 	public boolean isOnSale() {
-		return onSale;
+		if(this.itemProduct != null) {
+			this.onSale = this.itemProduct.isOnSale();
+			}
+		return this.onSale;
 	}
 
 	/**
 	 * @param onSale the onSale to set
 	 */
 	public void setOnSale(boolean onSale) {
-		this.onSale = onSale;
-	}
-	//////////////////////////TODO///////////////////////////////
-
-	/**
-	 * @return the amountInOrder
-	 */
-	public int getAmountInOrder() {
-		return amountInOrder;
-	}
-
-	/**
-	 * @param amountInOrder the amountInOrder to set
-	 */
-	public void setAmountInOrder(int amountInOrder) {
-		this.amountInOrder = amountInOrder;
+		this.itemProduct.setOnSale(onSale);
 	}
 
 	/**
@@ -245,8 +261,10 @@ public class ItemInOrder {
 	/**
 	 * @param totalPrice the totalPrice to set
 	 */
-	public void setTotalPrice(float totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setTotalPrice() {
+		if(this.itemProduct != null) {
+			this.totalPrice = this.itemProduct.getFinalPrice() * this.itemProduct.getAmountInOrder();
+		}
 	}
 
 	/**
@@ -275,19 +293,5 @@ public class ItemInOrder {
 	 */
 	public void setItemOrderNumber(int itemOrderNumber) {
 		this.itemOrderNumber = itemOrderNumber;
-	}
-
-	/**
-	 * @return the itemAmount
-	 */
-	public int getItemAmount() {
-		return itemOrderAmount;
-	}
-
-	/**
-	 * @param itemAmount the itemAmount to set
-	 */
-	public void setItemAmount(int itemAmount) {
-		this.itemOrderAmount = itemAmount;
 	}
 }

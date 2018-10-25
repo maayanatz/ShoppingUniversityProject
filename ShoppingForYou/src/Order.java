@@ -7,17 +7,17 @@ public class Order {
 	
 	private int orderNumber;
 	private int orderCustomerID;
-	private float totalPrice;
+	private float totalOrderPrice;
 	private List<ItemInOrder> orderItems;
 		
 	public Order() {
 	}
 
-	public Order(int orderNumber, int orderCustomerID, float totalPrice, List<ItemInOrder> orderItems) {
+	public Order(int orderNumber, int orderCustomerID, float totalOrderPrice, List<ItemInOrder> orderItems) {
 		super();
 		this.orderNumber = orderNumber;
 		this.orderCustomerID = orderCustomerID;
-		this.totalPrice = totalPrice;
+		this.totalOrderPrice = totalOrderPrice;
 		this.orderItems = orderItems;
 	}
 
@@ -64,16 +64,16 @@ public class Order {
 	}
 
 	/**
-	 * @return the totalPrice
+	 * @return the totalOrderPrice
 	 */
-	public float getTotalPrice() {
-		return totalPrice;
+	public float getTotalOrderPrice() {
+		return totalOrderPrice;
 	}
 
 	/**
-	 * @param totalPrice the totalPrice to set
+	 * @param totalOrderPrice the totalOrderPrice to set
 	 */
-	public void setTotalPrice(float totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setTotalOrderPrice(float totalOrderPrice) {
+		this.totalOrderPrice = totalOrderPrice;
 	}
 }

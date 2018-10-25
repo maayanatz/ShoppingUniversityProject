@@ -93,7 +93,7 @@ public class EditAdminController implements Serializable {
 
 		try {
 			
-			// add product to the database
+			// add administrator to the database
 			shoppingDbUtil.addAdministrator(theAdministrator);
 			
 		} catch (Exception exc) {
@@ -114,7 +114,7 @@ public class EditAdminController implements Serializable {
 		logger.info("loading administrator: " + adminID);
 		
 		try {
-			// get product from database
+			// get administrator from database
 			Administrator theAdministrator = shoppingDbUtil.getAdministrator(adminID);
 			
 			// put in the request attribute ... so we can use it on the form page

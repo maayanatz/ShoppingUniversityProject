@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.bean.ManagedProperty;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -270,14 +271,14 @@ public class ShoppingDbUtil {
 					myRsItems = myStmtItems.executeQuery();
 					
 					while (myRsItems.next()) {
+
 						int itemOrderID = myRsItems.getInt("Item_In_Order_ID");
 						int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
-						int itemAmount = myRsItems.getInt("Amount");
-						float itemPrice = myRsItems.getInt("Item_Price");
-						float itemTotalPrice = myRsItems.getInt("Total_Price");
+						int amountInOrder = myRsItems.getInt("Amount");
+						Product tempItemProduct = this.getProduct(itemCatalogNumber);
+						tempItemProduct.setAmountInOrder(amountInOrder);
 						
-						ItemInOrder tempItem = new ItemInOrder(itemOrderID, itemCatalogNumber, 
-								orderNumber, itemAmount, itemPrice, itemTotalPrice);
+						ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct);
 						
 						// add it to the list of orderItems
 						orderItems.add(tempItem);
@@ -375,7 +376,8 @@ public class ShoppingDbUtil {
 		try {
 			myConn = getConnection();
 
-			String sqlCustomers = "select * from Customers natural join addresses natural join credit_cards where Customer_ID = ?";
+			String sqlCustomers = "select * from Customers natural join addresses natural join "
+					+ "credit_cards where Customer_ID = ?";
 			
 			myStmtCustomers = myConn.prepareStatement(sqlCustomers);
 
@@ -414,7 +416,7 @@ public class ShoppingDbUtil {
 				
 				while (myRsOrders.next()) {
 					int orderNumber = myRsOrders.getInt("Order_Number");
-					float totalPrice = myRsOrders.getFloat("Total_Price");
+					float totalPrice = myRsOrders.getFloat("Total_Order_Price");
 					
 					List<ItemInOrder> orderItems = new ArrayList<>();
 					
@@ -428,14 +430,14 @@ public class ShoppingDbUtil {
 					myRsItems = myStmtItems.executeQuery();
 					
 					while (myRsItems.next()) {
+						
 						int itemOrderID = myRsItems.getInt("Item_In_Order_ID");
 						int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
-						int itemAmount = myRsItems.getInt("Amount");
-						float itemPrice = myRsItems.getInt("Item_Price");
-						float itemTotalPrice = myRsItems.getInt("Total_Price");
+						int amountInOrder = myRsItems.getInt("Amount");
+						Product tempItemProduct = this.getProduct(itemCatalogNumber);
+						tempItemProduct.setAmountInOrder(amountInOrder);
 						
-						ItemInOrder tempItem = new ItemInOrder(itemOrderID, itemCatalogNumber, 
-								orderNumber, itemAmount, itemPrice, itemTotalPrice);
+						ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct);
 						
 						// add it to the list of orderItems
 						orderItems.add(tempItem);
@@ -674,7 +676,8 @@ public class ShoppingDbUtil {
 		try {
 			myConn = getConnection();
 			
-			String sql = "insert into products (Catalog_Number, Description, Category, Price, Discount, Image, Size, Amount_In_Stock) values (?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "insert into products (Catalog_Number, Description, Category, Price, "
+					+ "Discount, Image, Size, Amount_In_Stock) values (?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			myStmt = myConn.prepareStatement(sql);
 			
@@ -1144,101 +1147,46 @@ public class ShoppingDbUtil {
 	public void addOrder(Order theOrder) throws Exception {
 
 		Connection myConn = null;
-		PreparedStatement myStmt = null;
-
-		try {
-			myConn = getConnection();
-
-			String sql = "insert into orders (Order_Number, Customer_ID, Total_Price) values (?, ?, ?)";
-			
-			myStmt = myConn.prepareStatement(sql);
-			
-			// set params
-			myStmt.setInt(1, theOrder.getOrderNumber());
-			myStmt.setInt(2, theOrder.getOrderCustomerID());
-			myStmt.setFloat(3, theOrder.getTotalPrice());
-			
-			myStmt.execute();
-		}
-		finally {
-			close (myConn, myStmt);
-		}
-	}
-
-	public void addOrderItem(ItemInOrder theItem) throws Exception {
-
-		Connection myConn = null;
-		PreparedStatement myStmt = null;
-
-		try {
-			myConn = getConnection();
-
-			String sql = "insert into item_in_order (Item_In_Order_ID, Catalog_Number, Order_Number, Amount, Item_Price) values (?, ?, ?, ?, ?)";
-			
-			myStmt = myConn.prepareStatement(sql);
-			
-			// set params
-			myStmt.setInt(1, theItem.getItemOrderID());
-			myStmt.setInt(2, theItem.getItemCatalogNumber());
-			myStmt.setInt(3, theItem.getItemOrderNumber());
-			myStmt.setInt(4, theItem.getItemAmount());
-			myStmt.setFloat(5, theItem.getItemPrice());
-			
-			myStmt.execute();
-		}
-		finally {
-			close (myConn, myStmt);
-		}
-	}
-
-	public void updateOrder(Order theOrder) throws Exception {
-
-		Connection myConn = null;
-		PreparedStatement myStmt = null;
-
-		try {
-			myConn = getConnection();
-
-			String sql = "update orders set Total_Price=? where Order_Number=?";
-			
-			myStmt = myConn.prepareStatement(sql);
-			
-			// set params
-			myStmt.setFloat(1, theOrder.getTotalPrice());
-			myStmt.setInt(2, theOrder.getOrderNumber());
-			
-			myStmt.execute();
-		}
-		finally {
-			close (myConn, myStmt);
-		}
-	}
-
-	public void cancelOrder(int orderNumber) throws Exception {
-
-		Connection myConn = null;
-		PreparedStatement myStmtItems = null;
 		PreparedStatement myStmtOrders = null;
+		PreparedStatement myStmtItems = null;
 
 		try {
 			myConn = getConnection();
 
-			String sqlItems = "delete from Item_In_Order where Order_Number = ?";
-			String sqlOrders = "delete from Orders where Order_Number = ?";
-
-			myStmtItems = myConn.prepareStatement(sqlItems);
+			String sqlOrders = "insert into orders (Order_Number, Customer_ID, Total_Order_Price) values (?, ?, ?)";
+		
 			myStmtOrders = myConn.prepareStatement(sqlOrders);
-
-			// set params
-			myStmtItems.setInt(1, orderNumber);
-			myStmtOrders.setInt(1, orderNumber);
 			
-			myStmtItems.execute();
+			// set params
+			myStmtOrders.setInt(1, theOrder.getOrderNumber());
+			myStmtOrders.setInt(2, theOrder.getOrderCustomerID());
+			myStmtOrders.setFloat(3, theOrder.getTotalOrderPrice());
+			
 			myStmtOrders.execute();
+			
+			for (int i = 0; i < theOrder.getOrderItems().size(); i++) {
+				
+				ItemInOrder theItem = theOrder.getOrderItems().get(i); 
+				
+				String sqlItems = "insert into ItemInOrder (Item_In_Order_ID, Catalog_Number, "
+						+ "Order_Number, Amount, Item_Price, Total_Price) values (?, ?, ?, ?, ?, ?)";
+				
+				myStmtItems = myConn.prepareStatement(sqlItems);
+				
+				// set params
+				myStmtItems.setInt(1, theItem.getItemOrderID());
+				myStmtItems.setInt(2, theItem.getCatalogNumber());
+				myStmtItems.setInt(3, theOrder.getOrderNumber());
+				myStmtItems.setInt(4, theItem.getAmountInOrder());
+				myStmtOrders.setFloat(5, theItem.getFinalPrice());
+				myStmtOrders.setFloat(6, theItem.getTotalPrice());
+				
+				myStmtItems.execute();
+			}
 		}
 		finally {
-			close (myConn, myStmtItems);
 			close (myConn, myStmtOrders);
+			close (myConn, myStmtItems);
 		}
 	}
 
@@ -1266,17 +1214,15 @@ public class ShoppingDbUtil {
 			while (myRs.next()) {
 				
 				// retrieve data from result set row
+
 				int itemOrderID = myRs.getInt("Item_In_Order_ID");
 				int itemCatalogNumber = myRs.getInt("Catalog_Number");
-				int itemOrderNumber = myRs.getInt("Order_Number");
-				int itemAmount = myRs.getInt("Amount");
-				float itemPrice = myRs.getFloat("Item_Price");
-				float totalPrice = myRs.getFloat("Total_Price");
-
-				// create new ItemInOrder object
-
-				ItemInOrder tempItem = new ItemInOrder(itemOrderID, itemCatalogNumber, itemOrderNumber, itemAmount, itemPrice, totalPrice);
-
+				int amountInOrder = myRs.getInt("Amount");
+				Product tempItemProduct = this.getProduct(itemCatalogNumber);
+				tempItemProduct.setAmountInOrder(amountInOrder);
+				
+				ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct);
+				
 				// add it to the list of administrators
 				orderItems.add(tempItem);
 			}
@@ -1307,7 +1253,7 @@ public class ShoppingDbUtil {
 			
 			if (myRsOrders.next()) {
 				int orderCustomerID = myRsOrders.getInt("Customer_ID");
-				float totalPrice = myRsOrders.getFloat("Total_Price");
+				float totalPrice = myRsOrders.getFloat("Total_Order_Price");
 				
 				List<ItemInOrder> orderItems = new ArrayList<>();
 				
@@ -1321,14 +1267,14 @@ public class ShoppingDbUtil {
 				myRsItems = myStmtItems.executeQuery();
 				
 				while (myRsItems.next()) {
+					
 					int itemOrderID = myRsItems.getInt("Item_In_Order_ID");
 					int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
-					int itemAmount = myRsItems.getInt("Amount");
-					float itemPrice = myRsItems.getInt("Item_Price");
-					float itemTotalPrice = myRsItems.getInt("Total_Price");
+					int amountInOrder = myRsItems.getInt("Amount");
+					Product tempItemProduct = this.getProduct(itemCatalogNumber);
+					tempItemProduct.setAmountInOrder(amountInOrder);
 					
-					ItemInOrder tempItem = new ItemInOrder(itemOrderID, itemCatalogNumber, 
-							orderNumber, itemAmount, itemPrice, itemTotalPrice);
+					ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct);
 					
 					// add it to the list of orderItems
 					orderItems.add(tempItem);
