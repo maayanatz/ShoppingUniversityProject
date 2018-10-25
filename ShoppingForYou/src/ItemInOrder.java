@@ -14,13 +14,14 @@ public class ItemInOrder {
 	}
 
 	public ItemInOrder(int itemOrderID, int itemCatalogNumber, int itemOrderNumber, int itemAmount,
-			float itemPrice) {
+			float itemPrice, float totalPrice) {
 		super();
 		this.itemOrderID = itemOrderID;
 		this.itemCatalogNumber = itemCatalogNumber;
 		this.itemOrderNumber = itemOrderNumber;
 		this.itemAmount = itemAmount;
 		this.itemPrice = itemPrice;
+		this.totalPrice = totalPrice;
 	}
 
 	/**

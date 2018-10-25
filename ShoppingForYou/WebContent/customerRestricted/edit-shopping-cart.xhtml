@@ -4,20 +4,96 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 	
+<f:metadata>
+  <f:event type="preRenderView" listener="#{newOrderController.loadOrderItems()}"/>
+</f:metadata>
+	
 <h:head>
+	<h:outputStylesheet library="css" name="list-items-style.css" />
 </h:head>
 
 <h:body>
+
 	<ui:decorate template="/templates/default-template.xhtml">
 	
-	<ui:define name="page-title">ShoppingForYou | Welcome</ui:define>
+	<ui:define name="page-title">ShoppingForYou | Shopping Cart</ui:define>
 	
 	<ui:define name="page-content">
-	
-		<p> This is edit-shopping-cart page!!! </p>
+
+	<div id="wrapper">
+		<div id="header">
+			<h2>Shopping for You - My Shopping Cart</h2>
+		</div>
+	</div>
+
+	<div id="container">
+
+		<div id="content">
 		
+			<h:messages globalOnly="true" />		
+
+			<h:form>
+						
+			<h:dataTable value="#{newOrderController.thisOrderItems}" var="tempItem"
+				styleClass="demo-table" 
+				headerClass="demo-table-header"
+				rowClasses="demo-table-odd-row,demo-table-even-row">
+
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Catalog Number</f:facet>
+
+					<!--  the value for each row -->
+					#{tempItem.itemCatalogNumber}
+				</h:column>
+
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Quantity</f:facet>
+
+					<!--  the value for each row -->
+					#{tempItem.itemAmount}
+				</h:column>
+
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Product Price</f:facet>
+
+					<!--  the value for each row -->
+					#{tempItem.itemPrice}
+				</h:column>
+
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Total Price</f:facet>
+
+					<!--  the value for each row -->
+					#{tempItem.totalPrice}
+				</h:column>
+								
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Action</f:facet>
+
+					<!--  the value for each row -->
+					<h:commandLink value="Approve Order"
+						action="#{newOrderController.approveOrder()}"/>
+					|
+
+					<h:commandLink value="Cancel Order"
+						onclick="if (!confirm('Are you sure you want to cancel this order?')) return false"
+						action="#{newOrderController.cancelOrder()}"/>
+					
+				</h:column>
+
+			</h:dataTable>
+
+			</h:form>
+
+		</div>
+		
+	</div>
 	</ui:define>
 	</ui:decorate>
-	
 </h:body>
 </html>

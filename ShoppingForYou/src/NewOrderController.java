@@ -16,6 +16,7 @@ public class NewOrderController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Order theOrder;
+	private List<ItemInOrder> thisOrderItems;
 	private boolean addItemFailure;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
@@ -23,8 +24,23 @@ public class NewOrderController implements Serializable {
 	public NewOrderController() throws Exception {
 		theOrder = createOrder();
 		addOrder();
+		thisOrderItems = new ArrayList<>();
 		addItemFailure = false;
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
+	}
+
+	/**
+	 * @return the thisOrderItems
+	 */
+	public List<ItemInOrder> getThisOrderItems() {
+		return thisOrderItems;
+	}
+
+	/**
+	 * @param thisOrderItems the thisOrderItems to set
+	 */
+	public void setThisOrderItems(List<ItemInOrder> thisOrderItems) {
+		this.thisOrderItems = thisOrderItems;
 	}
 
 	/**
@@ -130,8 +146,9 @@ public class NewOrderController implements Serializable {
 		int itemOrderNumber = this.getTheOrder().getOrderNumber();
 		int itemAmount = amount;
 		int itemPrice = price;
+		int tempTotalPrice = price;
 		
-		ItemInOrder theItem = new ItemInOrder(itemOrderID, itemCatalogNumber, itemOrderNumber, itemAmount, itemPrice);
+		ItemInOrder theItem = new ItemInOrder(itemOrderID, itemCatalogNumber, itemOrderNumber, itemAmount, itemPrice, tempTotalPrice);
 
 		try {
 			
@@ -194,6 +211,52 @@ public class NewOrderController implements Serializable {
 		}
 		
 		return "edit-shopping-cart";	
+	}
+	
+	public String approveOrder() {
+
+		logger.info("Approving order number: " + this.getTheOrder().getOrderNumber());
+		
+		try {
+
+			for (int i = 0; i < this.getTheOrder().getOrderItems().size(); i++) {
+		        int itemCatalogNumber = this.getTheOrder().getOrderItems().get(i).getItemCatalogNumber();
+		        int itemAmount = this.getTheOrder().getOrderItems().get(i).getItemAmount();
+		        
+		        shoppingDbUtil.decreaseProductAmount(itemCatalogNumber, itemAmount);
+		    }
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error approving order number: " + this.getTheOrder().getOrderNumber(), exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+			
+			return null;
+		}
+		
+		return "edit-shopping-cart";	
+	}
+	
+	public void loadOrderItems() {
+
+		logger.info("Loading order items");
+		
+		thisOrderItems.clear();
+
+		try {
+			
+			// get all order items from database
+			thisOrderItems = shoppingDbUtil.getThisOrderItems(this.getTheOrder().getOrderNumber());
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error loading order items", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+		}
 	}
 	
 	private void addErrorMessage(Exception exc) {

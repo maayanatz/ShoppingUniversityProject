@@ -273,9 +273,11 @@ public class ShoppingDbUtil {
 						int itemOrderID = myRsItems.getInt("Item_In_Order_ID");
 						int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
 						int itemAmount = myRsItems.getInt("Amount");
+						float itemPrice = myRsItems.getInt("Item_Price");
 						float itemTotalPrice = myRsItems.getInt("Total_Price");
 						
-						ItemInOrder tempItem = new ItemInOrder(itemOrderID, itemCatalogNumber, orderNumber, itemAmount, itemTotalPrice);
+						ItemInOrder tempItem = new ItemInOrder(itemOrderID, itemCatalogNumber, 
+								orderNumber, itemAmount, itemPrice, itemTotalPrice);
 						
 						// add it to the list of orderItems
 						orderItems.add(tempItem);
@@ -429,9 +431,11 @@ public class ShoppingDbUtil {
 						int itemOrderID = myRsItems.getInt("Item_In_Order_ID");
 						int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
 						int itemAmount = myRsItems.getInt("Amount");
+						float itemPrice = myRsItems.getInt("Item_Price");
 						float itemTotalPrice = myRsItems.getInt("Total_Price");
 						
-						ItemInOrder tempItem = new ItemInOrder(itemOrderID, itemCatalogNumber, orderNumber, itemAmount, itemTotalPrice);
+						ItemInOrder tempItem = new ItemInOrder(itemOrderID, itemCatalogNumber, 
+								orderNumber, itemAmount, itemPrice, itemTotalPrice);
 						
 						// add it to the list of orderItems
 						orderItems.add(tempItem);
@@ -857,26 +861,44 @@ public class ShoppingDbUtil {
 		}
 	}
 
-	public void decreaseProduct(Product theProduct) throws Exception {
+	public void decreaseProductAmount(int catalogNumber, int amountInOrder) throws Exception {
 		
 		Connection myConn = null;
-		PreparedStatement myStmt = null;
+		PreparedStatement myStmtCurrentProductAmount = null;
+		PreparedStatement myStmtNewProductAmount = null;
+		ResultSet myRsCurrentProductAmount = null;
+		int currentProductAmount = 0;
 
 		try {
 			myConn = getConnection();
-				
-			String sql = "update products set Amount_In_Stock=? where Catalog_Number=?";
+			
+			String sqlCurrentProductAmount = "select Amount_In_Stock from products where Catalog_Number=?";
 
-			myStmt = myConn.prepareStatement(sql);
+			myStmtCurrentProductAmount = myConn.prepareStatement(sqlCurrentProductAmount);
 
 			// set params
-			myStmt.setInt(1, (theProduct.getAmount()));
-			myStmt.setInt(2, theProduct.getCatalogNumber());
+			myStmtCurrentProductAmount.setInt(1, catalogNumber);
 			
-			myStmt.execute();
+			myRsCurrentProductAmount = myStmtCurrentProductAmount.executeQuery(sqlCurrentProductAmount);;
+			
+			while (myRsCurrentProductAmount.next()) {
+				
+				// retrieve data from result set row
+				currentProductAmount = myRsCurrentProductAmount.getInt("Amount_In_Stock");
+			}
+			
+			String sqlNewProductAmount = "update products set Amount_In_Stock=? where Catalog_Number=?";
+			
+			myStmtNewProductAmount = myConn.prepareStatement(sqlNewProductAmount);
+			
+			myStmtNewProductAmount.setInt(1, (currentProductAmount - amountInOrder));
+			myStmtNewProductAmount.setInt(2, catalogNumber);
+			
+			myStmtNewProductAmount.executeQuery(sqlNewProductAmount);
 		}
 		finally {
-			close (myConn, myStmt);
+			close (myConn, myStmtCurrentProductAmount);
+			close (myConn, myStmtNewProductAmount);
 		}
 	}
 	
@@ -1220,4 +1242,50 @@ public class ShoppingDbUtil {
 		}
 	}
 
+	public List<ItemInOrder> getThisOrderItems(int orderNumber) throws Exception {
+
+		List<ItemInOrder> orderItems = new ArrayList<>();
+
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			myConn = getConnection();
+
+			String sql = "select * from item_in_order where Order_Number=?";
+
+			myStmt = myConn.prepareStatement(sql);
+			
+			// set params
+			myStmt.setInt(1, orderNumber);
+			
+			myRs = myStmt.executeQuery(sql);
+
+			// process result set
+			while (myRs.next()) {
+				
+				// retrieve data from result set row
+				int itemOrderID = myRs.getInt("Item_In_Order_ID");
+				int itemCatalogNumber = myRs.getInt("Catalog_Number");
+				int itemOrderNumber = myRs.getInt("Order_Number");
+				int itemAmount = myRs.getInt("Amount");
+				float itemPrice = myRs.getFloat("Item_Price");
+				float totalPrice = myRs.getFloat("Total_Price");
+
+				// create new ItemInOrder object
+
+				ItemInOrder tempItem = new ItemInOrder(itemOrderID, itemCatalogNumber, itemOrderNumber, itemAmount, itemPrice, totalPrice);
+
+				// add it to the list of administrators
+				orderItems.add(tempItem);
+			}
+			
+			return orderItems;		
+		}
+		finally {
+			close (myConn, myStmt, myRs);
+		}
+	}
+	
 }

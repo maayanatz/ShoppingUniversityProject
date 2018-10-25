@@ -259,7 +259,7 @@ public class EditProductController implements Serializable {
 
 			// delete the product from the database
 			theProduct.setAmount((theProduct.getAmount()) - 1);
-			shoppingDbUtil.decreaseProduct(theProduct);
+			shoppingDbUtil.decreaseProductAmount(theProduct.getCatalogNumber(), theProduct.getAmountInOrder());
 			
 		} catch (Exception exc) {
 			// send this to server logs

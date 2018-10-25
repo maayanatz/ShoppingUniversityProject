@@ -14,6 +14,7 @@ public class Product {
 	protected int amount;
 	protected boolean soldOut;
 	protected boolean onSale;
+	protected int amountInOrder;
 	
 	public Product() {
 	}
@@ -45,6 +46,21 @@ public class Product {
 		{
 			this.onSale = false;
 		}
+		amountInOrder = 0;
+	}
+	
+	/**
+	 * @return the amountInOrder
+	 */
+	public int getAmountInOrder() {
+		return amountInOrder;
+	}
+
+	/**
+	 * @param amountInOrder the amountInOrder to set
+	 */
+	public void setAmountInOrder(int amountInOrder) {
+		this.amountInOrder = amountInOrder;
 	}
 
 	/**
