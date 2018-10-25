@@ -335,7 +335,8 @@ public class ShoppingDbUtil {
 		try {
 			myConn = getConnection();
 
-			String sql = "select * from Customers natural join addresses natural join credit_cards where Customer_ID = ?";
+			String sql = "select * from Customers natural join addresses "
+					+ "natural join credit_cards natural join orders natural join item_in_order where Customer_ID = ?";
 
 			myStmt = myConn.prepareStatement(sql);
 			
@@ -366,14 +367,28 @@ public class ShoppingDbUtil {
 				String cardNumber = myRs.getString("Credit_Card_Number");
 				int cardOwner = myRs.getInt("User_ID");
 				
-				// create new address, creditCard and customer objects
+				int orderNumber = myRs.getInt("Order_Number");
+				float totalPrice = myRs.getFloat("Total_Price");
+				
+				int itemOrderID = myRs.getInt("Item_In_Order_ID");
+				int itemCatalogNumber = myRs.getInt("Catalog_Number");
+				int itemOrderNumber = myRs.getInt("Order_Number");
+				int itemAmount = myRs.getInt("Amount");
+				float itemTotalPrice = myRs.getFloat("Total_Price");
+
+				// create new address, creditCard, itemInOrder, order and customer objects
 				Address customerAddress = new Address(addressID, id, streetName, houseNumber, 
 						apartmentNumber, city, country, postalCode);
 				
 				CreditCard customerCard = new CreditCard(cardNumber, id, cardOwner);
 				
+				ItemInOrder orderItems = new ItemInOrder(itemOrderID, itemCatalogNumber, itemOrderNumber, 
+						itemAmount, itemTotalPrice);
+				
+				Order customerOrder = new Order(orderNumber, id, totalPrice, orderItems);
+				
 				theCustomer = new Customer(id, firstName, lastName,
-						email, password, phoneNumber, customerAddress, customerCard);
+						email, password, phoneNumber, customerAddress, customerCard, customerOrder);
 			}
 			else {
 				throw new Exception("Could not find customer id: " + customerId);
@@ -436,12 +451,14 @@ public class ShoppingDbUtil {
 		}
 	}
 	
-	public void deleteCustomer(int customerId) throws Exception {
+	public void deleteCustomer(Customer theCustomer) throws Exception {
 
 		Connection myConn = null;
 		PreparedStatement myStmtCustomers = null;
 		PreparedStatement myStmtAddresses = null;
 		PreparedStatement myStmtCards = null;
+		PreparedStatement myStmtOrders = null;
+		PreparedStatement myStmtOrdersItems = null;
 
 		try {
 			myConn = getConnection();
@@ -449,15 +466,21 @@ public class ShoppingDbUtil {
 			String sqlCustomers = "delete from customers where Customer_ID = ?";
 			String sqlAddresses = "delete from addresses where Customer_ID = ?";
 			String sqlCards = "delete from credit_cards where Customer_ID = ?";
+			String sqlOrders = "delete from orders where Customer_ID = ?";
+			String sqlOrdersItems = "delete from item_in_order where Order_Number = ?";
 
 			myStmtCustomers = myConn.prepareStatement(sqlCustomers);
 			myStmtAddresses = myConn.prepareStatement(sqlAddresses);
 			myStmtCards = myConn.prepareStatement(sqlCards);
+			myStmtOrders = myConn.prepareStatement(sqlOrders);
+			myStmtOrdersItems = myConn.prepareStatement(sqlOrdersItems);
 
 			// set params
-			myStmtCustomers.setInt(1, customerId);
-			myStmtAddresses.setInt(1, customerId);
-			myStmtCards.setInt(1, customerId);
+			myStmtCustomers.setInt(1, theCustomer.getId());
+			myStmtAddresses.setInt(1, theCustomer.getId());
+			myStmtCards.setInt(1, theCustomer.getId());
+			myStmtOrders.setInt(1, theCustomer.getId());
+			myStmtOrdersItems.setInt(1, theCustomer.getOrderNumber());
 			
 			myStmtAddresses.execute();
 			myStmtCards.execute();			

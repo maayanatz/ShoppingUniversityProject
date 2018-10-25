@@ -1,3 +1,5 @@
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
@@ -25,6 +27,9 @@ public class Customer {
 	private String cardNumber;
 	private int cardCustomer;
 	private int cardOwner;
+	private List<Order> customerOrders;
+	
+	
 	@ManagedProperty(value="#{order}")
 	private Order customerOrder;
 	private int orderNumber;

@@ -122,18 +122,18 @@ public class EditCustomerController implements Serializable {
 		return "edit-customers?faces-redirect=true";		
 	}
 	
-	public String deleteCustomer(int customerId) {
+	public String deleteCustomer(Customer theCustomer) {
 
-		logger.info("Deleting customer id: " + customerId);
+		logger.info("Deleting customer id: " + theCustomer.getId());
 		
 		try {
 
 			// delete the customer from the database
-			shoppingDbUtil.deleteCustomer(customerId);
+			shoppingDbUtil.deleteCustomer(theCustomer);
 			
 		} catch (Exception exc) {
 			// send this to server logs
-			logger.log(Level.SEVERE, "Error deleting customer id: " + customerId, exc);
+			logger.log(Level.SEVERE, "Error deleting customer id: " + theCustomer.getId(), exc);
 			
 			// add error message for JSF page
 			addErrorMessage(exc);
