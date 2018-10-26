@@ -188,7 +188,22 @@ public class ShoppingCartController implements Serializable {
 		return "add-item";
 	}
 	
-	public void addItem(Product theItemProduct) {
+	public void addItem() {
+		
+		Product theItemProduct = null;
+		
+		ExternalContext externalContext = 
+				FacesContext.getCurrentInstance().getExternalContext();
+		Map<String, Object> requestMap = externalContext.getRequestMap();
+		Object currentProduct = requestMap.get("product");
+		
+		if (currentProduct == null) {
+			return;
+		}
+		else if (currentProduct instanceof Product) {
+			theItemProduct = (Product) currentProduct;
+		}
+		
 		if (theItemProduct.getAmount() < theItemProduct.getAmountInOrder())
 		{
 			setAddItemFailure(true);
@@ -198,9 +213,8 @@ public class ShoppingCartController implements Serializable {
 		
 		int itemOrderID = randomNumberInRange(201, 400);
 		int itemOrderNumber = 0;
-		Product itemProduct = theItemProduct;
 		
-		ItemInOrder newItem = new ItemInOrder(itemOrderID, itemOrderNumber, itemProduct);
+		ItemInOrder newItem = new ItemInOrder(itemOrderID, itemOrderNumber, theItemProduct);
 		
 		items.add(newItem);
 		
@@ -246,6 +260,10 @@ public class ShoppingCartController implements Serializable {
 			// add error message for JSF page
 			addErrorMessage(exc);
 		}
+	}
+	
+	public String addToCart() {
+		return "/customerRestricted/add-item.xhtml?faces-redirect=true";
 	}
 	
 	public void submitOrder() {

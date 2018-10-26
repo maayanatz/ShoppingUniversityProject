@@ -28,11 +28,9 @@
 			<p class="finalPrice">#{product.finalPrice} &#x20AA;</p>
 			<p class="size">#{product.size}</p>
 			<h:outputLabel>Quantity:</h:outputLabel> <h:inputText value="#{product.amountInOrder}" id="amountInOrder" /> <h:message for="amountInOrder" />
-			
-			<ui:param name="itemCatalogNumber" value="#{product.catalogNumber}" />
-			
+
 			<h:commandButton class="addToCart" value="Add to Shopping Cart" 
-				disabled="#{product.soldOut}" action="#{shoppingCartController.loadProduct(itemCatalogNumber)}"/>
+				disabled="#{product.soldOut}" action="#{shoppingCartController.addToCart()}"/>
 		</h:form>
 
 	</div>
