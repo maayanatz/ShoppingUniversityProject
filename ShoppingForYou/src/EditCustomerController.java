@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -21,6 +20,8 @@ public class EditCustomerController implements Serializable {
 	private List<Order> currentCustomerOrders;
 	private List<ItemInOrder> currentOrderItems;
 	private List<Order> customerOrders;
+	private boolean addNewCustomerFailure;
+	private boolean addNewCustomerSuccess;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
@@ -28,7 +29,37 @@ public class EditCustomerController implements Serializable {
 		customers = new ArrayList<>();
 		currentCustomerOrders = new ArrayList<>();
 		currentOrderItems = new ArrayList<>();
+		addNewCustomerFailure = false;
+		addNewCustomerSuccess = false;
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
+	}
+
+	/**
+	 * @return the addNewCustomerFailure
+	 */
+	public boolean isAddNewCustomerFailure() {
+		return addNewCustomerFailure;
+	}
+
+	/**
+	 * @param addNewCustomerFailure the addNewCustomerFailure to set
+	 */
+	public void setAddNewCustomerFailure(boolean addNewCustomerFailure) {
+		this.addNewCustomerFailure = addNewCustomerFailure;
+	}
+
+	/**
+	 * @return the addNewCustomerSuccess
+	 */
+	public boolean isAddNewCustomerSuccess() {
+		return addNewCustomerSuccess;
+	}
+
+	/**
+	 * @param addNewCustomerSuccess the addNewCustomerSuccess to set
+	 */
+	public void setAddNewCustomerSuccess(boolean addNewCustomerSuccess) {
+		this.addNewCustomerSuccess = addNewCustomerSuccess;
 	}
 
 	/**
@@ -139,7 +170,7 @@ public class EditCustomerController implements Serializable {
 		}
 	}
 		
-	public String addCustomer(Customer theCustomer) {
+	public String addCustomer(Customer theCustomer, int page) {
 
 		logger.info("Adding customer: " + theCustomer);
 
@@ -149,6 +180,8 @@ public class EditCustomerController implements Serializable {
 			shoppingDbUtil.addCustomer(theCustomer);
 			
 		} catch (Exception exc) {
+			this.addNewCustomerFailure = true;
+			this.addNewCustomerSuccess = false;
 			// send this to server logs
 			logger.log(Level.SEVERE, "Error adding customers", exc);
 			
@@ -157,8 +190,12 @@ public class EditCustomerController implements Serializable {
 
 			return null;
 		}
-		
-		return "edit-customers?faces-redirect=true";
+		this.addNewCustomerFailure = false;
+		this.addNewCustomerSuccess = true;
+		if (page == 0) {
+			return "edit-customers?faces-redirect=true";
+		}
+		return "new-customer-result?faces-redirect=true";
 	}
 
 	public String loadCustomer(int customerId) {

@@ -13,18 +13,17 @@
 
 	<ui:decorate template="/templates/default-template.xhtml">
 	
-	<ui:define name="page-title">ShoppingForYou | Add Customer</ui:define>
+	<ui:define name="page-title">ShoppingForYou | New Customer</ui:define>
 	
 	<ui:define name="page-content">
 
 	<div id="wrapper">
 		<div id="header">
-			<h2>Shopping for You - Customers Management</h2>
+			<h2>Shopping for You - New Customer Registration</h2>
 		</div>
 	</div>
 	
 	<div id="container">
-		<h3>Add Customer</h3>
 
 		<h:messages globalOnly="true" />
 
@@ -61,14 +60,12 @@
 				
 				<h:outputLabel>Credit card owner ID:</h:outputLabel> <h:inputText value="#{customer.cardOwner}" id="cardOwner" /> <h:message for="cardOwner" />
 							
-				<h:outputLabel /> <h:commandButton value="Save" styleClass="save" action="#{editCustomerController.addCustomer(customer, 0)}"/>
+				<h:outputLabel /> <h:commandButton value="Save" styleClass="save" action="#{editCustomerController.addCustomer(customer, 1)}"/>
 			
 			</h:panelGrid>
 		</h:form>
 
 		<div style="clear: both;"></div>
-
-		<p><h:outputLink value="edit-customers.xhtml">Back to List</h:outputLink></p>
 
 	</div>	
 	</ui:define>
