@@ -117,13 +117,22 @@ public class EditCustomerController implements Serializable {
 		return "update-customer-form.xhtml";
 	}
 	
-	public String loadCustomerOrders(Customer theCustomer) {
+	public String loadCustomerOrders(int customerID) {
 		
-		logger.info("loading orders of customer: " + theCustomer.getId());
+		logger.info("loading orders of customer: " + customerID);
 		currentCustomerOrders.clear();
 		
-		if (theCustomer.getCustomerOrders() != null) {
-			this.currentCustomerOrders = theCustomer.getCustomerOrders();
+		try {
+			
+			// get all customer orders from database
+			currentCustomerOrders = shoppingDbUtil.getCustomerOrders(customerID);
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error loading customer orders", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
 		}
 		
 		return "list-customer-orders.xhtml";
