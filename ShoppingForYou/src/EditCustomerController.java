@@ -223,7 +223,7 @@ public class EditCustomerController implements Serializable {
 			return null;
 		}
 				
-		return "update-customer-form.xhtml";
+		return "update-customer-form?faces-redirect=true";
 	}
 	
 	public int getLoggedInCustomerID()
@@ -308,22 +308,28 @@ public class EditCustomerController implements Serializable {
 			addErrorMessage(exc);
 		}
 		
-		return "list-customer-orders.xhtml";
+		return "list-customer-orders?faces-redirect=true";
 	}
 	
-	public String loadOrderItems(Order theOrder) {
+	public String loadOrderItems(int orderNumber) {
 		
-		logger.info("loading items of order: " + theOrder.getOrderNumber());
+		logger.info("loading items of order: " + orderNumber);
 		currentOrderItems.clear();
 		
-		if (theOrder.getOrderItems() != null) {
-			this.currentOrderItems = theOrder.getOrderItems();
-		}
-		else {
-			return null;
+		try {
+			
+			// get all order items from database
+			currentOrderItems = shoppingDbUtil.getOrderItems(orderNumber);
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error loading order items", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
 		}
 		
-		return "list-order-items.xhtml";
+		return "list-order-items?faces-redirect=true";
 	}
 	
 	public String updateCustomer(Customer theCustomer) {
@@ -368,7 +374,7 @@ public class EditCustomerController implements Serializable {
 			return null;
 		}
 		
-		return "edit-customers";	
+		return "edit-customers?faces-redirect=true";	
 	}
 		
 	private void addErrorMessage(Exception exc) {

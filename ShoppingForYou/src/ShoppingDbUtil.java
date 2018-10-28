@@ -1136,14 +1136,10 @@ public class ShoppingDbUtil {
 	public List<Order> getCustomerOrders(int customerID) throws Exception {
 		Connection myConn = null;
 		PreparedStatement myStmtOrders = null;
-		PreparedStatement myStmtItems = null;
 		ResultSet myRsOrders = null;
-		ResultSet myRsItems = null;
 		
 		List<Order> customerOrders = new ArrayList<>();
-		List<ItemInOrder> orderItems = new ArrayList<>();
 		Order tempOrder = null;
-		ItemInOrder tempItem = null;
 		
 		try {
 			myConn = getConnection();
@@ -1158,35 +1154,13 @@ public class ShoppingDbUtil {
 				int orderCustomerID = myRsOrders.getInt("Customer_ID");
 				float totalPrice = myRsOrders.getFloat("Total_Order_Price");
 				
-				String sqlItems = "select * from Item_In_Order where Order_Number = ?";
-				
-				myStmtItems = myConn.prepareStatement(sqlItems);
-				
-				// set params
-				myStmtItems.setInt(1, orderNumber);
-				
-				myRsItems = myStmtItems.executeQuery();
-				
-				while (myRsItems.next()) {
-					
-					int itemOrderID = myRsItems.getInt("Item_In_Order_ID");
-					int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
-					int amountInOrder = myRsItems.getInt("Amount");
-					Product tempItemProduct = this.getProduct(itemCatalogNumber);
-					
-					tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct, amountInOrder);
-					
-					// add it to the list of orderItems
-					orderItems.add(tempItem);
-				}
-				tempOrder = new Order(orderNumber, orderCustomerID, totalPrice, orderItems);
+				tempOrder = new Order(orderNumber, orderCustomerID, totalPrice, null);
 				customerOrders.add(tempOrder);
 			}
 			return customerOrders;
 		}
 		finally {
 			close (myConn, myStmtOrders, myRsOrders);
-			close (myConn, myStmtItems, myRsItems);
 		}
 	}
 	
