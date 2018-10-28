@@ -879,9 +879,9 @@ public class ShoppingDbUtil {
 			// set params
 			myStmtCurrentProductAmount.setInt(1, catalogNumber);
 			
-			myRsCurrentProductAmount = myStmtCurrentProductAmount.executeQuery(sqlCurrentProductAmount);;
+			myRsCurrentProductAmount = myStmtCurrentProductAmount.executeQuery();
 			
-			while (myRsCurrentProductAmount.next()) {
+			if (myRsCurrentProductAmount.next()) {
 				
 				// retrieve data from result set row
 				currentProductAmount = myRsCurrentProductAmount.getInt("Amount_In_Stock");
@@ -894,7 +894,7 @@ public class ShoppingDbUtil {
 			myStmtNewProductAmount.setInt(1, (currentProductAmount - amountInOrder));
 			myStmtNewProductAmount.setInt(2, catalogNumber);
 			
-			myStmtNewProductAmount.executeQuery(sqlNewProductAmount);
+			myStmtNewProductAmount.execute();
 		}
 		finally {
 			close (myConn, myStmtCurrentProductAmount);
@@ -1174,17 +1174,8 @@ public class ShoppingDbUtil {
 				myStmtItems.setInt(2, theItem.getCatalogNumber());
 				myStmtItems.setInt(3, theOrder.getOrderNumber());
 				myStmtItems.setInt(4, theItem.getAmountInOrder());
-				myStmtOrders.setFloat(5, theItem.getFinalPrice());
-				myStmtOrders.setFloat(6, theItem.getTotalPrice());
-				
-				System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++");
-				System.out.println(theItem.getItemOrderID());
-				System.out.println(theItem.getCatalogNumber());
-				System.out.println(theOrder.getOrderNumber());
-				System.out.println(theItem.getAmountInOrder());
-				System.out.println(theItem.getFinalPrice());
-				System.out.println(theItem.getTotalPrice());	
-				System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++");
+				myStmtItems.setFloat(5, theItem.getFinalPrice());
+				myStmtItems.setFloat(6, theItem.getTotalPrice());
 				
 				myStmtItems.execute();
 			}
