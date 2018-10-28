@@ -250,11 +250,10 @@ public class ShoppingCartController implements Serializable {
 
 		int customerID;
 		
-		logger.info("Getting order customer ID for email: " + loggedInCustomerEmail);
+		logger.info("Getting order customer ID with email: " + loggedInCustomerEmail);
 
 		try {
 			
-			// add item to the database
 			customerID = shoppingDbUtil.getLoggedInCustomerID(loggedInCustomerEmail);
 			
 		} catch (Exception exc) {
