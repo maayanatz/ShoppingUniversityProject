@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -33,7 +34,7 @@ public class Customer {
 	}
 	
 	public Customer(int id, String firstName, String lastName, String email,
-			String password, int phoneNumber, Address customerAddress, CreditCard customerCard,  List<Order> customerOrders) {
+			String password, int phoneNumber, Address customerAddress, CreditCard customerCard) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -42,7 +43,7 @@ public class Customer {
 		this.phoneNumber = phoneNumber;
 		this.customerAddress = customerAddress;
 		this.customerCard = customerCard;
-		this.customerOrders = customerOrders;
+		this.customerOrders = new ArrayList<>();
 	}
 
 	/**

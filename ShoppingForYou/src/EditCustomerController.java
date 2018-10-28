@@ -25,6 +25,7 @@ public class EditCustomerController implements Serializable {
 	public EditCustomerController() throws Exception {
 		customers = new ArrayList<>();
 		currentCustomerOrders = new ArrayList<>();
+		currentOrderItems = new ArrayList<>();
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
@@ -170,9 +171,11 @@ public class EditCustomerController implements Serializable {
 		logger.info("Deleting customer id: " + theCustomer.getId());
 		
 		try {
+			
+			theCustomer.setCustomerOrders(shoppingDbUtil.getCustomerOrders(theCustomer.getId()));
 
 			// delete the customer from the database
-			shoppingDbUtil.deleteCustomer(theCustomer);
+			shoppingDbUtil.deleteCustomer(theCustomer.getId(), theCustomer.getCustomerOrders());
 			
 		} catch (Exception exc) {
 			// send this to server logs

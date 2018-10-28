@@ -204,16 +204,10 @@ public class ShoppingDbUtil {
 	public List<Customer> getCustomers() throws Exception {
 
 		List<Customer> customers = new ArrayList<>();
-		List<Order> customerOrders = new ArrayList<>();
-		List<ItemInOrder> orderItems = new ArrayList<>();
 
 		Connection myConn = null;
 		Statement myStmtCustomers = null;
-		PreparedStatement myStmtOrders = null;
-		PreparedStatement myStmtItems = null;
 		ResultSet myRsCustomers = null;
-		ResultSet myRsOrders = null;
-		ResultSet myRsItems = null;
 		
 		try {
 			myConn = getConnection();
@@ -247,47 +241,6 @@ public class ShoppingDbUtil {
 				String cardNumber = myRsCustomers.getString("Credit_Card_Number");
 				int cardOwner = myRsCustomers.getInt("User_ID");
 				
-				String sqlOrders = "select * from Orders where Customer_ID = ?";
-				
-				myStmtOrders = myConn.prepareStatement(sqlOrders);
-				
-				// set params
-				myStmtOrders.setInt(1, id);
-				
-				myRsOrders = myStmtOrders.executeQuery();
-				
-				while (myRsOrders.next()) {
-					int orderNumber = myRsOrders.getInt("Order_Number");
-					float totalPrice = myRsOrders.getFloat("Total_Price");
-					
-					String sqlItems = "select * from Item_In_Order where Order_Number = ?";
-					
-					myStmtItems = myConn.prepareStatement(sqlItems);
-					
-					// set params
-					myStmtItems.setInt(1, orderNumber);
-					
-					myRsItems = myStmtItems.executeQuery();
-					
-					while (myRsItems.next()) {
-
-						int itemOrderID = myRsItems.getInt("Item_In_Order_ID");
-						int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
-						int amountInOrder = myRsItems.getInt("Amount");
-						Product tempItemProduct = this.getProduct(itemCatalogNumber);
-						
-						ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct, amountInOrder);
-						
-						// add it to the list of orderItems
-						orderItems.add(tempItem);
-					}
-					
-					Order tempOrder = new Order(orderNumber, id, totalPrice, orderItems);
-					
-					// add it to the list of customerOrders
-					customerOrders.add(tempOrder);
-				}
-
 				// create new address, creditCard, itemInOrder, order and customer objects
 				Address customerAddress = new Address(addressID, id, streetName, houseNumber, 
 						apartmentNumber, city, country, postalCode);
@@ -295,7 +248,7 @@ public class ShoppingDbUtil {
 				CreditCard customerCard = new CreditCard(cardNumber, id, cardOwner);
 				
 				Customer tempCustomer = new Customer(id, firstName, lastName,
-						email, password, phoneNumber, customerAddress, customerCard, customerOrders);
+						email, password, phoneNumber, customerAddress, customerCard);
 
 				// add it to the list of customers
 				customers.add(tempCustomer);
@@ -305,8 +258,6 @@ public class ShoppingDbUtil {
 		}
 		finally {
 			close (myConn, myStmtCustomers, myRsCustomers);
-			close (myConn, myStmtOrders, myRsOrders);
-			close (myConn, myStmtItems, myRsItems);
 		}
 	}
 
@@ -365,11 +316,7 @@ public class ShoppingDbUtil {
 	
 		Connection myConn = null;
 		PreparedStatement myStmtCustomers = null;
-		PreparedStatement myStmtOrders = null;
-		PreparedStatement myStmtItems = null;
 		ResultSet myRsCustomers = null;
-		ResultSet myRsOrders = null;
-		ResultSet myRsItems = null;
 		
 		try {
 			myConn = getConnection();
@@ -405,47 +352,6 @@ public class ShoppingDbUtil {
 				String cardNumber = myRsCustomers.getString("Credit_Card_Number");
 				int cardOwner = myRsCustomers.getInt("User_ID");
 				
-				List<Order> customerOrders = new ArrayList<>();
-				
-				String sqlOrders = "select * from Orders where Customer_ID = ?";
-				myStmtOrders = myConn.prepareStatement(sqlOrders);
-				myStmtOrders.setInt(1, customerId);
-				myRsOrders = myStmtOrders.executeQuery();
-				
-				while (myRsOrders.next()) {
-					int orderNumber = myRsOrders.getInt("Order_Number");
-					float totalPrice = myRsOrders.getFloat("Total_Order_Price");
-					
-					List<ItemInOrder> orderItems = new ArrayList<>();
-					
-					String sqlItems = "select * from Item_In_Order where Order_Number = ?";
-					
-					myStmtItems = myConn.prepareStatement(sqlItems);
-					
-					// set params
-					myStmtItems.setInt(1, orderNumber);
-					
-					myRsItems = myStmtItems.executeQuery();
-					
-					while (myRsItems.next()) {
-						
-						int itemOrderID = myRsItems.getInt("Item_In_Order_ID");
-						int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
-						int amountInOrder = myRsItems.getInt("Amount");
-						Product tempItemProduct = this.getProduct(itemCatalogNumber);
-						
-						ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct, amountInOrder);
-						
-						// add it to the list of orderItems
-						orderItems.add(tempItem);
-					}
-					
-					Order tempOrder = new Order(orderNumber, id, totalPrice, orderItems);
-					
-					// add it to the list of customerOrders
-					customerOrders.add(tempOrder);
-				}
-
 				// create new address, creditCard, itemInOrder, order and customer objects
 				Address customerAddress = new Address(addressID, id, streetName, houseNumber, 
 						apartmentNumber, city, country, postalCode);
@@ -453,7 +359,7 @@ public class ShoppingDbUtil {
 				CreditCard customerCard = new CreditCard(cardNumber, id, cardOwner);
 				
 				theCustomer = new Customer(id, firstName, lastName, email, password, phoneNumber, 
-						customerAddress, customerCard, customerOrders);	
+						customerAddress, customerCard);	
 			}
 			
 			else {
@@ -464,8 +370,6 @@ public class ShoppingDbUtil {
 		}
 		finally {
 			close (myConn, myStmtCustomers, myRsCustomers);
-			close (myConn, myStmtOrders, myRsOrders);
-			close (myConn, myStmtItems, myRsItems);
 		}
 	}
 	
@@ -519,7 +423,7 @@ public class ShoppingDbUtil {
 		}
 	}
 	
-	public void deleteCustomer(Customer theCustomer) throws Exception {
+	public void deleteCustomer(int customerID, List<Order> customerOrders) throws Exception {
 
 		Connection myConn = null;
 		PreparedStatement myStmtCustomers = null;
@@ -542,13 +446,13 @@ public class ShoppingDbUtil {
 			myStmtOrders = myConn.prepareStatement(sqlOrders);
 
 			// set params
-			myStmtCustomers.setInt(1, theCustomer.getId());
-			myStmtAddresses.setInt(1, theCustomer.getId());
-			myStmtCards.setInt(1, theCustomer.getId());
-			myStmtOrders.setInt(1, theCustomer.getId());
+			myStmtCustomers.setInt(1, customerID);
+			myStmtAddresses.setInt(1, customerID);
+			myStmtCards.setInt(1, customerID);
+			myStmtOrders.setInt(1, customerID);
 			
-		    for (int i = 0; i < theCustomer.getCustomerOrders().size(); i++) {
-		        int orderNumber = theCustomer.getCustomerOrders().get(i).getOrderNumber();
+		    for (int i = 0; i < customerOrders.size(); i++) {
+		        int orderNumber = customerOrders.get(i).getOrderNumber();
 		        
 		        String sqlOrdersItems = "delete from item_in_order where Order_Number = ?";
 		        myStmtOrdersItems = myConn.prepareStatement(sqlOrdersItems);
@@ -1186,7 +1090,7 @@ public class ShoppingDbUtil {
 		}
 	}
 
-	public List<ItemInOrder> getThisOrderItems(int orderNumber) throws Exception {
+	public List<ItemInOrder> getOrderItems(int orderNumber) throws Exception {
 
 		List<ItemInOrder> orderItems = new ArrayList<>();
 
@@ -1229,28 +1133,30 @@ public class ShoppingDbUtil {
 		}
 	}
 
-	public Order getOrder(int orderNumber) throws Exception {
+	public List<Order> getCustomerOrders(int customerID) throws Exception {
 		Connection myConn = null;
 		PreparedStatement myStmtOrders = null;
 		PreparedStatement myStmtItems = null;
 		ResultSet myRsOrders = null;
 		ResultSet myRsItems = null;
 		
-		Order thisOrder = null;
+		List<Order> customerOrders = new ArrayList<>();
+		List<ItemInOrder> orderItems = new ArrayList<>();
+		Order tempOrder = null;
+		ItemInOrder tempItem = null;
 		
 		try {
 			myConn = getConnection();
 				
-			String sqlOrders = "select * from Orders where Order_Number = ?";
+			String sqlOrders = "select * from Orders where Customer_ID = ?";
 			myStmtOrders = myConn.prepareStatement(sqlOrders);
-			myStmtOrders.setInt(1, orderNumber);
+			myStmtOrders.setInt(1, customerID);
 			myRsOrders = myStmtOrders.executeQuery();
 			
-			if (myRsOrders.next()) {
+			while (myRsOrders.next()) {
+				int orderNumber = myRsOrders.getInt("Order_Number");
 				int orderCustomerID = myRsOrders.getInt("Customer_ID");
 				float totalPrice = myRsOrders.getFloat("Total_Order_Price");
-				
-				List<ItemInOrder> orderItems = new ArrayList<>();
 				
 				String sqlItems = "select * from Item_In_Order where Order_Number = ?";
 				
@@ -1268,19 +1174,15 @@ public class ShoppingDbUtil {
 					int amountInOrder = myRsItems.getInt("Amount");
 					Product tempItemProduct = this.getProduct(itemCatalogNumber);
 					
-					ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct, amountInOrder);
+					tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct, amountInOrder);
 					
 					// add it to the list of orderItems
 					orderItems.add(tempItem);
 				}
-				
-				thisOrder = new Order(orderNumber, orderCustomerID, totalPrice, orderItems);
-				}
-			else {
-				throw new Exception("Could not find order number: " + orderNumber);
-				}
-	
-			return thisOrder;
+				tempOrder = new Order(orderNumber, orderCustomerID, totalPrice, orderItems);
+				customerOrders.add(tempOrder);
+			}
+			return customerOrders;
 		}
 		finally {
 			close (myConn, myStmtOrders, myRsOrders);
