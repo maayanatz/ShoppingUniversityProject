@@ -18,9 +18,10 @@ public class ShoppingCartController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private List<ItemInOrder> items;
-	boolean addItemFailure;
-	boolean addItemSuccess;
-	float totalOrderPrice;
+	private boolean addItemFailure;
+	private boolean addItemSuccess;
+	private float totalOrderPrice;
+	private int itemNumber;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
@@ -32,6 +33,20 @@ public class ShoppingCartController implements Serializable {
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
+	/**
+	 * @return the itemNumber
+	 */
+	public int getItemNumber() {
+		return itemNumber;
+	}
+
+	/**
+	 * @param itemNumber the itemNumber to set
+	 */
+	public void setItemNumber(int itemNumber) {
+		this.itemNumber = itemNumber;
+	}
+
 	/**
 	 * @return the totalOrderPrice
 	 */
@@ -131,10 +146,18 @@ public class ShoppingCartController implements Serializable {
 	
 	public int getLoggedInCustomerID()
 	{
-		String loggedInCustomerEmail = (String) FacesContext.getCurrentInstance().
+		String loggedInCustomerEmail = null;
+		
+		Object currentEmailFound = FacesContext.getCurrentInstance().
 				getExternalContext().getSessionMap().get("currentEmail");
 		
-		if (loggedInCustomerEmail == null) {
+		if (currentEmailFound == null) {
+			return 0;
+		}
+		else if (currentEmailFound instanceof String) {
+			loggedInCustomerEmail = (String) currentEmailFound;
+		}
+		else {
 			return 0;
 		}
 
@@ -192,16 +215,17 @@ public class ShoppingCartController implements Serializable {
 		
 		Product theItemProduct = null;
 		
-		ExternalContext externalContext = 
-				FacesContext.getCurrentInstance().getExternalContext();
-		Map<String, Object> requestMap = externalContext.getRequestMap();
-		Object currentProduct = requestMap.get("product");
+		Object currentProduct = FacesContext.getCurrentInstance().
+				getExternalContext().getSessionMap().get("product");
 		
 		if (currentProduct == null) {
 			return;
 		}
 		else if (currentProduct instanceof Product) {
 			theItemProduct = (Product) currentProduct;
+		}
+		else {
+			return;
 		}
 		
 		if (theItemProduct.getAmount() < theItemProduct.getAmountInOrder())
