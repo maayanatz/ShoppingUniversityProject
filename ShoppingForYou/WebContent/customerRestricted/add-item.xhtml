@@ -29,6 +29,10 @@
 				<h:outputLabel rendered="#{shoppingCartController.addItemFailure}">
 					Failed to add product to shopping cart!<br/>
 						The requested quantity is not available in stock.</h:outputLabel>
+		
+				<h:outputLabel rendered="#{shoppingCartController.duplicateItem}">
+					Failed to add product to shopping cart!<br/>
+						The product is already listed in the shopping cart items.</h:outputLabel>			
 				
 				<h:outputLabel rendered="#{shoppingCartController.addItemSuccess}">
 					Product added to shopping cart successfully!</h:outputLabel>

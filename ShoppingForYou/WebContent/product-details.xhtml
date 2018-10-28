@@ -28,19 +28,22 @@
 			<p class="finalPrice">#{product.finalPrice} &#x20AA;</p>
 			<p class="size">#{product.size}</p>
 			
-			<h:outputLabel>Quantity:</h:outputLabel>
+			<h:outputLabel class="quantity">Quantity:</h:outputLabel>
 			<h:selectOneMenu value = "#{shoppingCartController.itemOrderAmount}">
 				<f:selectItem itemValue = "1" itemLabel = "1" /> 
 	            <f:selectItem itemValue = "2" itemLabel = "2" /> 
 	            <f:selectItem itemValue = "3" itemLabel = "3" />  
-	         </h:selectOneMenu> 
+	        </h:selectOneMenu> 
 	         
+	        <br/><br/><br/>
 			<h:commandButton class="addToCart" value="Add to Shopping Cart" 
 				disabled="#{product.soldOut}" action="#{shoppingCartController.addToCart()}">
 				
 				<f:param id="productItemNumber" name="productItemNumber" value="#{product.catalogNumber}"/>
 				
 			</h:commandButton>
+			<br/><br/><br/>
+			
 		</h:form>
 
 	</div>

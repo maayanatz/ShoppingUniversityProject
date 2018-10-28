@@ -20,20 +20,98 @@ public class ShoppingCartController implements Serializable {
 	private List<ItemInOrder> items;
 	private boolean addItemFailure;
 	private boolean addItemSuccess;
+	private boolean addOrderSuccess;
+	private boolean duplicateItem;
 	private float totalOrderPrice;
 	private int productItemNumber;
 	private int itemOrderAmount;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
+	private int orderNumber;
+	private int orderCustomerID;
+	private boolean addOrderFailure;
 	
 	public ShoppingCartController() throws Exception {
 		items = new ArrayList<>();
 		totalOrderPrice = 0;
 		addItemFailure = false;
 		addItemSuccess = false;
+		addOrderSuccess = false;
+		addOrderFailure = false;
+		duplicateItem = false;
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
+	/**
+	 * @return the duplicateItem
+	 */
+	public boolean isDuplicateItem() {
+		return duplicateItem;
+	}
+
+	/**
+	 * @param duplicateItem the duplicateItem to set
+	 */
+	public void setDuplicateItem(boolean duplicateItem) {
+		this.duplicateItem = duplicateItem;
+	}
+
+	/**
+	 * @return the addOrderFailure
+	 */
+	public boolean isAddOrderFailure() {
+		return addOrderFailure;
+	}
+
+	/**
+	 * @param addOrderFailure the addOrderFailure to set
+	 */
+	public void setAddOrderFailure(boolean addOrderFailure) {
+		this.addOrderFailure = addOrderFailure;
+	}
+
+	/**
+	 * @return the addOrderSuccess
+	 */
+	public boolean isAddOrderSuccess() {
+		return addOrderSuccess;
+	}
+
+	/**
+	 * @param addOrderSuccess the addOrderSuccess to set
+	 */
+	public void setAddOrderSuccess(boolean addOrderSuccess) {
+		this.addOrderSuccess = addOrderSuccess;
+	}
+
+	/**
+	 * @return the orderNumber
+	 */
+	public int getOrderNumber() {
+		return orderNumber;
+	}
+
+	/**
+	 * @param orderNumber the orderNumber to set
+	 */
+	public void setOrderNumber(int orderNumber) {
+		this.orderNumber = orderNumber;
+	}
+
+	/**
+	 * @return the orderCustomerID
+	 */
+	public int getOrderCustomerID() {
+		return orderCustomerID;
+	}
+
+	/**
+	 * @param orderCustomerID the orderCustomerID to set
+	 */
+	public void setOrderCustomerID(int orderCustomerID) {
+		this.orderCustomerID = orderCustomerID;
+	}
+
 	/**
 	 * @return the itemOrderAmount
 	 */
@@ -168,14 +246,14 @@ public class ShoppingCartController implements Serializable {
 			return 0;
 		}
 
-		int orderCustomerID;
+		int customerID;
 		
 		logger.info("Getting order customer ID for email: " + loggedInCustomerEmail);
 
 		try {
 			
 			// add item to the database
-			orderCustomerID = shoppingDbUtil.getLoggedInCustomerID(loggedInCustomerEmail);
+			customerID = shoppingDbUtil.getLoggedInCustomerID(loggedInCustomerEmail);
 			
 		} catch (Exception exc) {
 			// send this to server logs
@@ -187,7 +265,7 @@ public class ShoppingCartController implements Serializable {
 			return 0;
 		}
 		
-		return orderCustomerID;
+		return customerID;
 	}
 	
 	public Product loadProduct(int catalogNumber) {
@@ -244,7 +322,7 @@ public class ShoppingCartController implements Serializable {
 		setAddItemSuccess(true);
 	}
 	
-	public void addOrder(Order theOrder) {
+	public int addOrder(Order theOrder) {
 
 		logger.info("Adding order: " + theOrder.getOrderNumber());
 
@@ -259,10 +337,12 @@ public class ShoppingCartController implements Serializable {
 			
 			// add error message for JSF page
 			addErrorMessage(exc);
+			return 0;
 		}
+		return 1;
 	}
 	
-	public void updateProductAmount(List<ItemInOrder> items) {
+	public int updateProductAmount(List<ItemInOrder> items) {
 
 		logger.info("Updating Products Amount");
 
@@ -279,6 +359,17 @@ public class ShoppingCartController implements Serializable {
 			
 			// add error message for JSF page
 			addErrorMessage(exc);
+			return 0;
+		}
+		return 1;
+	}
+	
+	public void checkDuplicate() {
+		for (int i = 0; i < this.items.size(); i++) {
+			if (this.items.get(i).getCatalogNumber() == this.productItemNumber) {
+				this.duplicateItem = true;
+				return;
+			}
 		}
 	}
 	
@@ -298,19 +389,31 @@ public class ShoppingCartController implements Serializable {
 
 			return null;
         }
-        addItem();
-        
+        checkDuplicate();
+        if (this.duplicateItem == false)
+        {
+        	addItem();
+        }
         return "/customerRestricted/add-item.xhtml?faces-redirect=true";
 	}
 	
-	public void submitOrder() {
-		int orderNumber = randomNumberInRange(1, 200);
-		int orderCustomerID = getLoggedInCustomerID();
+	public String submitOrder() {
+		this.orderNumber = randomNumberInRange(1, 200);
+		this.orderCustomerID = getLoggedInCustomerID();
 		
-		Order newOrder = new Order(orderNumber, orderCustomerID, totalOrderPrice, items);
+		Order newOrder = new Order(this.orderNumber, this.orderCustomerID, totalOrderPrice, items);
 		
-		addOrder(newOrder);
-		updateProductAmount(newOrder.getOrderItems());
+		int addOrderResult = addOrder(newOrder);
+		int updateAmountResult = updateProductAmount(newOrder.getOrderItems());
+		if (addOrderResult == 1 && updateAmountResult == 1) {
+			this.addOrderSuccess = true;
+			this.addOrderFailure = false;
+		}
+		else {
+			this.addOrderFailure = true;
+			this.addOrderSuccess = false;
+		}
+		return "/customerRestricted/add-order.xhtml?faces-redirect=true";
 	}
 	
 	public void cancelOrder() {
@@ -318,6 +421,7 @@ public class ShoppingCartController implements Serializable {
 		totalOrderPrice = 0;
 		addItemFailure = false;
 		addItemSuccess = false;
+		duplicateItem = false;
 	}
 		
 	private void addErrorMessage(Exception exc) {

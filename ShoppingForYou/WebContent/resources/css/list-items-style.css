@@ -52,3 +52,12 @@ html,body{
 	margin-bottom: 15px;
 	background: #cccccc;
 }
+
+.product-container .productImg {
+    width: 100;
+    height: auto;
+    vertical-align: middle    
+    position: relative;
+	top: 0;
+	left: 0;
+}
