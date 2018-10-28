@@ -32,7 +32,7 @@
 			<h:commandButton class="addToCart" value="Add to Shopping Cart" 
 				disabled="#{product.soldOut}" action="#{shoppingCartController.addToCart()}">
 				
-				<f:param name="itemProductNumber" value="#{product.catalogNumber}" />
+				<f:param id="productItemNumber" name="productItemNumber" value="#{product.catalogNumber}"/>
 				
 			</h:commandButton>
 		</h:form>

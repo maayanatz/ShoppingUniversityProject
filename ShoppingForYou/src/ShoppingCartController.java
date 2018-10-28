@@ -21,7 +21,7 @@ public class ShoppingCartController implements Serializable {
 	private boolean addItemFailure;
 	private boolean addItemSuccess;
 	private float totalOrderPrice;
-	private int itemNumber;
+	private int productItemNumber;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
@@ -34,17 +34,10 @@ public class ShoppingCartController implements Serializable {
 	}
 	
 	/**
-	 * @return the itemNumber
+	 * @return the productItemNumber
 	 */
-	public int getItemNumber() {
-		return itemNumber;
-	}
-
-	/**
-	 * @param itemNumber the itemNumber to set
-	 */
-	public void setItemNumber(int itemNumber) {
-		this.itemNumber = itemNumber;
+	public int getProductItemNumber() {
+		return productItemNumber;
 	}
 
 	/**
@@ -88,7 +81,6 @@ public class ShoppingCartController implements Serializable {
 	public void setAddItemSuccess(boolean addItemSuccess) {
 		this.addItemSuccess = addItemSuccess;
 	}
-
 
 	/**
 	 * @return the items
@@ -183,13 +175,14 @@ public class ShoppingCartController implements Serializable {
 		return orderCustomerID;
 	}
 	
-	public String loadProduct(int catalogNumber) {
+	public Product loadProduct(int catalogNumber) {
 		
+		Product theProduct = null;
 		logger.info("loading product: " + catalogNumber);
 		
 		try {
 			// get administrator from database
-			Product theProduct = shoppingDbUtil.getProduct(catalogNumber);
+			theProduct = shoppingDbUtil.getProduct(catalogNumber);
 			
 			// put in the request attribute ... so we can use it on the form page
 			ExternalContext externalContext = 
@@ -208,25 +201,13 @@ public class ShoppingCartController implements Serializable {
 			return null;
 		}
 
-		return "add-item";
+		return theProduct;
 	}
 	
 	public void addItem() {
 		
 		Product theItemProduct = null;
-		
-		Object currentProduct = FacesContext.getCurrentInstance().
-				getExternalContext().getSessionMap().get("product");
-		
-		if (currentProduct == null) {
-			return;
-		}
-		else if (currentProduct instanceof Product) {
-			theItemProduct = (Product) currentProduct;
-		}
-		else {
-			return;
-		}
+		theItemProduct = loadProduct(this.productItemNumber);
 		
 		if (theItemProduct.getAmount() < theItemProduct.getAmountInOrder())
 		{
@@ -287,6 +268,22 @@ public class ShoppingCartController implements Serializable {
 	}
 	
 	public String addToCart() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
+        
+        try {  
+        	productItemNumber = Integer.parseInt(params.get("productItemNumber")); 
+        }  
+        catch(Exception exc) {  
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error getting item product number", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+
+			return null;
+        }  
+
 		return "/customerRestricted/add-item.xhtml?faces-redirect=true";
 	}
 	
@@ -311,4 +308,11 @@ public class ShoppingCartController implements Serializable {
 		FacesMessage message = new FacesMessage("Error: " + exc.getMessage());
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
+	
+    public void parametersAction(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
+        productItemNumber = Integer.parseInt(params.get("productItemNumber"));
+    }
+	
 }
