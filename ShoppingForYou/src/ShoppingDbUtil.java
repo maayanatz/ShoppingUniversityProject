@@ -275,9 +275,8 @@ public class ShoppingDbUtil {
 						int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
 						int amountInOrder = myRsItems.getInt("Amount");
 						Product tempItemProduct = this.getProduct(itemCatalogNumber);
-						tempItemProduct.setAmountInOrder(amountInOrder);
 						
-						ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct);
+						ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct, amountInOrder);
 						
 						// add it to the list of orderItems
 						orderItems.add(tempItem);
@@ -434,9 +433,8 @@ public class ShoppingDbUtil {
 						int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
 						int amountInOrder = myRsItems.getInt("Amount");
 						Product tempItemProduct = this.getProduct(itemCatalogNumber);
-						tempItemProduct.setAmountInOrder(amountInOrder);
 						
-						ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct);
+						ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct, amountInOrder);
 						
 						// add it to the list of orderItems
 						orderItems.add(tempItem);
@@ -1218,9 +1216,8 @@ public class ShoppingDbUtil {
 				int itemCatalogNumber = myRs.getInt("Catalog_Number");
 				int amountInOrder = myRs.getInt("Amount");
 				Product tempItemProduct = this.getProduct(itemCatalogNumber);
-				tempItemProduct.setAmountInOrder(amountInOrder);
 				
-				ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct);
+				ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct, amountInOrder);
 				
 				// add it to the list of administrators
 				orderItems.add(tempItem);
@@ -1271,9 +1268,8 @@ public class ShoppingDbUtil {
 					int itemCatalogNumber = myRsItems.getInt("Catalog_Number");
 					int amountInOrder = myRsItems.getInt("Amount");
 					Product tempItemProduct = this.getProduct(itemCatalogNumber);
-					tempItemProduct.setAmountInOrder(amountInOrder);
 					
-					ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct);
+					ItemInOrder tempItem = new ItemInOrder(itemOrderID, orderNumber, tempItemProduct, amountInOrder);
 					
 					// add it to the list of orderItems
 					orderItems.add(tempItem);

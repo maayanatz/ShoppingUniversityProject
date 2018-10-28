@@ -22,6 +22,7 @@ public class ShoppingCartController implements Serializable {
 	private boolean addItemSuccess;
 	private float totalOrderPrice;
 	private int productItemNumber;
+	private int itemOrderAmount;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
@@ -33,6 +34,20 @@ public class ShoppingCartController implements Serializable {
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
+	/**
+	 * @return the itemOrderAmount
+	 */
+	public int getItemOrderAmount() {
+		return itemOrderAmount;
+	}
+	
+	/**
+	 * @param itemOrderAmount the itemOrderAmount to set
+	 */
+	public void setItemOrderAmount(int itemOrderAmount) {
+		this.itemOrderAmount = itemOrderAmount;
+	}
+
 	/**
 	 * @return the productItemNumber
 	 */
@@ -144,7 +159,7 @@ public class ShoppingCartController implements Serializable {
 				getExternalContext().getSessionMap().get("currentEmail");
 		
 		if (currentEmailFound == null) {
-			return 0;
+			return 1;
 		}
 		else if (currentEmailFound instanceof String) {
 			loggedInCustomerEmail = (String) currentEmailFound;
@@ -209,7 +224,7 @@ public class ShoppingCartController implements Serializable {
 		Product theItemProduct = null;
 		theItemProduct = loadProduct(this.productItemNumber);
 		
-		if (theItemProduct.getAmount() < theItemProduct.getAmountInOrder())
+		if (theItemProduct.getAmount() < this.itemOrderAmount)
 		{
 			setAddItemFailure(true);
 			setAddItemSuccess(false);
@@ -219,7 +234,7 @@ public class ShoppingCartController implements Serializable {
 		int itemOrderID = randomNumberInRange(201, 400);
 		int itemOrderNumber = 0;
 		
-		ItemInOrder newItem = new ItemInOrder(itemOrderID, itemOrderNumber, theItemProduct);
+		ItemInOrder newItem = new ItemInOrder(itemOrderID, itemOrderNumber, theItemProduct, this.itemOrderAmount);
 		
 		items.add(newItem);
 		
@@ -272,7 +287,7 @@ public class ShoppingCartController implements Serializable {
         Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
         
         try {  
-        	productItemNumber = Integer.parseInt(params.get("productItemNumber")); 
+        	this.productItemNumber = Integer.parseInt(params.get("productItemNumber"));
         }  
         catch(Exception exc) {  
 			// send this to server logs
@@ -282,9 +297,10 @@ public class ShoppingCartController implements Serializable {
 			addErrorMessage(exc);
 
 			return null;
-        }  
-
-		return "/customerRestricted/add-item.xhtml?faces-redirect=true";
+        }
+        addItem();
+        
+        return "/customerRestricted/add-item.xhtml?faces-redirect=true";
 	}
 	
 	public void submitOrder() {

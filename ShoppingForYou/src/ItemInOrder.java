@@ -7,6 +7,7 @@ public class ItemInOrder {
 	private int itemOrderID;
 	private int itemOrderNumber;
 	private float totalPrice;
+	private int amountInOrder;
 	@ManagedProperty(value="#{Product}")
 	Product itemProduct;
 	protected int catalogNumber;
@@ -20,16 +21,16 @@ public class ItemInOrder {
 	protected int amount;
 	protected boolean soldOut;
 	protected boolean onSale;
-	protected int amountInOrder;
 	
 	public ItemInOrder() {
 	}
 
-	public ItemInOrder(int itemOrderID, int itemOrderNumber, Product itemProduct) {
+	public ItemInOrder(int itemOrderID, int itemOrderNumber, Product itemProduct, int amountInOrder) {
 		super();
 		this.itemOrderID = itemOrderID;
 		this.itemOrderNumber = itemOrderNumber;
 		this.itemProduct = itemProduct;
+		this.amountInOrder = amountInOrder;
 		this.setTotalPrice();
 	}
 
@@ -37,17 +38,14 @@ public class ItemInOrder {
 	 * @return the amountInOrder
 	 */
 	public int getAmountInOrder() {
-		if(this.itemProduct != null) {
-			this.amountInOrder = this.itemProduct.getAmountInOrder();
-			}
-		return this.amountInOrder;
+		return amountInOrder;
 	}
 
 	/**
 	 * @param amountInOrder the amountInOrder to set
 	 */
 	public void setAmountInOrder(int amountInOrder) {
-		this.itemProduct.setAmountInOrder(amountInOrder);
+		this.amountInOrder = amountInOrder;
 	}
 
 	/**
@@ -263,7 +261,7 @@ public class ItemInOrder {
 	 */
 	public void setTotalPrice() {
 		if(this.itemProduct != null) {
-			this.totalPrice = this.itemProduct.getFinalPrice() * this.itemProduct.getAmountInOrder();
+			this.totalPrice = this.itemProduct.getFinalPrice() * this.amountInOrder;
 		}
 	}
 

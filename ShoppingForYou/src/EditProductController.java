@@ -251,7 +251,7 @@ public class EditProductController implements Serializable {
 		return "edit-products";	
 	}
 	
-	public String decreaseProduct(Product theProduct) {
+	public String decreaseProduct(Product theProduct, int amountInOrder) {
 
 		logger.info("Decreasing amount of product number: " + theProduct.getCatalogNumber());
 		
@@ -259,7 +259,7 @@ public class EditProductController implements Serializable {
 
 			// delete the product from the database
 			theProduct.setAmount((theProduct.getAmount()) - 1);
-			shoppingDbUtil.decreaseProductAmount(theProduct.getCatalogNumber(), theProduct.getAmountInOrder());
+			shoppingDbUtil.decreaseProductAmount(theProduct.getCatalogNumber(), amountInOrder);
 			
 		} catch (Exception exc) {
 			// send this to server logs

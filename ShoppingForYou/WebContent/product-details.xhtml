@@ -27,8 +27,14 @@
 			<h:outputLabel class="discount" rendered="#{product.onSale}">-#{product.discount}%</h:outputLabel>
 			<p class="finalPrice">#{product.finalPrice} &#x20AA;</p>
 			<p class="size">#{product.size}</p>
-			<h:outputLabel>Quantity:</h:outputLabel> <h:inputText value="#{product.amountInOrder}" id="amountInOrder" /> <h:message for="amountInOrder" />
-
+			
+			<h:outputLabel>Quantity:</h:outputLabel>
+			<h:selectOneMenu value = "#{shoppingCartController.itemOrderAmount}">
+				<f:selectItem itemValue = "1" itemLabel = "1" /> 
+	            <f:selectItem itemValue = "2" itemLabel = "2" /> 
+	            <f:selectItem itemValue = "3" itemLabel = "3" />  
+	         </h:selectOneMenu> 
+	         
 			<h:commandButton class="addToCart" value="Add to Shopping Cart" 
 				disabled="#{product.soldOut}" action="#{shoppingCartController.addToCart()}">
 				
