@@ -74,7 +74,7 @@
 			<h:form id="form" style="margin-top: 10px;" >
 				<h:panelGrid columns="3">
 					<h:outputLabel>Email address:</h:outputLabel> <h:inputText value="#{customerLoginController.currentEmail}" id="email" /> <h:message for="email" />
-					<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{customerLoginController.currentPass}" id="password" /> <h:message for="password" />
+					<h:outputLabel>Password:</h:outputLabel> <h:inputSecret value="#{customerLoginController.currentPass}" id="password" /> <h:message for="password" />
 					
 					<h:commandButton styleClass="login" value="Login" disabled="#{customerLoginController.loggedIn}" action="#{customerLoginController.customerLogin()}"/>
 					
