@@ -404,7 +404,7 @@ public class ShoppingCartController implements Serializable {
 		this.orderNumber = randomNumberInRange(1, 200);
 		this.orderCustomerID = getLoggedInCustomerID();
 		
-		Order newOrder = new Order(this.orderNumber, this.orderCustomerID, totalOrderPrice, items);
+		Order newOrder = new Order(this.orderNumber, this.orderCustomerID, this.totalOrderPrice, this.items);
 		
 		int addOrderResult = addOrder(newOrder);
 		int updateAmountResult = updateProductAmount(newOrder.getOrderItems());

@@ -1165,8 +1165,7 @@ public class ShoppingDbUtil {
 				
 				ItemInOrder theItem = theOrder.getOrderItems().get(i); 
 				
-				String sqlItems = "insert into ItemInOrder (Item_In_Order_ID, Catalog_Number, "
-						+ "Order_Number, Amount, Item_Price, Total_Price) values (?, ?, ?, ?, ?, ?)";
+				String sqlItems = "insert into item_in_order (Item_In_Order_ID, Catalog_Number, Order_Number, Amount, Item_Price, Total_Price) values (?, ?, ?, ?, ?, ?)";
 				
 				myStmtItems = myConn.prepareStatement(sqlItems);
 				
@@ -1177,6 +1176,15 @@ public class ShoppingDbUtil {
 				myStmtItems.setInt(4, theItem.getAmountInOrder());
 				myStmtOrders.setFloat(5, theItem.getFinalPrice());
 				myStmtOrders.setFloat(6, theItem.getTotalPrice());
+				
+				System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++");
+				System.out.println(theItem.getItemOrderID());
+				System.out.println(theItem.getCatalogNumber());
+				System.out.println(theOrder.getOrderNumber());
+				System.out.println(theItem.getAmountInOrder());
+				System.out.println(theItem.getFinalPrice());
+				System.out.println(theItem.getTotalPrice());	
+				System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++");
 				
 				myStmtItems.execute();
 			}
