@@ -109,6 +109,16 @@
 					#{tempCustomer.cardNumber}
 					Owner ID: #{tempCustomer.cardOwner}
 				</h:column>
+				
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Customer Orders</f:facet>
+
+					<!--  the value for each row -->
+					<h:commandLink value="Orders List"
+						action="#{editCustomerController.loadCustomerOrders(tempCustomer)}"/>
+					
+				</h:column>			
 
 				<h:column>
 					<!-- the column header -->

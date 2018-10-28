@@ -17,15 +17,31 @@ public class EditCustomerController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private List<Customer> customers;
+	private List<Order> currentCustomerOrders;
+	private List<ItemInOrder> currentOrderItems;
 	private ShoppingDbUtil shoppingDbUtil;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
 	public EditCustomerController() throws Exception {
 		customers = new ArrayList<>();
-		
+		currentCustomerOrders = new ArrayList<>();
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
+	/**
+	 * @return the currentOrderItems
+	 */
+	public List<ItemInOrder> getCurrentOrderItems() {
+		return currentOrderItems;
+	}
+
+	/**
+	 * @return the currentCustomerOrders
+	 */
+	public List<Order> getCurrentCustomerOrders() {
+		return currentCustomerOrders;
+	}
+
 	public List<Customer> getCustomers() {
 		return customers;
 	}
@@ -98,7 +114,34 @@ public class EditCustomerController implements Serializable {
 		}
 				
 		return "update-customer-form.xhtml";
-	}	
+	}
+	
+	public String loadCustomerOrders(Customer theCustomer) {
+		
+		logger.info("loading orders of customer: " + theCustomer.getId());
+		currentCustomerOrders.clear();
+		
+		if (theCustomer.getCustomerOrders() != null) {
+			this.currentCustomerOrders = theCustomer.getCustomerOrders();
+		}
+		
+		return "list-customer-orders.xhtml";
+	}
+	
+	public String loadOrderItems(Order theOrder) {
+		
+		logger.info("loading items of order: " + theOrder.getOrderNumber());
+		currentOrderItems.clear();
+		
+		if (theOrder.getOrderItems() != null) {
+			this.currentOrderItems = theOrder.getOrderItems();
+		}
+		else {
+			return null;
+		}
+		
+		return "list-order-items.xhtml";
+	}
 	
 	public String updateCustomer(Customer theCustomer) {
 

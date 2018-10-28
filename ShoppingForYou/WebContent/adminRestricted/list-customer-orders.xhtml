@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+<h:head>
+	<h:outputStylesheet library="css" name="list-items-style.css" />
+</h:head>
+
+<h:body>
+
+	<ui:decorate template="/templates/default-template.xhtml">
+	
+	<ui:define name="page-title">ShoppingForYou | List Customers Orders</ui:define>
+	
+	<ui:define name="page-content">
+
+	<div id="wrapper">
+		<div id="header">
+			<h2>Shopping for You - Customers Management</h2>
+		</div>
+	</div>
+
+	<div id="container">
+
+		<div id="content">
+		
+			<h:messages globalOnly="true" />			
+
+			<h:form>
+						
+			<h:dataTable value="#{editCustomerController.currentCustomerOrders}" var="tempOrder"
+				styleClass="demo-table" 
+				headerClass="demo-table-header"
+				rowClasses="demo-table-odd-row,demo-table-even-row">
+
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Order Number</f:facet>
+
+					<!--  the value for each row -->
+					#{tempOrder.orderNumber}
+				</h:column>
+
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Customer ID</f:facet>
+
+					<!--  the value for each row -->
+					#{tempOrder.orderCustomerID}
+				</h:column>
+
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Total Order Price</f:facet>
+
+					<!--  the value for each row -->
+					#{tempOrder.totalOrderPrice}
+				</h:column>
+
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Order Items</f:facet>
+
+					<!--  the value for each row -->
+					<h:commandLink value="Items List"
+						action="#{editCustomerController.loadOrderItems(tempOrder)}"/>
+					
+				</h:column>
+
+			</h:dataTable>
+
+			</h:form>
+
+		</div>
+		
+	</div>
+	</ui:define>
+	</ui:decorate>
+</h:body>
+</html>
