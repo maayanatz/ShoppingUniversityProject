@@ -34,6 +34,8 @@ public class ShoppingCartController implements Serializable {
 	public ShoppingCartController() throws Exception {
 		items = new ArrayList<>();
 		totalOrderPrice = 0;
+		productItemNumber = 0;
+		itemOrderAmount = 0;
 		addItemFailure = false;
 		addItemSuccess = false;
 		addOrderSuccess = false;
@@ -411,6 +413,7 @@ public class ShoppingCartController implements Serializable {
 		if (addOrderResult == 1 && updateAmountResult == 1) {
 			this.addOrderSuccess = true;
 			this.addOrderFailure = false;
+			clearShoppingCart();
 		}
 		else {
 			this.addOrderFailure = true;
@@ -419,9 +422,11 @@ public class ShoppingCartController implements Serializable {
 		return "/customerRestricted/add-order.xhtml?faces-redirect=true";
 	}
 	
-	public void cancelOrder() {
+	public void clearShoppingCart() {
 		items.clear();
 		totalOrderPrice = 0;
+		productItemNumber = 0;
+		itemOrderAmount = 0;
 		addItemFailure = false;
 		addItemSuccess = false;
 		duplicateItem = false;
