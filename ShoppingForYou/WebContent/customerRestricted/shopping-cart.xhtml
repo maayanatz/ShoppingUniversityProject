@@ -42,6 +42,14 @@
 					<!--  the value for each row -->
 					#{tempItem.catalogNumber}
 				</h:column>
+				
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Image</f:facet>
+					
+					<!--  the value for each row -->
+					<h:graphicImage class="itemImg" value="#{tempItem.image}" />
+				</h:column>				
 
 				<h:column>
 					<!-- the column header -->
@@ -53,26 +61,10 @@
 				
 				<h:column>
 					<!-- the column header -->
-					<f:facet name="header">Final Price</f:facet>
+					<f:facet name="header">Item Price</f:facet>
 					
 					<!--  the value for each row -->
-					#{tempItem.finalPrice}
-				</h:column>
-				
-				<h:column>
-					<!-- the column header -->
-					<f:facet name="header">Image</f:facet>
-					
-					<!--  the value for each row -->
-					<h:graphicImage class="itemImg" value="#{tempItem.image}" />
-				</h:column>
-				
-				<h:column>
-					<!-- the column header -->
-					<f:facet name="header">Size</f:facet>
-					
-					<!--  the value for each row -->
-					#{tempProduct.size}
+					#{tempItem.finalPrice} &#x20AA;
 				</h:column>
 				
 				<h:column>
@@ -85,17 +77,19 @@
 				
 				<h:column>
 					<!-- the column header -->
-					<f:facet name="header">Total price</f:facet>
+					<f:facet name="header">Total Item Price</f:facet>
 					
 					<!--  the value for each row -->
-					#{tempItem.totalPrice}
+					#{tempItem.totalPrice} &#x20AA;
 				</h:column>
 
 			</h:dataTable>
 			
 			<br/><br/>
 			
-			<h:outputLabel class="orderPrice">Order total price: #{shoppingCartController.totalOrderPrice}</h:outputLabel>
+			<div id="orderPriceContainer">
+				<h:outputLabel class="orderPrice">Order total price: #{shoppingCartController.totalOrderPrice} &#x20AA;</h:outputLabel>
+			</div>
 			
 			<br/><br/><br/>
 			
