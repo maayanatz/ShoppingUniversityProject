@@ -368,9 +368,12 @@ public class ShoppingCartController implements Serializable {
 		for (int i = 0; i < this.items.size(); i++) {
 			if (this.items.get(i).getCatalogNumber() == this.productItemNumber) {
 				this.duplicateItem = true;
+				this.addItemFailure = false;
+				this.addItemSuccess = false;
 				return;
 			}
 		}
+		this.duplicateItem = false;
 	}
 	
 	public String addToCart() {

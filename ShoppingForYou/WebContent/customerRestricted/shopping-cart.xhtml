@@ -93,12 +93,20 @@
 
 			</h:dataTable>
 			
-			<h:commandButton class="submitOrder" value="Submit Order" 
-				action="#{shoppingCartController.submitOrder()}"/>
-				
-			<h:commandButton class="cancelOrder" value="Cancel Order" 
-				onclick="if (!confirm('Are you sure you want to cancel this order?')) return false" 
-				action="#{shoppingCartController.cancelOrder()}"/>
+			<br/><br/>
+			
+			<h:outputLabel class="orderPrice">Order total price: #{shoppingCartController.totalOrderPrice}</h:outputLabel>
+			
+			<br/><br/><br/>
+			
+			<div id="buttonsContainer">
+				<h:commandButton class="submitOrder" value="Submit Order" 
+					action="#{shoppingCartController.submitOrder()}"/>
+					
+				<h:commandButton class="cancelOrder" value="Cancel Order" 
+					onclick="if (!confirm('Are you sure you want to cancel this order?')) return false" 
+					action="#{shoppingCartController.cancelOrder()}"/>
+			</div>
 
 			</h:form>
 

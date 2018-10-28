@@ -39,6 +39,7 @@ html,body{
 #container form#find label {font-size: 13px; color: #000; float:left; margin-right: 20px;}
 #container form#find input {border: 1px solid #ccc; border-radius: 3px; padding: 5px 10px; width: 86%;}
 #container #content {margin-top: 20px;}
+#buttonsContainer {margin: 0 auto; text-align: center;}
 
 .add-item-button {
 	border: 1px solid #666; 
@@ -47,10 +48,33 @@ html,body{
 	font-size: 12px;
 	font-weight: bold;
 	width: 120px; 
-	padding: 5px 10px; 
-	
+	padding: 5px 10px; 	
 	margin-bottom: 15px;
 	background: #cccccc;
+}
+
+.cancelOrder {
+	border: 1px solid #666; 
+	border-radius: 5px; 
+	padding: 4px; 
+	font-size: 12px;
+	font-weight: bold;
+	width: 120px; 
+	padding: 5px 10px; 	
+	margin-bottom: 15px;
+	background: #DC143C;
+}
+
+.submitOrder {
+	border: 1px solid #666; 
+	border-radius: 5px; 
+	padding: 4px; 
+	font-size: 12px;
+	font-weight: bold;
+	width: 120px; 
+	padding: 5px 10px; 	
+	margin-bottom: 15px;
+	background: #006400;
 }
 
 .product-container .productImg {
