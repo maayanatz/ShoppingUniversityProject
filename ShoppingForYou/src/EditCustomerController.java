@@ -332,7 +332,7 @@ public class EditCustomerController implements Serializable {
 		return "list-order-items?faces-redirect=true";
 	}
 	
-	public String updateCustomer(Customer theCustomer) {
+	public synchronized String updateCustomer(Customer theCustomer) {
 
 		logger.info("updating customer: " + theCustomer);
 		

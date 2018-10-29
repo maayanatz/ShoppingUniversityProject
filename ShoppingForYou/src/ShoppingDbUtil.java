@@ -152,7 +152,7 @@ public class ShoppingDbUtil {
 		}
 	}
 	
-	public void updateAdministrator(Administrator theAdministrator) throws Exception {
+	public synchronized void updateAdministrator(Administrator theAdministrator) throws Exception {
 
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
@@ -373,7 +373,7 @@ public class ShoppingDbUtil {
 		}
 	}
 	
-	public void updateCustomer(Customer theCustomer) throws Exception {
+	public synchronized void updateCustomer(Customer theCustomer) throws Exception {
 
 		Connection myConn = null;
 		PreparedStatement myStmtCustomers = null;
@@ -689,7 +689,7 @@ public class ShoppingDbUtil {
 		}
 	}
 
-	public void updateProduct(Product theProduct) throws Exception {
+	public synchronized void updateProduct(Product theProduct) throws Exception {
 
 		Connection myConn = null;
 		

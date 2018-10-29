@@ -207,7 +207,7 @@ public class EditProductController implements Serializable {
 		return "product-details.xhtml";
 	}	
 	
-	public String updateProduct(Product theProduct) {
+	public synchronized String updateProduct(Product theProduct) {
 
 		logger.info("updating product: " + theProduct);
 		
