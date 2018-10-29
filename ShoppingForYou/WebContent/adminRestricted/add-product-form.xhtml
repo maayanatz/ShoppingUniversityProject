@@ -66,7 +66,7 @@
             							
 				<h:outputLabel>Amount in Stock:</h:outputLabel> <h:inputText value="#{product.amount}" id="amount"
 					converterMessage="Amount in stock must contain only digits." validatorMessage="Amount in stock must contain only values >= 0."> 
-					<f:validateLongRange minimum="0" /> 
+					<f:validateLongRange minimum="0" for="amount"/> 
 				</h:inputText> <h:message style = "color:red;" for="amount" />
 				
 				<h:outputLabel /> <h:commandButton value="Save" styleClass="save" action="#{editProductController.addProduct(product)}"/>

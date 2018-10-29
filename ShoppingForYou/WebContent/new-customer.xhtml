@@ -74,7 +74,7 @@
 				
 				<h:outputLabel>House number:</h:outputLabel> <h:inputText value="#{customer.houseNumber}" id="houseNumber" 
 					converterMessage="House number must contain only digits." validatorMessage="House number is mandatory."> 
-						<f:validateLength minimum="1" for="id" />
+						<f:validateLongRange minimum="1" for="houseNumber"/>
 				</h:inputText> <h:message style = "color:red;" for="houseNumber" />
 				
 				<h:outputLabel>Apartment number:</h:outputLabel> <h:inputText value="#{customer.apartmentNumber}" id="apartmantNumber" 
