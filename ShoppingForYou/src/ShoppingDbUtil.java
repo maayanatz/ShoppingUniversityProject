@@ -503,7 +503,7 @@ public class ShoppingDbUtil {
 		}
 	}
 
-	public List<Product> getProducts() throws Exception {
+	public synchronized List<Product> getProducts() throws Exception {
 		
 		List<Product> products = new ArrayList<>();
 
@@ -569,7 +569,7 @@ public class ShoppingDbUtil {
 		}
 	}
 
-	public void addProduct(Product theProduct) throws Exception {
+	public synchronized void addProduct(Product theProduct) throws Exception {
 
 		Connection myConn = null;
 		PreparedStatement myStmt = null;

@@ -47,12 +47,14 @@
 				</h:inputText> <h:message style = "color:red;" for="category" />
 				
 				<h:outputLabel>Price:</h:outputLabel> <h:inputText value="#{product.price}" id="price"
-					converterMessage="Price must contain only digits." validatorMessage="Price is mandatory and must contain a minimum of 2 digits."> 
-					<f:validateLength minimum="2" for="price" />> 
+					converterMessage="Price must contain only digits." validatorMessage="Price must contain only values >= 1."> 
+					<f:validateLongRange minimum="1" for="price"/> 
 				</h:inputText> <h:message style = "color:red;" for="price" />
 				
 				<h:outputLabel>Discount:</h:outputLabel> <h:inputText value="#{product.discount}" id="discount" 
-					converterMessage="Discount must contain only digits."/> <h:message style = "color:red;" for="discount" />
+					converterMessage="Discount must contain only digits." validatorMessage="Discount must contain only values >= 0."> 
+					<f:validateLongRange minimum="0" for="discount"/> 
+				</h:inputText> <h:message style = "color:red;" for="discount" />
 				
 				<h:outputLabel>Image:</h:outputLabel> <h:inputText value="#{product.image}" id="image" required="true" 
 					requiredMessage="Image is mandatory." validatorMessage="Image (src) must be a valid URL.">

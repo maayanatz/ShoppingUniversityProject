@@ -21,7 +21,10 @@ public class EditProductController implements Serializable {
 	private List<Skirt> skirts;
 	private List<Dress> dresses;
 	private List<Jacket> jackets;
-	private ShoppingDbUtil shoppingDbUtil;
+	private boolean addNewProductFailure;
+	private boolean addNewProductSuccess;
+	private ShoppingDbUtil shoppingDbUtil;	
+	private boolean duplicateCatalogNumber;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
 	public EditProductController() throws Exception {
@@ -30,10 +33,55 @@ public class EditProductController implements Serializable {
 		skirts = new ArrayList<>();
 		dresses = new ArrayList<>();
 		jackets = new ArrayList<>();
+		addNewProductFailure = false;
+		addNewProductSuccess = false;
+		duplicateCatalogNumber = false;
 		
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
+	/**
+	 * @return the addNewProductFailure
+	 */
+	public boolean isAddNewProductFailure() {
+		return addNewProductFailure;
+	}
+
+	/**
+	 * @param addNewProductFailure the addNewProductFailure to set
+	 */
+	public void setAddNewProductFailure(boolean addNewProductFailure) {
+		this.addNewProductFailure = addNewProductFailure;
+	}
+
+	/**
+	 * @return the addNewProductSuccess
+	 */
+	public boolean isAddNewProductSuccess() {
+		return addNewProductSuccess;
+	}
+
+	/**
+	 * @param addNewProductSuccess the addNewProductSuccess to set
+	 */
+	public void setAddNewProductSuccess(boolean addNewProductSuccess) {
+		this.addNewProductSuccess = addNewProductSuccess;
+	}
+
+	/**
+	 * @return the duplicateCatalogNumber
+	 */
+	public boolean isDuplicateCatalogNumber() {
+		return duplicateCatalogNumber;
+	}
+
+	/**
+	 * @param duplicateCatalogNumber the duplicateCatalogNumber to set
+	 */
+	public void setDuplicateCatalogNumber(boolean duplicateCatalogNumber) {
+		this.duplicateCatalogNumber = duplicateCatalogNumber;
+	}
+
 	public List<Product> getProducts() {
 		return products;
 	}
@@ -154,8 +202,51 @@ public class EditProductController implements Serializable {
 		}
 	}
 	
-	public String addProduct(Product theProduct) {
+	private synchronized int validationChecks(Product theProduct) {
+		int tempCatalogNumber;
+		List<Product> currentProducts = null;
+		
+		int catalogNumber = theProduct.getCatalogNumber();
+		
+		duplicateCatalogNumber = false;
+		
+		try {
+			
+			logger.info("Loading current products");
+			currentProducts = shoppingDbUtil.getProducts();
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error getting products", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
 
+			return 0;
+		}
+		
+		for (int i = 0; i < currentProducts.size(); i++) {
+
+			tempCatalogNumber = currentProducts.get(i).getCatalogNumber();
+			
+			if (catalogNumber == tempCatalogNumber)
+			{
+				duplicateCatalogNumber = true;
+				return 0;
+			}
+		}	
+		return 1;
+	}
+	
+	public synchronized String addProduct(Product theProduct) {
+		int validationChecksResult = validationChecks(theProduct);
+		
+		if (validationChecksResult == 0) {
+			this.addNewProductFailure = true;
+			this.addNewProductSuccess = false;
+			return "add-product-result?faces-redirect=true";
+		}
+		
 		logger.info("Adding product: " + theProduct);
 
 		try {
@@ -164,6 +255,9 @@ public class EditProductController implements Serializable {
 			shoppingDbUtil.addProduct(theProduct);
 			
 		} catch (Exception exc) {
+			this.addNewProductFailure = true;
+			this.addNewProductSuccess = false;
+			
 			// send this to server logs
 			logger.log(Level.SEVERE, "Error adding products", exc);
 			
@@ -172,8 +266,10 @@ public class EditProductController implements Serializable {
 
 			return null;
 		}
+		this.addNewProductFailure = false;
+		this.addNewProductSuccess = true;
 		
-		return "edit-products?faces-redirect=true";
+		return "add-product-result?faces-redirect=true";
 	}
 
 	public String loadProduct(int catalogNumber, int page) {
