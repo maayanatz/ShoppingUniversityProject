@@ -137,7 +137,7 @@ public class EditAdminController implements Serializable {
 		return "update-admin-form.xhtml";
 	}	
 	
-	public synchronized String updateAdministrator(Administrator theAdministrator) {
+	public String updateAdministrator(Administrator theAdministrator) {
 
 		logger.info("updating administrator: " + theAdministrator);
 		
