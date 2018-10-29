@@ -258,7 +258,7 @@ public class EditCustomerController implements Serializable {
 			this.addNewCustomerFailure = true;
 			this.addNewCustomerSuccess = false;
 			if (page == 0) {
-				return "edit-customers?faces-redirect=true";
+				return "add-customer-result?faces-redirect=true";
 			}
 			else {
 				return "new-customer-result?faces-redirect=true";
@@ -286,7 +286,7 @@ public class EditCustomerController implements Serializable {
 		this.addNewCustomerFailure = false;
 		this.addNewCustomerSuccess = true;
 		if (page == 0) {
-			return "edit-customers?faces-redirect=true";
+			return "add-customer-result?faces-redirect=true";
 		}
 		return "new-customer-result?faces-redirect=true";
 	}
