@@ -223,7 +223,7 @@ public class EditCustomerController implements Serializable {
 			return null;
 		}
 				
-		return "update-customer-form?faces-redirect=true";
+		return "update-customer-form.xhtml";
 	}
 	
 	public int getLoggedInCustomerID()
