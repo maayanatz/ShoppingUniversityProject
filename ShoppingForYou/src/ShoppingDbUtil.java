@@ -201,7 +201,7 @@ public class ShoppingDbUtil {
 		}		
 	}	
 		
-	public List<Customer> getCustomers() throws Exception {
+	public synchronized List<Customer> getCustomers() throws Exception {
 
 		List<Customer> customers = new ArrayList<>();
 
@@ -261,7 +261,7 @@ public class ShoppingDbUtil {
 		}
 	}
 
-	public void addCustomer(Customer theCustomer) throws Exception {
+	public synchronized void addCustomer(Customer theCustomer) throws Exception {
 
 		Connection myConn = null;
 		PreparedStatement myStmtCustomers = null;

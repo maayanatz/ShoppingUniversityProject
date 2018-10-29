@@ -235,7 +235,7 @@ public class EditCustomerController implements Serializable {
 		logger.info("Loading customers");
 		
 		customers.clear();
-
+		
 		try {
 			
 			// get all customers from database
@@ -250,7 +250,7 @@ public class EditCustomerController implements Serializable {
 		}
 	}
 		
-	public String addCustomer(Customer theCustomer, int page) {
+	public synchronized String addCustomer(Customer theCustomer, int page) {
 
 		int validationChecksResult = validationChecks(theCustomer);
 		
@@ -260,8 +260,11 @@ public class EditCustomerController implements Serializable {
 			if (page == 0) {
 				return "edit-customers?faces-redirect=true";
 			}
-			return "new-customer-result?faces-redirect=true";
+			else {
+				return "new-customer-result?faces-redirect=true";
+			}
 		}
+		
 		logger.info("Adding customer: " + theCustomer);
 
 		try {
@@ -273,7 +276,7 @@ public class EditCustomerController implements Serializable {
 			this.addNewCustomerFailure = true;
 			this.addNewCustomerSuccess = false;
 			// send this to server logs
-			logger.log(Level.SEVERE, "Error adding customers", exc);
+			logger.log(Level.SEVERE, "Error adding customer", exc);
 			
 			// add error message for JSF page
 			addErrorMessage(exc);
@@ -288,12 +291,13 @@ public class EditCustomerController implements Serializable {
 		return "new-customer-result?faces-redirect=true";
 	}
 
-	private int validationChecks(Customer theCustomer) {
+	private synchronized int validationChecks(Customer theCustomer) {
 		int tempID;
 		String tempEmail;
 		String tempPassword;
 		int tempAddressID;
 		String tempCreditCard;
+		List<Customer> currentCustomers = null;
 		
 		int id = theCustomer.getId();
 		String email = theCustomer.getEmail();
@@ -307,13 +311,28 @@ public class EditCustomerController implements Serializable {
 		duplicateAddressID = false;
 		duplicateCreditCard = false;
 		
-		loadCustomers();
-		for (int i = 0; i < this.customers.size(); i++) {
-			tempID = this.customers.get(i).getId();
-			tempEmail = this.customers.get(i).getEmail();
-			tempPassword = this.customers.get(i).getPassword();
-			tempAddressID = this.customers.get(i).getAddressID();
-			tempCreditCard = this.customers.get(i).getCardNumber();
+		try {
+			
+			logger.info("Loading current customers");
+			currentCustomers = shoppingDbUtil.getCustomers();
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error getting customers", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+
+			return 0;
+		}
+		
+		for (int i = 0; i < currentCustomers.size(); i++) {
+
+			tempID = currentCustomers.get(i).getId();
+			tempEmail = currentCustomers.get(i).getEmail();
+			tempPassword = currentCustomers.get(i).getPassword();
+			tempAddressID = currentCustomers.get(i).getAddressID();
+			tempCreditCard = currentCustomers.get(i).getCardNumber();
 			
 			if (id == tempID)
 			{
@@ -336,7 +355,7 @@ public class EditCustomerController implements Serializable {
 					duplicateAddressID == true | duplicateCreditCard == true) {
 				return 0;
 			}
-		}
+		}	
 		return 1;
 	}
 
