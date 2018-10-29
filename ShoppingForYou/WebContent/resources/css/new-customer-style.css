@@ -1,0 +1,12 @@
+label {
+	white-space: pre-wrap;
+}
+.error {
+	color: #DC143C;
+}
+.success {
+	color: #228B22;
+}
+#header {
+	color: #C71585;
+}

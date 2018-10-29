@@ -5,6 +5,9 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 	
 <h:head>
+<style>
+	<h:outputStylesheet library="css" name="new-customer-style.css" />
+</style>
 </h:head>
 
 <h:body>
@@ -26,11 +29,29 @@
 			<h:messages globalOnly="true" />
 			<h:form id="form" style="margin-top: 10px;" >
 
-				<h:outputLabel rendered="#{editCustomerController.addNewCustomerFailure}">
-					Error: falied to complete new customer registration proccess!</h:outputLabel>
+				<h:outputLabel class="error" rendered="#{editCustomerController.addNewCustomerFailure}">Error: falied to complete new customer registration proccess!</h:outputLabel>
 				
-				<h:outputLabel rendered="#{editCustomerController.addNewCustomerSuccess}">
-					New customer registration proccess completed successfully!</h:outputLabel>
+				<h:outputLabel rendered="#{editCustomerController.duplicateID}">
+				
+				customer with the same ID already exists.</h:outputLabel>
+
+				<h:outputLabel rendered="#{editCustomerController.duplicateEmail}">
+				
+				customer with the same email address already exists.</h:outputLabel>
+
+				<h:outputLabel rendered="#{editCustomerController.duplicatePassword}">
+				
+				customer with the same password already exists.</h:outputLabel>
+
+				<h:outputLabel rendered="#{editCustomerController.duplicateAddressID}">
+				
+				customer with the same address ID already exists.</h:outputLabel>								
+
+				<h:outputLabel rendered="#{editCustomerController.duplicateCreditCard}">
+				
+				customer with the same credit card number already exists.</h:outputLabel>
+				
+				<h:outputLabel class="success" rendered="#{editCustomerController.addNewCustomerSuccess}">New customer registration proccess completed successfully!</h:outputLabel>
 	
 			</h:form>
 			<div style="clear: both;"></div>

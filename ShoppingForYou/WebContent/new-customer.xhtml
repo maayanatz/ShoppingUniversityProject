@@ -30,38 +30,38 @@
 		<h:form id="form" style="margin-top: 10px;" >
 			<h:panelGrid columns="3">
 			
-				<h:outputLabel>ID:</h:outputLabel> <h:inputText value="#{customer.id}" id="id" /> <h:message for="id" />
+				<h:outputLabel>ID:</h:outputLabel> <h:inputText value="#{customer.id}" id="id"/> <h:message style = "color:red;" for="id" />
 			
-				<h:outputLabel>First name:</h:outputLabel> <h:inputText value="#{customer.firstName}" id="firstName" /> <h:message for="firstName" />
+				<h:outputLabel>First name:</h:outputLabel> <h:inputText value="#{customer.firstName}" id="firstName" required="true" requiredMessage="Your first name is mandatory." /> <h:message style = "color:red;" for="firstName" />
 	
-				<h:outputLabel>Last name:</h:outputLabel> <h:inputText value="#{customer.lastName}" id="lastName" /> <h:message for="lastName" />
+				<h:outputLabel>Last name:</h:outputLabel> <h:inputText value="#{customer.lastName}" id="lastName" required="true" requiredMessage="Your last name is mandatory." /> <h:message style = "color:red;" for="lastName" />
 	
-				<h:outputLabel>Email:</h:outputLabel> <h:inputText value="#{customer.email}" id="email" required="true" requiredMessage="Your email is mandatory."/> <h:message for="email" />
+				<h:outputLabel>Email:</h:outputLabel> <h:inputText value="#{customer.email}" id="email" required="true" requiredMessage="Your email address is mandatory."/> <h:message style = "color:red;" for="email" />
             							
-				<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{customer.password}" id="password" /> <h:message for="password" />            							
+				<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{customer.password}" id="password" required="true" requiredMessage="Your password is mandatory."/> <h:message style = "color:red;" for="password" />            							
 				
-				<h:outputLabel>Phone number:</h:outputLabel> <h:inputText value="#{customer.phoneNumber}" id="phoneNumber" /> <h:message for="phoneNumber" />
+				<h:outputLabel>Phone number:</h:outputLabel> <h:inputText value="#{customer.phoneNumber}" id="phoneNumber" /> <h:message style = "color:red;" for="phoneNumber" />
 				
-				<h:outputLabel>Addrees ID:</h:outputLabel> <h:inputText value="#{customer.addressID}" id="addressID" /> <h:message for="addressID" />
+				<h:outputLabel>Addrees ID:</h:outputLabel> <h:inputText value="#{customer.addressID}" id="addressID" /> <h:message style = "color:red;" for="addressID" />
 				
-				<h:outputLabel>Street name:</h:outputLabel> <h:inputText value="#{customer.streetName}" id="streetName" /> <h:message for="streetName" />
+				<h:outputLabel>Street name:</h:outputLabel> <h:inputText value="#{customer.streetName}" id="streetName" required="true" requiredMessage="Your street name is mandatory." /> <h:message style = "color:red;" for="streetName" />
 				
-				<h:outputLabel>House number:</h:outputLabel> <h:inputText value="#{customer.houseNumber}" id="houseNumber" /> <h:message for="houseNumber" />
+				<h:outputLabel>House number:</h:outputLabel> <h:inputText value="#{customer.houseNumber}" id="houseNumber" /> <h:message style = "color:red;" for="houseNumber" />
 				
-				<h:outputLabel>Apartment number:</h:outputLabel> <h:inputText value="#{customer.apartmentNumber}" id="apartmantNumber" /> <h:message for="apartmantNumber" />
+				<h:outputLabel>Apartment number:</h:outputLabel> <h:inputText value="#{customer.apartmentNumber}" id="apartmantNumber" /> <h:message style = "color:red;" for="apartmantNumber" />
 				
-				<h:outputLabel>City:</h:outputLabel> <h:inputText value="#{customer.city}" id="city" /> <h:message for="city" />
+				<h:outputLabel>City:</h:outputLabel> <h:inputText value="#{customer.city}" id="city" required="true" requiredMessage="Your city is mandatory."/> <h:message style = "color:red;" for="city" />
 				
-				<h:outputLabel>Country:</h:outputLabel> <h:inputText value="#{customer.country}" id="country" /> <h:message for="country" />
+				<h:outputLabel>Country:</h:outputLabel> <h:inputText value="#{customer.country}" id="country" required="true" requiredMessage="Your country is mandatory." /> <h:message style = "color:red;" for="country" />
 				
-				<h:outputLabel>Postal code:</h:outputLabel> <h:inputText value="#{customer.postalCode}" id="postalCode" /> <h:message for="postalCode" />
+				<h:outputLabel>Postal code:</h:outputLabel> <h:inputText value="#{customer.postalCode}" id="postalCode" /> <h:message style = "color:red;" for="postalCode" />
 				
-				<h:outputLabel>Credit card number:</h:outputLabel> <h:inputText value="#{customer.cardNumber}" id="cardNumber" /> <h:message for="cardNumber" />
+				<h:outputLabel>Credit card number:</h:outputLabel> <h:inputText value="#{customer.cardNumber}" id="cardNumber" required="true" requiredMessage="Your card number is mandatory." /> <h:message style = "color:red;" for="cardNumber" />
 				
-				<h:outputLabel>Credit card owner ID:</h:outputLabel> <h:inputText value="#{customer.cardOwner}" id="cardOwner" /> <h:message for="cardOwner" />
+				<h:outputLabel>Credit card owner ID:</h:outputLabel> <h:inputText value="#{customer.cardOwner}" id="cardOwner" /> <h:message style = "color:red;" for="cardOwner" />
 							
 				<h:outputLabel /> <h:commandButton value="Save" styleClass="save" action="#{editCustomerController.addCustomer(customer, 1)}"/>
-			
+				
 			</h:panelGrid>
 		</h:form>
 

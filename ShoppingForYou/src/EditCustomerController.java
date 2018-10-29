@@ -22,7 +22,12 @@ public class EditCustomerController implements Serializable {
 	private List<Order> customerOrders;
 	private boolean addNewCustomerFailure;
 	private boolean addNewCustomerSuccess;
-	private ShoppingDbUtil shoppingDbUtil;
+	private ShoppingDbUtil shoppingDbUtil;	
+	private boolean duplicateID;
+	private boolean duplicateEmail;
+	private boolean duplicatePassword;
+	private boolean duplicateAddressID;
+	private boolean duplicateCreditCard;	
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
 	public EditCustomerController() throws Exception {
@@ -31,7 +36,82 @@ public class EditCustomerController implements Serializable {
 		currentOrderItems = new ArrayList<>();
 		addNewCustomerFailure = false;
 		addNewCustomerSuccess = false;
+		duplicateID = false;
+		duplicateEmail = false;
+		duplicatePassword = false;
+		duplicateAddressID = false;
+		duplicateCreditCard = false;
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
+	}
+
+	/**
+	 * @return the duplicateID
+	 */
+	public boolean isDuplicateID() {
+		return duplicateID;
+	}
+
+	/**
+	 * @param duplicateID the duplicateID to set
+	 */
+	public void setDuplicateID(boolean duplicateID) {
+		this.duplicateID = duplicateID;
+	}
+
+	/**
+	 * @return the duplicateEmail
+	 */
+	public boolean isDuplicateEmail() {
+		return duplicateEmail;
+	}
+
+	/**
+	 * @param duplicateEmail the duplicateEmail to set
+	 */
+	public void setDuplicateEmail(boolean duplicateEmail) {
+		this.duplicateEmail = duplicateEmail;
+	}
+
+	/**
+	 * @return the duplicatePassword
+	 */
+	public boolean isDuplicatePassword() {
+		return duplicatePassword;
+	}
+
+	/**
+	 * @param duplicatePassword the duplicatePassword to set
+	 */
+	public void setDuplicatePassword(boolean duplicatePassword) {
+		this.duplicatePassword = duplicatePassword;
+	}
+
+	/**
+	 * @return the duplicateAddressID
+	 */
+	public boolean isDuplicateAddressID() {
+		return duplicateAddressID;
+	}
+
+	/**
+	 * @param duplicateAddressID the duplicateAddressID to set
+	 */
+	public void setDuplicateAddressID(boolean duplicateAddressID) {
+		this.duplicateAddressID = duplicateAddressID;
+	}
+
+	/**
+	 * @return the duplicateCreditCard
+	 */
+	public boolean isDuplicateCreditCard() {
+		return duplicateCreditCard;
+	}
+
+	/**
+	 * @param duplicateCreditCard the duplicateCreditCard to set
+	 */
+	public void setDuplicateCreditCard(boolean duplicateCreditCard) {
+		this.duplicateCreditCard = duplicateCreditCard;
 	}
 
 	/**
@@ -172,6 +252,16 @@ public class EditCustomerController implements Serializable {
 		
 	public String addCustomer(Customer theCustomer, int page) {
 
+		int validationChecksResult = validationChecks(theCustomer);
+		
+		if (validationChecksResult == 0) {
+			this.addNewCustomerFailure = true;
+			this.addNewCustomerSuccess = false;
+			if (page == 0) {
+				return "edit-customers?faces-redirect=true";
+			}
+			return "new-customer-result?faces-redirect=true";
+		}
 		logger.info("Adding customer: " + theCustomer);
 
 		try {
@@ -196,6 +286,58 @@ public class EditCustomerController implements Serializable {
 			return "edit-customers?faces-redirect=true";
 		}
 		return "new-customer-result?faces-redirect=true";
+	}
+
+	private int validationChecks(Customer theCustomer) {
+		int tempID;
+		String tempEmail;
+		String tempPassword;
+		int tempAddressID;
+		String tempCreditCard;
+		
+		int id = theCustomer.getId();
+		String email = theCustomer.getEmail();
+		String password = theCustomer.getPassword();
+		int addressID = theCustomer.getAddressID();
+		String creditCard = theCustomer.getCardNumber();
+		
+		duplicateID = false;
+		duplicateEmail = false;
+		duplicatePassword = false;
+		duplicateAddressID = false;
+		duplicateCreditCard = false;
+		
+		loadCustomers();
+		for (int i = 0; i < this.customers.size(); i++) {
+			tempID = this.customers.get(i).getId();
+			tempEmail = this.customers.get(i).getEmail();
+			tempPassword = this.customers.get(i).getPassword();
+			tempAddressID = this.customers.get(i).getAddressID();
+			tempCreditCard = this.customers.get(i).getCardNumber();
+			
+			if (id == tempID)
+			{
+				duplicateID = true;
+			}
+			if (email.equals(tempEmail)) {
+				duplicateEmail = true;
+			}
+			if (password.equals(tempPassword)) {
+				duplicatePassword = true;
+			}
+			if (addressID == tempAddressID) {
+				duplicateAddressID = true;
+			}
+			if (creditCard.equals(tempCreditCard)) {
+				duplicateCreditCard = true;
+			}
+			
+			if (duplicateID == true | duplicateEmail == true | duplicatePassword == true | 
+					duplicateAddressID == true | duplicateCreditCard == true) {
+				return 0;
+			}
+		}
+		return 1;
 	}
 
 	public String loadCustomer(int customerId) {
