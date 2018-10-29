@@ -22,6 +22,7 @@ public class ShoppingCartController implements Serializable {
 	private boolean addItemSuccess;
 	private boolean addOrderSuccess;
 	private boolean duplicateItem;
+	private boolean cartEmpty;
 	private float totalOrderPrice;
 	private int productItemNumber;
 	private int itemOrderAmount;
@@ -41,9 +42,24 @@ public class ShoppingCartController implements Serializable {
 		addOrderSuccess = false;
 		addOrderFailure = false;
 		duplicateItem = false;
+		cartEmpty = true;
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
+	/**
+	 * @return the cartEmpty
+	 */
+	public boolean isCartEmpty() {
+		return cartEmpty;
+	}
+
+	/**
+	 * @param cartEmpty the cartEmpty to set
+	 */
+	public void setCartEmpty(boolean cartEmpty) {
+		this.cartEmpty = cartEmpty;
+	}
+
 	/**
 	 * @return the duplicateItem
 	 */
@@ -321,6 +337,7 @@ public class ShoppingCartController implements Serializable {
 		
 		setAddItemFailure(false);
 		setAddItemSuccess(true);
+		setCartEmpty(false);
 	}
 	
 	public int addOrder(Order theOrder) {
@@ -429,6 +446,7 @@ public class ShoppingCartController implements Serializable {
 		addItemFailure = false;
 		addItemSuccess = false;
 		duplicateItem = false;
+		cartEmpty = true;
 	}
 		
 	private void addErrorMessage(Exception exc) {
