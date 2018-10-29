@@ -51,7 +51,6 @@
 					requiredMessage="Email address is mandatory." 
 					validatorMessage="Email format should be: 'word[any_char]@word.2/3_chars_words'. The . and - signs must be followed by a char.">
 					<f:validateRegex pattern="^\w+([\.-]?\w+)*@\w+(\.\w{2,3})+$" for="email" /> 
-					
 				</h:inputText> <h:message style = "color:red;" for="email" />
             							
 				<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{customer.password}" id="password" required="true"

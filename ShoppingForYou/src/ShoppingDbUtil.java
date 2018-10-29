@@ -37,7 +37,7 @@ public class ShoppingDbUtil {
 		return theDataSource;
 	}
 	
-	public List<Administrator> getAdministrators() throws Exception {
+	public synchronized List<Administrator> getAdministrators() throws Exception {
 
 		List<Administrator> administrators = new ArrayList<>();
 
@@ -125,7 +125,7 @@ public class ShoppingDbUtil {
 		}
 	}
 	
-	public void addAdministrator(Administrator theAdministrator) throws Exception {
+	public synchronized void addAdministrator(Administrator theAdministrator) throws Exception {
 
 		Connection myConn = null;
 		PreparedStatement myStmt = null;

@@ -31,17 +31,35 @@
 		<h:form id="form" style="margin-top: 10px;" >
 			<h:panelGrid columns="3">
 			
-				<h:outputLabel>ID:</h:outputLabel> <h:inputText value="#{administrator.adminID}" id="id" /> <h:message for="id" />
+				<h:outputLabel>ID:</h:outputLabel> <h:inputText value="#{administrator.adminID}" id="id" maxlength="9" 
+					converterMessage="ID must contain only digits." validatorMessage="ID is mandatory and must contain 9 digits only."> 
+						<f:validateLength minimum="9" maximum="9" for="id" />
+				</h:inputText> <h:message style = "color:red;" for="id" />
 			
-				<h:outputLabel>First name:</h:outputLabel> <h:inputText value="#{administrator.firstName}" id="firstName" /> <h:message for="firstName" />
+				<h:outputLabel>First name:</h:outputLabel> <h:inputText value="#{administrator.firstName}" id="firstName" required="true" 
+					requiredMessage="First name is mandatory." validatorMessage="First name must start with a capital letter and contain only letters.">
+						<f:validateRegex pattern="[A-Z]([a-z ]*)" for="firstName" /> 
+				</h:inputText> <h:message style = "color:red;" for="firstName" />
 	
-				<h:outputLabel>Last name:</h:outputLabel> <h:inputText value="#{administrator.lastName}" id="lastName" /> <h:message for="lastName" />
+				<h:outputLabel>Last name:</h:outputLabel> <h:inputText value="#{administrator.lastName}" id="lastName" required="true" 
+					requiredMessage="Last name is mandatory." validatorMessage="Last name must start with a capital letter and contain only letters.">
+						<f:validateRegex pattern="[A-Z]([a-z ]*)" for="lasttName" /> 
+				</h:inputText> <h:message style = "color:red;" for="lastName" />
 	
-				<h:outputLabel>Email:</h:outputLabel> <h:inputText value="#{administrator.email}" id="email" required="true" requiredMessage="Your email is mandatory."/> <h:message for="email" />
+				<h:outputLabel>Email:</h:outputLabel> <h:inputText value="#{administrator.email}" id="email" required="true" 
+					requiredMessage="Email address is mandatory." 
+					validatorMessage="Email format should be: 'letters@shopforyou.com'.">
+					<f:validateRegex pattern="^[a-zA-Z]+@shopforyou.com$" for="email" /> 
+				</h:inputText> <h:message style = "color:red;" for="email" />
             							
-				<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{administrator.password}" id="password" /> <h:message for="password" />            							
+				<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{administrator.password}" id="password" required="true"
+					requiredMessage="Password is mandatory." 
+					validatorMessage="Password must be at least 4 characters, no more than 8 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.">
+					<f:validateRegex pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$" for="password" />
+				</h:inputText> <h:message style = "color:red;" for="password" />            					
 				
-				<h:outputLabel>Phone number:</h:outputLabel> <h:inputText value="#{administrator.phoneNumber}" id="phoneNumber" /> <h:message for="phoneNumber" />
+				<h:outputLabel>Phone number:</h:outputLabel> <h:inputText value="#{administrator.phoneNumber}" id="phoneNumber" 
+					converterMessage="Phone number must contain only digits."/> <h:message style = "color:red;" for="phoneNumber" />
 				
 				<h:outputLabel /> <h:commandButton value="Save" styleClass="save" action="#{editAdminController.addAdministrator(administrator)}"/>
 			
