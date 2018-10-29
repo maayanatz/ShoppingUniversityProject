@@ -29,21 +29,29 @@
 			<h:messages globalOnly="true" />
 			<h:form id="form" style="margin-top: 10px;" >
 
-				<h:outputLabel class="error" rendered="#{editAdminController.addNewAdminFailure}">Error: falied to add new admin!</h:outputLabel>
+				<h:outputLabel class="error" rendered="#{editCustomerController.addNewCustomerFailure}">Error: falied to add new customer!</h:outputLabel>
 				
-				<h:outputLabel rendered="#{editAdminController.duplicateID}">
+				<h:outputLabel rendered="#{editCustomerController.duplicateID}">
 				
-				administrator with the same ID already exists.</h:outputLabel>
+				customer with the same ID already exists.</h:outputLabel>
 
-				<h:outputLabel rendered="#{editAdminController.duplicateEmail}">
+				<h:outputLabel rendered="#{editCustomerController.duplicateEmail}">
 				
-				administrator with the same email address already exists.</h:outputLabel>
+				customer with the same email address already exists.</h:outputLabel>
 
-				<h:outputLabel rendered="#{editAdminController.duplicatePassword}">
+				<h:outputLabel rendered="#{editCustomerController.duplicatePassword}">
 				
-				administrator with the same password already exists.</h:outputLabel>
+				customer with the same password already exists.</h:outputLabel>
+
+				<h:outputLabel rendered="#{editCustomerController.duplicateAddressID}">
 				
-				<h:outputLabel class="success" rendered="#{editAdminController.addNewAdminSuccess}">New administrator addedd successfully!</h:outputLabel>
+				customer with the same address ID already exists.</h:outputLabel>								
+
+				<h:outputLabel rendered="#{editCustomerController.duplicateCreditCard}">
+				
+				customer with the same credit card number already exists.</h:outputLabel>
+				
+				<h:outputLabel class="success" rendered="#{editCustomerController.addNewCustomerSuccess}">New customer addedd successfully!</h:outputLabel>
 	
 			</h:form>
 			<div style="clear: both;"></div>

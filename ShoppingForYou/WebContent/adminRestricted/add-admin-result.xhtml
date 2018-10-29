@@ -29,34 +29,26 @@
 			<h:messages globalOnly="true" />
 			<h:form id="form" style="margin-top: 10px;" >
 
-				<h:outputLabel class="error" rendered="#{editCustomerController.addNewCustomerFailure}">Error: falied to add new customer!</h:outputLabel>
+				<h:outputLabel class="error" rendered="#{editAdminController.addNewAdminFailure}">Error: falied to add new admin!</h:outputLabel>
 				
-				<h:outputLabel rendered="#{editCustomerController.duplicateID}">
+				<h:outputLabel rendered="#{editAdminController.duplicateID}">
 				
-				customer with the same ID already exists.</h:outputLabel>
+				administrator with the same ID already exists.</h:outputLabel>
 
-				<h:outputLabel rendered="#{editCustomerController.duplicateEmail}">
+				<h:outputLabel rendered="#{editAdminController.duplicateEmail}">
 				
-				customer with the same email address already exists.</h:outputLabel>
+				administrator with the same email address already exists.</h:outputLabel>
 
-				<h:outputLabel rendered="#{editCustomerController.duplicatePassword}">
+				<h:outputLabel rendered="#{editAdminController.duplicatePassword}">
 				
-				customer with the same password already exists.</h:outputLabel>
-
-				<h:outputLabel rendered="#{editCustomerController.duplicateAddressID}">
+				administrator with the same password already exists.</h:outputLabel>
 				
-				customer with the same address ID already exists.</h:outputLabel>								
-
-				<h:outputLabel rendered="#{editCustomerController.duplicateCreditCard}">
-				
-				customer with the same credit card number already exists.</h:outputLabel>
-				
-				<h:outputLabel class="success" rendered="#{editCustomerController.addNewCustomerSuccess}">New customer addedd successfully!</h:outputLabel>
+				<h:outputLabel class="success" rendered="#{editAdminController.addNewAdminSuccess}">New administrator addedd successfully!</h:outputLabel>
 	
 			</h:form>
 			<div style="clear: both;"></div>
 			
-			<p><h:outputLink value="edit-customers.xhtml">Back to List</h:outputLink></p>
+			<p><h:outputLink value="edit-administrators.xhtml">Back to List</h:outputLink></p>
 	</div>	
 	</ui:define>
 	</ui:decorate>
