@@ -142,7 +142,7 @@ public class EditProductController implements Serializable {
 
 		try {
 			
-			// get all jackets from database
+			// get all jackets from the database
 			jackets = shoppingDbUtil.getJackets();
 			
 		} catch (Exception exc) {
