@@ -48,7 +48,7 @@
 	
 				<h:outputLabel>Email:</h:outputLabel> <h:inputText value="#{administrator.email}" id="email" required="true" 
 					requiredMessage="Email address is mandatory." 
-					validatorMessage="Email format should be: 'letters@shopforyou.com'.">
+					validatorMessage="Email format should be: 'user_name@shopforyou.com'.">
 					<f:validateRegex pattern="^[a-zA-Z]+@shopforyou.com$" for="email" /> 
 				</h:inputText> <h:message style = "color:red;" for="email" />
             							

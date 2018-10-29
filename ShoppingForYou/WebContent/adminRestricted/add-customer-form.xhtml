@@ -68,7 +68,7 @@
 				</h:inputText> <h:message style = "color:red;" for="addressID" />
 				
 				<h:outputLabel>Street name:</h:outputLabel> <h:inputText value="#{customer.streetName}" id="streetName" required="true" 
-					requiredMessage="Street name is mandatory." validatorMessage="Streen name must contain only letters.">
+					requiredMessage="Street name is mandatory." validatorMessage="Street name must contain only letters.">
 						<f:validateRegex pattern="^[a-zA-Z ]*$" for="streetName" /> 
 				</h:inputText> <h:message style = "color:red;" for="streetName" />
 				
