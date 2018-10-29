@@ -251,29 +251,6 @@ public class EditProductController implements Serializable {
 		return "edit-products";	
 	}
 	
-	public String decreaseProduct(Product theProduct, int amountInOrder) {
-
-		logger.info("Decreasing amount of product number: " + theProduct.getCatalogNumber());
-		
-		try {
-
-			// delete the product from the database
-			theProduct.setAmount((theProduct.getAmount()) - 1);
-			shoppingDbUtil.decreaseProductAmount(theProduct.getCatalogNumber(), amountInOrder);
-			
-		} catch (Exception exc) {
-			// send this to server logs
-			logger.log(Level.SEVERE, "Error decreasing amount of product number: " + theProduct.getCatalogNumber(), exc);
-			
-			// add error message for JSF page
-			addErrorMessage(exc);
-			
-			return null;
-		}
-		
-		return "edit-products";	
-	}
-	
 	private void addErrorMessage(Exception exc) {
 		FacesMessage message = new FacesMessage("Error: " + exc.getMessage());
 		FacesContext.getCurrentInstance().addMessage(null, message);

@@ -340,14 +340,18 @@ public class ShoppingCartController implements Serializable {
 		setCartEmpty(false);
 	}
 	
-	public int addOrder(Order theOrder) {
+	public synchronized int addOrder(Order theOrder) {
 
 		logger.info("Adding order: " + theOrder.getOrderNumber());
 
 		try {
-			
+			int validateAmountResult = validateAmount(theOrder.getOrderItems());
+			if (validateAmountResult == 0) {
+				return 0;
+			}			
 			// add order to the database
 			shoppingDbUtil.addOrder(theOrder);
+			updateProductAmount(theOrder.getOrderItems());
 			
 		} catch (Exception exc) {
 			// send this to server logs
@@ -360,7 +364,32 @@ public class ShoppingCartController implements Serializable {
 		return 1;
 	}
 	
-	public int updateProductAmount(List<ItemInOrder> items) {
+	public synchronized int validateAmount(List<ItemInOrder> items) {
+		logger.info("Validating Products Amount");
+
+		try {
+			for (int i = 0; i < items.size(); i++) {
+				ItemInOrder theItem = items.get(i); 
+				theItem.setAmount(shoppingDbUtil.getProductAmount(theItem.getCatalogNumber()));
+				
+				if (theItem.getAmount() < theItem.getAmountInOrder())
+				{
+					return 0;
+				}
+			}
+			
+		} catch (Exception exc) {
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error Validating Products Amount", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+			return 0;
+		}
+		return 1;
+	}
+	
+	public synchronized void updateProductAmount(List<ItemInOrder> items) {
 
 		logger.info("Updating Products Amount");
 
@@ -368,7 +397,7 @@ public class ShoppingCartController implements Serializable {
 			
 			for (int i = 0; i < items.size(); i++) {
 				ItemInOrder theItem = items.get(i); 
-				shoppingDbUtil.decreaseProductAmount(theItem.getCatalogNumber(), theItem.getAmountInOrder());
+				shoppingDbUtil.decreaseProductAmount(theItem.getCatalogNumber(), theItem.getAmountInOrder(), theItem.getAmount());
 			}
 			
 		} catch (Exception exc) {
@@ -377,9 +406,7 @@ public class ShoppingCartController implements Serializable {
 			
 			// add error message for JSF page
 			addErrorMessage(exc);
-			return 0;
 		}
-		return 1;
 	}
 	
 	public void checkDuplicate() {
@@ -425,8 +452,7 @@ public class ShoppingCartController implements Serializable {
 		Order newOrder = new Order(this.orderNumber, this.orderCustomerID, this.totalOrderPrice, this.items);
 		
 		int addOrderResult = addOrder(newOrder);
-		int updateAmountResult = updateProductAmount(newOrder.getOrderItems());
-		if (addOrderResult == 1 && updateAmountResult == 1) {
+		if (addOrderResult == 1) {
 			this.addOrderSuccess = true;
 			this.addOrderFailure = false;
 			clearShoppingCart();

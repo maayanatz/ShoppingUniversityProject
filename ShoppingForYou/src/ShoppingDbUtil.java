@@ -764,45 +764,58 @@ public class ShoppingDbUtil {
 			close (myConn, myStmt, myRs);
 		}
 	}
-
-	public void decreaseProductAmount(int catalogNumber, int amountInOrder) throws Exception {
+	
+	public synchronized int getProductAmount(int catalogNumber) throws Exception {
 		
 		Connection myConn = null;
-		PreparedStatement myStmtCurrentProductAmount = null;
-		PreparedStatement myStmtNewProductAmount = null;
-		ResultSet myRsCurrentProductAmount = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
 		int currentProductAmount = 0;
 
 		try {
 			myConn = getConnection();
 			
-			String sqlCurrentProductAmount = "select Amount_In_Stock from products where Catalog_Number=?";
+			String sql = "select Amount_In_Stock from products where Catalog_Number=?";
 
-			myStmtCurrentProductAmount = myConn.prepareStatement(sqlCurrentProductAmount);
+			myStmt = myConn.prepareStatement(sql);
 
 			// set params
-			myStmtCurrentProductAmount.setInt(1, catalogNumber);
+			myStmt.setInt(1, catalogNumber);
 			
-			myRsCurrentProductAmount = myStmtCurrentProductAmount.executeQuery();
+			myRs = myStmt.executeQuery();
 			
-			if (myRsCurrentProductAmount.next()) {
+			if (myRs.next()) {
 				
 				// retrieve data from result set row
-				currentProductAmount = myRsCurrentProductAmount.getInt("Amount_In_Stock");
+				currentProductAmount = myRs.getInt("Amount_In_Stock");
 			}
-			
-			String sqlNewProductAmount = "update products set Amount_In_Stock=? where Catalog_Number=?";
-			
-			myStmtNewProductAmount = myConn.prepareStatement(sqlNewProductAmount);
-			
-			myStmtNewProductAmount.setInt(1, (currentProductAmount - amountInOrder));
-			myStmtNewProductAmount.setInt(2, catalogNumber);
-			
-			myStmtNewProductAmount.execute();
+			return currentProductAmount;
 		}
 		finally {
-			close (myConn, myStmtCurrentProductAmount);
-			close (myConn, myStmtNewProductAmount);
+			close (myConn, myStmt);
+		}
+	}
+	
+	public synchronized void decreaseProductAmount(int catalogNumber, int amountInOrder, int currentAmount) throws Exception {
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		int newAmount = currentAmount - amountInOrder;
+
+		try {
+			myConn = getConnection();
+			
+			String sql = "update products set Amount_In_Stock=? where Catalog_Number=?";
+			
+			myStmt = myConn.prepareStatement(sql);
+			
+			myStmt.setInt(1, newAmount);
+			myStmt.setInt(2, catalogNumber);
+			
+			myStmt.execute();
+		}
+		finally {
+			close (myConn, myStmt);
 		}
 	}
 	
@@ -1045,7 +1058,7 @@ public class ShoppingDbUtil {
 		return loggedInCustomerID;
 	}
 
-	public void addOrder(Order theOrder) throws Exception {
+	public synchronized void addOrder(Order theOrder) throws Exception {
 
 		Connection myConn = null;
 		PreparedStatement myStmtOrders = null;
