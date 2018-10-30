@@ -336,9 +336,9 @@ public class ShoppingCartController implements Serializable {
         Iterator<ItemInOrder> itr = items.iterator(); 
         while (itr.hasNext()) 
         { 
-            int itemNumber = (Integer)itr.next().getCatalogNumber(); 
-            if (itemNumber == removeItemNumber) {
-            	float newTotalOrderPrice = this.getTotalOrderPrice() - (float)itr.next().getTotalPrice();
+            ItemInOrder thisItem = (ItemInOrder)itr.next(); 
+            if (thisItem.getCatalogNumber() == removeItemNumber) {
+            	float newTotalOrderPrice = this.getTotalOrderPrice() - thisItem.getTotalPrice();
             	itr.remove();
             	this.setTotalOrderPrice(newTotalOrderPrice);
             	return;
