@@ -31,38 +31,62 @@
 		<h:form id="form" style="margin-top: 10px;" >
 			<h:panelGrid columns="3">
 			
-				<h:outputLabel>First name:</h:outputLabel> <h:inputText value="#{customer.firstName}" id="firstName" /> <h:message for="firstName" />
+				<h:outputLabel>First name:</h:outputLabel> <h:inputText value="#{customer.firstName}" id="firstName" required="true" 
+					requiredMessage="First name is mandatory." validatorMessage="First name must start with a capital letter and contain only letters.">
+						<f:validateRegex pattern="[A-Z]([a-z ]*)" for="firstName" /> 
+				</h:inputText> <h:message style = "color:red;" for="firstName" />
 				
-				<h:outputLabel>Last name:</h:outputLabel> <h:inputText value="#{customer.lastName}" id="lastName" /> <h:message for="lastName" />
-	
-				<h:outputLabel>Email:</h:outputLabel> <h:inputText value="#{customer.email}" id="email" 
-									required="true"
-            							requiredMessage="Your email is mandatory."/> 	<h:message for="email"  />
+				<h:outputLabel>Last name:</h:outputLabel> <h:inputText value="#{customer.lastName}" id="lastName" required="true" 
+					requiredMessage="Last name is mandatory." validatorMessage="Last name must start with a capital letter and contain only letters.">
+						<f:validateRegex pattern="[A-Z]([a-z ]*)" for="lasttName" /> 
+				</h:inputText> <h:message style = "color:red;" for="lastName" />
             							
-            	<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{customer.password}" id="password" /> <h:message for="password" />
+            	<h:outputLabel>Password:</h:outputLabel> <h:inputText value="#{customer.password}" id="password" required="true"
+					requiredMessage="Password is mandatory." 
+					validatorMessage="Password must be at least 4 characters, no more than 8 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.">
+					<f:validateRegex pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$" for="password" />
+				</h:inputText> <h:message style = "color:red;" for="password" />            					
             	
-            	<h:outputLabel>Phone Number:</h:outputLabel> <h:inputText value="#{customer.phoneNumber}" id="phoneNumber" /> <h:message for="phoneNumber" />
+            	<h:outputLabel>Phone Number:</h:outputLabel> <h:inputText value="#{customer.phoneNumber}" id="phoneNumber" 
+					converterMessage="Phone number must contain only digits."/> <h:message style = "color:red;" for="phoneNumber" />
 				
-				<h:outputLabel>Street name:</h:outputLabel> <h:inputText value="#{customer.streetName}" id="streetName" /> <h:message for="streetName" />
+				<h:outputLabel>Street name:</h:outputLabel> <h:inputText value="#{customer.streetName}" id="streetName" required="true" 
+					requiredMessage="Street name is mandatory." validatorMessage="Street name must contain only letters.">
+						<f:validateRegex pattern="^[a-zA-Z ]*$" for="streetName" /> 
+				</h:inputText> <h:message style = "color:red;" for="streetName" />
 				
-				<h:outputLabel>House number:</h:outputLabel> <h:inputText value="#{customer.houseNumber}" id="houseNumber" /> <h:message for="houseNumber" />
+				<h:outputLabel>House number:</h:outputLabel> <h:inputText value="#{customer.houseNumber}" id="houseNumber"
+					converterMessage="House number must contain only digits." validatorMessage="House number is mandatory."> 
+						<f:validateLongRange minimum="1" for="houseNumber"/>
+				</h:inputText> <h:message style = "color:red;" for="houseNumber" />
 				
-				<h:outputLabel>Apartment number:</h:outputLabel> <h:inputText value="#{customer.apartmentNumber}" id="apartmantNumber" /> <h:message for="apartmantNumber" />
+				<h:outputLabel>Apartment number:</h:outputLabel> <h:inputText value="#{customer.apartmentNumber}" id="apartmantNumber"
+					converterMessage="Apartmant number must contain only digits."/> 
+					<h:message style = "color:red;" for="apartmantNumber" />
 				
-				<h:outputLabel>City:</h:outputLabel> <h:inputText value="#{customer.city}" id="city" /> <h:message for="city" />
+				<h:outputLabel>City:</h:outputLabel> <h:inputText value="#{customer.city}" id="city" required="true" 
+					requiredMessage="City is mandatory." validatorMessage="City must contain only letters.">
+						<f:validateRegex pattern="^[a-zA-Z ]*$" for="city" /> 
+				</h:inputText> <h:message style = "color:red;" for="city" />
 				
-				<h:outputLabel>Country:</h:outputLabel> <h:inputText value="#{customer.country}" id="country" /> <h:message for="country" />
+				<h:outputLabel>Country:</h:outputLabel> <h:inputText value="#{customer.country}" id="country" required="true" 
+					requiredMessage="Country is mandatory." validatorMessage="Country must contain only letters.">
+						<f:validateRegex pattern="^[a-zA-Z ]*$" for="country" /> 
+				</h:inputText> <h:message style = "color:red;" for="country" />
 				
-				<h:outputLabel>Postal code:</h:outputLabel> <h:inputText value="#{customer.postalCode}" id="postalCode" /> <h:message for="postalCode" />
-				
-				<h:outputLabel>Credit card number:</h:outputLabel> <h:inputText value="#{customer.cardNumber}" id="customerCardNumber" /> <h:message for="customerCardNumber" />
-				
-				<h:outputLabel>Credit card owner ID:</h:outputLabel> <h:inputText value="#{customer.cardOwner}" id="cardOwner" /> <h:message for="cardOwner" />
-				
+				<h:outputLabel>Postal code:</h:outputLabel> <h:inputText value="#{customer.postalCode}" id="postalCode" maxlength="7" 
+					converterMessage="Postal code must contain only digits." 
+					validatorMessage="Postal code is mandatory and must contain 7 digits only."> 
+						<f:validateLength minimum="7" maximum="7" for="postalCode" />
+				</h:inputText> <h:message style = "color:red;" for="postalCode" />
+
 				 <h:inputHidden value="#{customer.id}" />
+				 <h:inputHidden value="#{customer.email}" />
 				 <h:inputHidden value="#{customer.customerID}" />
 				 <h:inputHidden value="#{customer.addressID}" />
 				 <h:inputHidden value="#{customer.cardCustomer}" />
+				 <h:inputHidden value="#{customer.cardNumber}" />
+				 <h:inputHidden value="#{customer.cardOwner}" />
 				 
 				 <h:commandButton value="Save" styleClass="save" 
 				 			action="#{editCustomerController.updateCustomer(customer)}"/>

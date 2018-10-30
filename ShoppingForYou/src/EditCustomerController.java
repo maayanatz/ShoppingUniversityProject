@@ -25,7 +25,6 @@ public class EditCustomerController implements Serializable {
 	private ShoppingDbUtil shoppingDbUtil;	
 	private boolean duplicateID;
 	private boolean duplicateEmail;
-	private boolean duplicatePassword;
 	private boolean duplicateAddressID;
 	private boolean duplicateCreditCard;	
 	private Logger logger = Logger.getLogger(getClass().getName());
@@ -38,7 +37,6 @@ public class EditCustomerController implements Serializable {
 		addNewCustomerSuccess = false;
 		duplicateID = false;
 		duplicateEmail = false;
-		duplicatePassword = false;
 		duplicateAddressID = false;
 		duplicateCreditCard = false;
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
@@ -70,20 +68,6 @@ public class EditCustomerController implements Serializable {
 	 */
 	public void setDuplicateEmail(boolean duplicateEmail) {
 		this.duplicateEmail = duplicateEmail;
-	}
-
-	/**
-	 * @return the duplicatePassword
-	 */
-	public boolean isDuplicatePassword() {
-		return duplicatePassword;
-	}
-
-	/**
-	 * @param duplicatePassword the duplicatePassword to set
-	 */
-	public void setDuplicatePassword(boolean duplicatePassword) {
-		this.duplicatePassword = duplicatePassword;
 	}
 
 	/**
@@ -294,20 +278,17 @@ public class EditCustomerController implements Serializable {
 	private synchronized int validationChecks(Customer theCustomer) {
 		int tempID;
 		String tempEmail;
-		String tempPassword;
 		int tempAddressID;
 		String tempCreditCard;
 		List<Customer> currentCustomers = null;
 		
 		int id = theCustomer.getId();
 		String email = theCustomer.getEmail();
-		String password = theCustomer.getPassword();
 		int addressID = theCustomer.getAddressID();
 		String creditCard = theCustomer.getCardNumber();
 		
 		duplicateID = false;
 		duplicateEmail = false;
-		duplicatePassword = false;
 		duplicateAddressID = false;
 		duplicateCreditCard = false;
 		
@@ -330,7 +311,6 @@ public class EditCustomerController implements Serializable {
 
 			tempID = currentCustomers.get(i).getId();
 			tempEmail = currentCustomers.get(i).getEmail();
-			tempPassword = currentCustomers.get(i).getPassword();
 			tempAddressID = currentCustomers.get(i).getAddressID();
 			tempCreditCard = currentCustomers.get(i).getCardNumber();
 			
@@ -341,9 +321,6 @@ public class EditCustomerController implements Serializable {
 			if (email.equals(tempEmail)) {
 				duplicateEmail = true;
 			}
-			if (password.equals(tempPassword)) {
-				duplicatePassword = true;
-			}
 			if (addressID == tempAddressID) {
 				duplicateAddressID = true;
 			}
@@ -351,8 +328,7 @@ public class EditCustomerController implements Serializable {
 				duplicateCreditCard = true;
 			}
 			
-			if (duplicateID == true | duplicateEmail == true | duplicatePassword == true | 
-					duplicateAddressID == true | duplicateCreditCard == true) {
+			if (duplicateID == true | duplicateEmail == true | duplicateAddressID == true | duplicateCreditCard == true) {
 				return 0;
 			}
 		}	

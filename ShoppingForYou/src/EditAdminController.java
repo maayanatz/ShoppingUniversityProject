@@ -22,7 +22,6 @@ public class EditAdminController implements Serializable {
 	private ShoppingDbUtil shoppingDbUtil;	
 	private boolean duplicateID;
 	private boolean duplicateEmail;
-	private boolean duplicatePassword;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
 	public EditAdminController() throws Exception {
@@ -31,7 +30,6 @@ public class EditAdminController implements Serializable {
 		addNewAdminSuccess = false;
 		duplicateID = false;
 		duplicateEmail = false;
-		duplicatePassword = false;
 		shoppingDbUtil = ShoppingDbUtil.getInstance();
 	}
 	
@@ -89,20 +87,6 @@ public class EditAdminController implements Serializable {
 	 */
 	public void setDuplicateEmail(boolean duplicateEmail) {
 		this.duplicateEmail = duplicateEmail;
-	}
-
-	/**
-	 * @return the duplicatePassword
-	 */
-	public boolean isDuplicatePassword() {
-		return duplicatePassword;
-	}
-
-	/**
-	 * @param duplicatePassword the duplicatePassword to set
-	 */
-	public void setDuplicatePassword(boolean duplicatePassword) {
-		this.duplicatePassword = duplicatePassword;
 	}
 
 	/**
@@ -177,16 +161,13 @@ public class EditAdminController implements Serializable {
 	private synchronized int validationChecks(Administrator theAdmin) {
 		int tempID;
 		String tempEmail;
-		String tempPassword;
 		List<Administrator> currentAdmins = null;
 		
 		int id = theAdmin.getAdminID();
 		String email = theAdmin.getEmail();
-		String password = theAdmin.getPassword();
 		
 		duplicateID = false;
 		duplicateEmail = false;
-		duplicatePassword = false;
 		
 		try {
 			
@@ -207,7 +188,6 @@ public class EditAdminController implements Serializable {
 
 			tempID = currentAdmins.get(i).getAdminID();
 			tempEmail = currentAdmins.get(i).getEmail();
-			tempPassword = currentAdmins.get(i).getPassword();
 			
 			if (id == tempID)
 			{
@@ -216,11 +196,8 @@ public class EditAdminController implements Serializable {
 			if (email.equals(tempEmail)) {
 				duplicateEmail = true;
 			}
-			if (password.equals(tempPassword)) {
-				duplicatePassword = true;
-			}
 			
-			if (duplicateID == true | duplicateEmail == true | duplicatePassword == true) {
+			if (duplicateID == true | duplicateEmail == true ) {
 				return 0;
 			}
 		}	
