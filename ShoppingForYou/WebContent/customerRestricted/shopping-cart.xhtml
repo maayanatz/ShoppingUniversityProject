@@ -48,7 +48,7 @@
 					<f:facet name="header">Image</f:facet>
 					
 					<!--  the value for each row -->
-					<h:graphicImage class="itemImg" value="#{tempItem.image}" height="150px" width="150px" />
+					<h:graphicImage class="itemImg" value="#{tempItem.image}" height="150px" width="125px" />
 				</h:column>				
 
 				<h:column>
@@ -82,6 +82,21 @@
 					<!--  the value for each row -->
 					#{tempItem.totalPrice} &#x20AA;
 				</h:column>
+				
+				<h:column>
+					<!-- the column header -->
+					<f:facet name="header">Remove Item</f:facet>
+
+					<!--  the value for each row -->
+					<h:commandLink value="Remove" 
+						onclick="if (!confirm('Are you sure you want to remove this product from the shopping cart?')) return false" 
+						action="#{shoppingCartController.removeItem()}">
+						
+						<f:param id="removeItemNumber" name="removeItemNumber" value="#{tempItem.catalogNumber}"/>
+					
+					</h:commandLink>
+
+				</h:column>	
 
 			</h:dataTable>
 			

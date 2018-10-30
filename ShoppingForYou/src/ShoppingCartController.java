@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -162,7 +163,7 @@ public class ShoppingCartController implements Serializable {
 	 * @param totalOrderPrice the totalOrderPrice to set
 	 */
 	public void setTotalOrderPrice(float totalItemPrice) {
-		this.totalOrderPrice = this.totalOrderPrice + totalItemPrice;
+		this.totalOrderPrice = totalItemPrice;
 	}
 
 	/**
@@ -314,6 +315,37 @@ public class ShoppingCartController implements Serializable {
 		return theProduct;
 	}
 	
+	public void removeItem() {
+		
+		int removeItemNumber = 0;
+		FacesContext fc = FacesContext.getCurrentInstance();
+        Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
+        
+        try {  
+        	removeItemNumber = Integer.parseInt(params.get("removeItemNumber"));
+        }  
+        catch(Exception exc) {  
+			// send this to server logs
+			logger.log(Level.SEVERE, "Error getting remove item product number", exc);
+			
+			// add error message for JSF page
+			addErrorMessage(exc);
+			return;
+        }
+        
+        Iterator<ItemInOrder> itr = items.iterator(); 
+        while (itr.hasNext()) 
+        { 
+            int itemNumber = (Integer)itr.next().getCatalogNumber(); 
+            if (itemNumber == removeItemNumber) {
+            	float newTotalOrderPrice = this.getTotalOrderPrice() - (float)itr.next().getTotalPrice();
+            	itr.remove();
+            	this.setTotalOrderPrice(newTotalOrderPrice);
+            	return;
+            }
+        }
+	}
+	
 	public void addItem() {
 		
 		Product theItemProduct = null;
@@ -333,7 +365,7 @@ public class ShoppingCartController implements Serializable {
 		
 		items.add(newItem);
 		
-		setTotalOrderPrice(newItem.getTotalPrice());
+		setTotalOrderPrice(this.getTotalOrderPrice() + newItem.getTotalPrice());
 		
 		setAddItemFailure(false);
 		setAddItemSuccess(true);
