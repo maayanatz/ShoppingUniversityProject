@@ -31,19 +31,40 @@
 		<h:form id="form" style="margin-top: 10px;" >
 			<h:panelGrid columns="3">
 			
-				<h:outputLabel>Description:</h:outputLabel> <h:inputText value="#{product.description}" id="description" /> <h:message for="description" />
+				<h:outputLabel>Description:</h:outputLabel> <h:inputText value="#{product.description}" id="description" required="true" 
+					requiredMessage="Description is mandatory." validatorMessage="Description must contain only letters.">
+						<f:validateRegex pattern="^[a-zA-Z ]*$" for="description" /> 
+				</h:inputText> <h:message style = "color:red;" for="description" />
 	
-				<h:outputLabel>Category:</h:outputLabel> <h:inputText value="#{product.category}" id="category" /> <h:message for="category" />
+				<h:outputLabel>Category:</h:outputLabel> <h:inputText value="#{product.category}" id="category" required="true" 
+					requiredMessage="Category is mandatory." validatorMessage="Category must only be one of the following: shirts/dresses/skirts/jackets.">
+						<f:validateRegex pattern="^(shirts|dresses|skirts|jackets)$" for="category" /> 
+				</h:inputText> <h:message style = "color:red;" for="category" />
 				
-				<h:outputLabel>Price:</h:outputLabel> <h:inputText value="#{product.price}" id="price" /> <h:message for="price" />
+				<h:outputLabel>Price:</h:outputLabel> <h:inputText value="#{product.price}" id="price"
+					converterMessage="Price must contain only digits." validatorMessage="Price must contain only values >= 1."> 
+					<f:validateLongRange minimum="1" for="price"/> 
+				</h:inputText> <h:message style = "color:red;" for="price" />
 				
-				<h:outputLabel>Discount:</h:outputLabel> <h:inputText value="#{product.discount}" id="discount" /> <h:message for="discount" />
+				<h:outputLabel>Discount:</h:outputLabel> <h:inputText value="#{product.discount}" id="discount" 
+					converterMessage="Discount must contain only digits." validatorMessage="Discount must contain only values >= 0."> 
+					<f:validateLongRange minimum="0" for="discount"/> 
+				</h:inputText> <h:message style = "color:red;" for="discount" />
 				
-				<h:outputLabel>Image:</h:outputLabel> <h:inputText value="#{product.image}" id="image" /> <h:message for="image" />
+				<h:outputLabel>Image:</h:outputLabel> <h:inputText value="#{product.image}" id="image" required="true" 
+					requiredMessage="Image is mandatory." validatorMessage="Image (src) must be a valid URL.">
+						<f:validateRegex pattern="^http(s)?:\/\/[\w.-\/]+$" for="image" /> 
+				</h:inputText> <h:message style = "color:red;" for="image" />
 	
-				<h:outputLabel>Size:</h:outputLabel> <h:inputText value="#{product.size}" id="size" /> <h:message for="size" />
+				<h:outputLabel>Size:</h:outputLabel> <h:inputText value="#{product.size}" id="size" required="true" 
+					requiredMessage="Size is mandatory." validatorMessage="Size must only be: 'OneSize'">
+						<f:validateRegex pattern="OneSize" for="Size" /> 
+            	</h:inputText> <h:message style = "color:red;" for="size" />
             							
-				<h:outputLabel>Amount in Stock:</h:outputLabel> <h:inputText value="#{product.amount}" id="amount" /> <h:message for="amount" /> 
+				<h:outputLabel>Amount in Stock:</h:outputLabel> <h:inputText value="#{product.amount}" id="amount"
+					converterMessage="Amount in stock must contain only digits." validatorMessage="Amount in stock must contain only values >= 0."> 
+					<f:validateLongRange minimum="0" for="amount"/> 
+				</h:inputText> <h:message style = "color:red;" for="amount" />
 				
 				 <h:inputHidden value="#{product.catalogNumber}" />
 				
