@@ -360,7 +360,7 @@ public class ShoppingCartController implements Serializable {
 			return;
 		}
 		
-		int itemOrderID = randomNumberInRange(201, 400);
+		int itemOrderID = randomNumberInRange(101, 10000);
 		int itemOrderNumber = 0;
 		
 		ItemInOrder newItem = new ItemInOrder(itemOrderID, itemOrderNumber, theItemProduct, this.itemOrderAmount);
@@ -480,7 +480,7 @@ public class ShoppingCartController implements Serializable {
 	}
 	
 	public String submitOrder() {
-		this.orderNumber = randomNumberInRange(1, 200);
+		this.orderNumber = randomNumberInRange(10001, 100000);
 		this.orderCustomerID = getLoggedInCustomerID();
 		
 		Order newOrder = new Order(this.orderNumber, this.orderCustomerID, this.totalOrderPrice, this.items);
