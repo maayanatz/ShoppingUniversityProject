@@ -292,10 +292,10 @@ public class ShoppingCartController implements Serializable {
 		logger.info("loading product: " + catalogNumber);
 		
 		try {
-			// get administrator from database
+			// get product from the database
 			theProduct = shoppingDbUtil.getProduct(catalogNumber);
 			
-			// put in the request attribute ... so we can use it on the form page
+			// put in the request attribute, so we can use it on the form page
 			ExternalContext externalContext = 
 						FacesContext.getCurrentInstance().getExternalContext();		
 
@@ -513,11 +513,4 @@ public class ShoppingCartController implements Serializable {
 		FacesMessage message = new FacesMessage("Error: " + exc.getMessage());
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
-	
-    public void parametersAction(){
-        FacesContext fc = FacesContext.getCurrentInstance();
-        Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
-        productItemNumber = Integer.parseInt(params.get("productItemNumber"));
-    }
-	
 }

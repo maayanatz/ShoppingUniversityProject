@@ -280,7 +280,7 @@ public class EditProductController implements Serializable {
 			// get product from database
 			Product theProduct = shoppingDbUtil.getProduct(catalogNumber);
 			
-			// put in the request attribute ... so we can use it on the form page
+			// put in the request attribute, so we can use it on the form page
 			ExternalContext externalContext = 
 						FacesContext.getCurrentInstance().getExternalContext();		
 

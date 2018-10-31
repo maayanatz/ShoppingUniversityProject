@@ -343,7 +343,7 @@ public class EditCustomerController implements Serializable {
 			// get customer from database
 			Customer theCustomer = shoppingDbUtil.getCustomer(customerId);
 			
-			// put in the request attribute ... so we can use it on the form page
+			// put in the request attribute, so we can use it on the form page
 			ExternalContext externalContext = 
 						FacesContext.getCurrentInstance().getExternalContext();		
 
@@ -411,7 +411,7 @@ public class EditCustomerController implements Serializable {
 			// get customer from database
 			Customer loggedInCustomer = shoppingDbUtil.getCustomer(loggedInCustomerID);
 			
-			// put in the request attribute ... so we can use it on the form page
+			// put in the request attribute, so we can use it on the form page
 			ExternalContext externalContext = 
 						FacesContext.getCurrentInstance().getExternalContext();		
 
